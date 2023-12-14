@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "ChecklistTracker (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ChecklistTracker (Unpackaged)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_DEBUGBREAK": "1",
+        "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_SHOWUI": "1",
+        "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_FAILFAST": "1"
+      }
+    }
+  }
+}
