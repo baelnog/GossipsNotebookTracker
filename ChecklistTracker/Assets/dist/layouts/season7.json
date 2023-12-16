@@ -76,7 +76,7 @@
       "position": [ 76, 334 ],
       "columns": 1,
       "padding": "8px",
-      "elements": [ "sometimes", "sometimes", "sometimes" ],
+      "elements": [ "medallions", "medallions", "medallions" ],
       "elementsSize": [ 24, 24 ],
       "displayName": "Trials",
       "hidden": false,

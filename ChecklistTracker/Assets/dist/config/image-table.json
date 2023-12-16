@@ -27,7 +27,7 @@
 				{ "name": "Fire Temple Hammer Chest", "alias": [ "Flare Dancer", "Fire Flare Dancer", "Fire Dancer", "Hammer Chest" ] },
 				{ "name": "Fire Temple Pierre", "alias": [ "Pierre Fire Temple", "Fire Scarecrow", "Scarecrow Fire" ] },
 				{ "name": "ZR Frogs in the Rain", "alias": [ "Frogs 1", "Frogs in the Rain"] },
-				{ "name": "Goron City Left Maze Chest", "alias": [ "GC Maze Left Chest", "GC Left Side Maze" ] },
+				{ "name": "Goron City Left Maze Chest", "alias": [ "GC Maze Left Chest", "GC Left Side Maze", "GC Hammer", "Hammer GC" ] },
 				{ "name": "Goron City Smiling Pot", "alias": [ "GC Pot", "Spinning Pot", "Goron Pot", "Goron Spinning Pot" ] },
 				{ "name": "GTG Maze Final Chest", "alias": [ "Final Chest GTG", "GTG Final Chest" ] },
 				{ "name": "GTG Sunken Rupees", "alias": [ "GTG Underwater Rupees", "GTG Toilet" ] },
@@ -278,7 +278,11 @@
 		],
 		"default_hashfrog": [
 			"sometimes",
-			"sold_out"
+			"sold_out",
+			"small_key",
+			"boss_key",
+			"bottle",
+			"bottle_big_poe"
 		],
 		"logical_items": [
 			"sometimes",
@@ -288,6 +292,15 @@
 			"bottle",
 			"bottle_big_poe",
 			"sold_out"
+		],
+		"medallions": [
+			"sometimes",
+			"medallion_green",
+			"medallion_red",
+			"medallion_blue",
+			"medallion_orange",
+			"medallion_purple",
+			"medallion_yellow"
 		]
 	},
 	"items": {

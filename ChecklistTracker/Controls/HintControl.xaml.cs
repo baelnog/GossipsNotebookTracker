@@ -173,7 +173,7 @@ namespace ChecklistTracker.Controls
             {
                 this.EntryBox.Text = (e.ChosenSuggestion as Config.Label).name;
             }
-            if (sender.IsSuggestionListOpen && sender.ItemsSource != null && sender.ItemsSource is List<Config.Label> labels && labels.Any())
+            else if (sender.IsSuggestionListOpen && sender.ItemsSource != null && sender.ItemsSource is List<Config.Label> labels && labels.Any())
             {
                 this.EntryBox.Text = labels.First().name;
             }

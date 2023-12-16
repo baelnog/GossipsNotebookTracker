@@ -71,7 +71,8 @@ namespace ChecklistTracker
 
         public static Item FindItem(string itemName)
         {
-            return Config.Value.items[itemName];
+            Config.Value.items.TryGetValue(itemName, out var value);
+            return value;
         }
 
         public static string? FindItemById(string itemId)

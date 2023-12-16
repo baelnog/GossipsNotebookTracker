@@ -143,8 +143,9 @@ namespace ChecklistTracker
                     foreach (var element in compTable.elements)
                     {
                         var item = ResourceFinder.FindItem(element);
+                        var type = item?.type ?? ItemType.Hint;
                         UIElement elementControl = null;
-                        switch (item.type)
+                        switch (type)
                         {
                             case ItemType.Song:
                                 elementControl = new SongControl(item, inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
@@ -153,7 +154,7 @@ namespace ChecklistTracker
                                 elementControl = new RewardControl(item, inventory, "dungeons", 3, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Hint:
-                                elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], compTable.elementId, paddingObj);
+                                elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], element, paddingObj);
                                 break;
                             default:
                                 elementControl = new ElementControl(item, inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
