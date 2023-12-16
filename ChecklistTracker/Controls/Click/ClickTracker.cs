@@ -1,9 +1,14 @@
 ﻿using Microsoft.UI.Input;
+using Microsoft.UI.Input.DragDrop;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 
 namespace ChecklistTracker.Controls.Click
@@ -16,6 +21,7 @@ namespace ChecklistTracker.Controls.Click
         private static DragInfo CurrentDrag = null;
 
         private static Dictionary<UIElement, ClickCallbacks> ClickCallbacks = new Dictionary<UIElement, ClickCallbacks>();
+        private static ConcurrentQueue<object> operations = new ConcurrentQueue<object>();
 
         internal static void ConfigureClickHandler(this UIElement source, ClickCallbacks callbacks)
         {
@@ -39,6 +45,7 @@ namespace ChecklistTracker.Controls.Click
         {
             if (s is UIElement sender)
             {
+                Debug.WriteLine($"OnPointerPressed");
                 var pointer = e.GetCurrentPoint((UIElement)e.OriginalSource);
                 var props = pointer.Properties;
                 MouseButton clickedButton;
@@ -63,6 +70,7 @@ namespace ChecklistTracker.Controls.Click
 
         static void OnPointerMoved(object s, PointerRoutedEventArgs e)
         {
+            Debug.WriteLine($"OnPointerMoved");
             if (s is UIElement sender && e.OriginalSource is UIElement originalSource)
             {
                 var pointer = e.GetCurrentPoint(originalSource);
@@ -76,6 +84,7 @@ namespace ChecklistTracker.Controls.Click
                 else if (props.IsRightButtonPressed)
                 {
                     button = MouseButton.Right;
+                    e.Handled = true;
                 }
                 else
                 {
@@ -92,16 +101,17 @@ namespace ChecklistTracker.Controls.Click
             e.DragUIOverride.IsGlyphVisible = false;
             if (s is UIElement sender)
             {
-                Debug.WriteLine($"OnDragOver pre lock");
                 var drag = CurrentDrag;
                 if (drag != null)
                 {
-                    Debug.WriteLine($"OnDragOver CurrentDrag.CurrentTarget = {sender}");
+                    Debug.WriteLine($"OnDragOver {drag}.CurrentTarget = {sender}");
                     drag.CurrentTarget = sender;
                 }
                 e.Handled |= true;
             }
         }
+
+        static int closeCounter = 0;
 
         static void StartDrag(MouseButton button, UIElement source, PointerPoint pointer)
         {
@@ -121,14 +131,25 @@ namespace ChecklistTracker.Controls.Click
 
             Debug.WriteLine($"StartDrag remove click");
 
-            CurrentDrag = new DragInfo
+            var drag = new DragInfo
             {
                 Source = source,
                 Button = button
             };
+            CurrentDrag = drag;
             if (button == MouseButton.Right)
             {
-                CurrentDrag.Operation = source.StartDragAsync(pointer);
+                //var op = source.StartDragAsync(pointer);
+                //drag.Operation = op;
+                //op.GetAwaiter().GetResult();
+                //op.Cancel();
+                //var status = op.Status;
+                //var disposable = op as IDisposable;
+
+                // Massive hack to avoid issues around Drag operation deconstructor.
+                // Just don't let it ever garbage collect...
+                // Hopefully usual usage would trigger enough drag and drops to cause a meaningful memory leak.
+                //operations.Enqueue(op);
             }    
             Debug.WriteLine($"StartDrag Current Drag set");
         }
@@ -144,11 +165,22 @@ namespace ChecklistTracker.Controls.Click
 
             var drag = CurrentDrag;
             CurrentDrag = null;
-            if (drag.Operation.Status == AsyncStatus.Started)
-            {
-                drag.Operation.Cancel();
-            }
-            CurrentDrag = null;
+            //if (drag?.Operation?.Status == AsyncStatus.Started)
+            //{
+            //    try
+            //    {
+            //        drag.Operation.Cancel();
+            //        drag.Operation.Close();
+            //    } catch (Exception ex)
+            //    {
+
+            //    }
+            //    finally
+            //    {
+            //        drag.Operation = null;
+            //    }
+            //}
+            //CurrentDrag = null;
         }
 
         static void OnPointerWheelChanged(UIElement uiElement, PointerRoutedEventArgs winArgs)
@@ -208,6 +240,30 @@ namespace ChecklistTracker.Controls.Click
                         }
                     }
                 }
+                if (clickedButton != MouseButton.Left && CurrentDrag?.Button == clickedButton)
+                {
+                    var drag = CurrentDrag;
+                    var source = drag.Source;
+                    var target = sender;
+                    if (ClickCallbacks.TryGetValue(source, out var sourceCallback) && ClickCallbacks.TryGetValue(target, out var destinationCallback))
+                    {
+                        if (sourceCallback?.OnDragHintControlCompleted != null && destinationCallback?.OnDropHintControlCompleted != null)
+                        {
+                            var dragged = sourceCallback.OnDragHintControlCompleted(source, drag.Button);
+                            destinationCallback.OnDropHintControlCompleted(target, drag.Button, dragged);
+                            CurrentDrag = null;
+                            winArgs.Handled = true;
+                        }
+
+                        if (sourceCallback?.OnDragImageCompleted != null && destinationCallback?.OnDropImageCompleted != null)
+                        {
+                            var dragged = sourceCallback.OnDragImageCompleted(source, drag.Button);
+                            destinationCallback.OnDropImageCompleted(target, drag.Button, dragged);
+                            CurrentDrag = null;
+                            winArgs.Handled = true;
+                        }
+                    }
+                }
             }
         }
 
@@ -215,6 +271,10 @@ namespace ChecklistTracker.Controls.Click
         {
             var drag = CurrentDrag;
             CurrentDrag = null;
+            //if (drag?.Operation?.Status == AsyncStatus.Started)
+            //{
+            //    drag?.Operation.Cancel();
+            //}
             if (drag?.CurrentTarget == null)
             {
                 return;
