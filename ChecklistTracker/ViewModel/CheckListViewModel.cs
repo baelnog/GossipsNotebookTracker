@@ -143,7 +143,7 @@ namespace ChecklistTracker.ViewModel
             {
                 _SelectedRegion = value;
                 OnFiltersChanged();
-                OnPropertyChanged();
+                this.RaisePropertyChanged(PropertyChanged);
             }
         }
 
@@ -155,11 +155,6 @@ namespace ChecklistTracker.ViewModel
         public void Redo()
         {
             Inventory.Redo();
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         internal void SelectRegion(HintRegion? region)
@@ -188,7 +183,7 @@ namespace ChecklistTracker.ViewModel
 
         private void OnFiltersChanged()
         {
-            OnPropertyChanged("ViewModelFilters");
+            this.RaisePropertyChanged(PropertyChanged, "ViewModelFilters");
         }
 
         internal void RegisterFilterCallbacks(View.AdvancedCollectionView collection)

@@ -1,33 +1,34 @@
 using ChecklistTracker.Config;
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.CoreUtils;
+using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System.ComponentModel;
 
 namespace ChecklistTracker.Controls
 {
-    public sealed partial class ElementControl : UserControl
+    public sealed partial class ElementControl : UserControl, INotifyPropertyChanged
     {
-        public ImageSource CurrentImage { get; set; }
+        public ImageSource CurrentImage { get => ViewModel.CurrentImage; }
         public int ImageWidth { get; set; }
         public int ImageHeight { get; set; }
-        public int Count { get; set; }
-        public bool HasCount { get; set; }
-        public Visibility CountVisibility { get { return HasCount ? Visibility.Visible: Visibility.Collapsed; } }
+        public int Count { get => ViewModel.Count; }
+        public Visibility CountVisibility { get { return ViewModel.HasCount ? Visibility.Visible: Visibility.Collapsed; } }
 
-        private Inventory Inventory;
-        internal Item Item;
+        internal ItemViewModel ViewModel;
 
-        internal ElementControl(Item item, Inventory inventory, int width, int height, Thickness padding)
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        internal ElementControl(ItemViewModel viewModel, int width, int height, Thickness padding)
         {
             InitializeComponent();
-            Inventory = inventory;
-            Item = item;
-            CurrentImage = inventory.GetCurrentItemImage(item);
+            ViewModel = viewModel;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
             ImageWidth = width; ImageHeight = height;
             Padding = padding;
-
-            HasCount = Item.collection == CollectionType.Count;
 
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = OnClick;
@@ -37,45 +38,42 @@ namespace ChecklistTracker.Controls
             this.Image.ConfigureClickHandler(callbacks);
         }
 
+        private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(PropertyChanged, e.PropertyName);
+        }
+
         void OnClick(UIElement sender, MouseButton button)
         {
             switch (button)
             {
                 case MouseButton.Left:
-                    Inventory.CollectItem(Item);
+                    ViewModel.Collect();
                     break;
                 case MouseButton.Right:
-                    Inventory.UncollectItem(Item);
+                    ViewModel.Uncollect();
                     break;
                 default:
                     return;
             }
-            CurrentImage = Inventory.GetCurrentItemImage(Item);
-            Count = Inventory.GetCurrentItemCount(Item);
-            this.Bindings.Update();
         }
 
         ImageSource OnDragImage(UIElement sender, MouseButton button)
         {
             if (button == MouseButton.Left)
             {
-                Inventory.CollectItem(Item);
-                CurrentImage = Inventory.GetCurrentItemImage(Item);
-                Count = Inventory.GetCurrentItemCount(Item);
-                return CurrentImage;
+                ViewModel.Collect();
+                return ViewModel.CurrentImage;
             }
             else
             {
-                return ResourceFinder.FindItemImage(Item, 1);
+                return ResourceFinder.FindItemImage(ViewModel.Item, 1);
             }
         }
 
         void OnScroll(UIElement sender, int scrollAmount)
         {
-            Inventory.CollectAmount(Item, scrollAmount);
-            CurrentImage = Inventory.GetCurrentItemImage(Item);
-            Count = Inventory.GetCurrentItemCount(Item);
-            this.Bindings.Update();
+            ViewModel.Collect(scrollAmount);
         }
     }
 }

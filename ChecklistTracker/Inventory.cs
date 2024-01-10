@@ -1,16 +1,18 @@
 ﻿using ChecklistTracker.Config;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ChecklistTracker
 {
-    internal class Inventory
+    internal class Inventory : INotifyPropertyChanged
     {
 
         private Dictionary<Item, int> ItemCounts;
@@ -20,6 +22,8 @@ namespace ChecklistTracker
         private Stack<(Action undo, Action redo)> RedoActions = new Stack<(Action undo, Action redo)>();
 
         private LogicEngine LogicEngine;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         internal Inventory(LogicEngine engine)
         {
@@ -123,6 +127,7 @@ namespace ChecklistTracker
                 {
                     LogicEngine.Inventory[item.logic_name] = value;
                     LogicEngine.UpdateItems(LogicEngine.Inventory);
+                    this.RaisePropertyChanged(PropertyChanged, item.logic_name);
                 }
             };
 

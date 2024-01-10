@@ -98,9 +98,8 @@ namespace ChecklistTracker
             }
         }
 
-        internal static void Launch(LogicEngine logicEngine, Inventory inventory)
+        internal static void Launch()
         {
-            CheckListViewModel.GlobalInstance = new CheckListViewModel(inventory, logicEngine);
             var window = new Window();
             var frame = new Frame();
             frame.Navigate(typeof(CheckPage));

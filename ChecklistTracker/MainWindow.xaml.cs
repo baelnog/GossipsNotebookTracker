@@ -35,6 +35,7 @@ using ChecklistTracker.ANTLR;
 using ChecklistTracker.LogicProvider;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
+using ChecklistTracker.ViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -88,7 +89,8 @@ namespace ChecklistTracker
 
         private void LayoutDesign()
         {
-            CheckPage.Launch(LogicEngine, Inventory);
+            CheckListViewModel.GlobalInstance = new CheckListViewModel(Inventory, LogicEngine);
+            CheckPage.Launch();
             //var parser = new RuleParser();
             //using (var engine = new LogicEngine())
             //{
@@ -176,7 +178,7 @@ namespace ChecklistTracker
                                 elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], element, paddingObj);
                                 break;
                             default:
-                                elementControl = new ElementControl(item, Inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
 
                         }
@@ -272,7 +274,7 @@ namespace ChecklistTracker
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId);
                     var item = ResourceFinder.FindItem(itemName);
-                    var control = new ElementControl(ResourceFinder.FindItem(itemName), Inventory, element.Size[1], element.Size[0], new Thickness(0));
+                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), element.Size[1], element.Size[0], new Thickness(0));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);
