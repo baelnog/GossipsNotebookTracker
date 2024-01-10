@@ -1,4 +1,6 @@
 <Project>
 	<PropertyGroup>
+        <!-- https://github.com/microsoft/WindowsAppSDK/issues/3548 -->
+        <EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
     </PropertyGroup>
 </Project>

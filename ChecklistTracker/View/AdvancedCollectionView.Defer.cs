@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ChecklistTracker.View
+{/// <summary>
+ /// A collection view implementation that supports filtering, grouping, sorting and incremental loading
+ /// Fork of https://github.com/CommunityToolkit/Windows/tree/main/components/Collections/src/AdvancedCollectionView/AdvancedCollectionView.Defer.cs
+ /// Fixes IndexOutOrRangeException when filtering out last element
+ /// </summary>
+    public partial class AdvancedCollectionView
+    {
+        /// <summary>
+        /// Stops refreshing until it is disposed
+        /// </summary>
+        /// <returns>An disposable object</returns>
+        public IDisposable DeferRefresh()
+        {
+            return new NotificationDeferrer(this);
+        }
+
+        /// <summary>
+        /// Notification deferrer helper class
+        /// </summary>
+        public class NotificationDeferrer : IDisposable
+        {
+            private readonly AdvancedCollectionView _acvs;
+            private readonly object _currentItem;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="NotificationDeferrer"/> class.
+            /// </summary>
+            /// <param name="acvs">Source ACVS</param>
+            public NotificationDeferrer(AdvancedCollectionView acvs)
+            {
+                _acvs = acvs;
+                _currentItem = _acvs.CurrentItem;
+                _acvs._deferCounter++;
+            }
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            /// <filterpriority>2</filterpriority>
+            public void Dispose()
+            {
+                _acvs.MoveCurrentTo(_currentItem);
+                _acvs._deferCounter--;
+                _acvs.Refresh();
+            }
+        }
+    }
+}

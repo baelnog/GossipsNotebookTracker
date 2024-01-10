@@ -22,22 +22,7 @@ namespace ChecklistTracker
 
         private static Lazy<ItemTable> Config = new Lazy<ItemTable>(() =>
         {
-            using Stream stream = File.Open($"{ProgramDir.Value}/config/image-table.json", FileMode.Open, FileAccess.Read);
-            //FileSystem.Current.OpenAppPackageFileAsync("image-table.json").Result;
-            if (stream == null)
-            {
-                throw new IOException("Failed to load image-table.json");
-            }
-            var table = JsonSerializer.Deserialize<ItemTable>(stream, new JsonSerializerOptions
-            {
-                AllowTrailingCommas = true,
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                PropertyNameCaseInsensitive = true,
-                Converters = {
-                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-                }
-            });
-            return table;
+            return TrackerConfig.Init().Result.ItemTable;
         });
 
         private static ConcurrentDictionary<string, BitmapImage> imageCache = new ConcurrentDictionary<string, BitmapImage>();

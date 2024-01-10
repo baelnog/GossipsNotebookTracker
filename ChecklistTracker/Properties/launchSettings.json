@@ -8,8 +8,12 @@
       "environmentVariables": {
         "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_DEBUGBREAK": "1",
         "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_SHOWUI": "1",
-        "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_FAILFAST": "1"
-      }
+        "MICROSOFT_WINDOWSAPPRUNTIME_BOOTSTRAP_INITIALIZE_FAILFAST": "1",
+        "DOTNET_DbgEnableMiniDump": "1",
+        "DOTNET_CreateDumpDiagnostics": "1",
+        "DOTNET_EnableCrashReport": "1"
+      },
+      "nativeDebugging": false
     }
   }
 }

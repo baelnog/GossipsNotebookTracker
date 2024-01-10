@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Input;
+﻿using ChecklistTracker.CoreUtils;
+using Microsoft.UI.Input;
 using Microsoft.UI.Input.DragDrop;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -45,7 +46,7 @@ namespace ChecklistTracker.Controls.Click
         {
             if (s is UIElement sender)
             {
-                Debug.WriteLine($"OnPointerPressed");
+                Logging.WriteLine($"OnPointerPressed");
                 var pointer = e.GetCurrentPoint((UIElement)e.OriginalSource);
                 var props = pointer.Properties;
                 MouseButton clickedButton;
@@ -70,7 +71,7 @@ namespace ChecklistTracker.Controls.Click
 
         static void OnPointerMoved(object s, PointerRoutedEventArgs e)
         {
-            Debug.WriteLine($"OnPointerMoved");
+            Logging.WriteLine($"OnPointerMoved");
             if (s is UIElement sender && e.OriginalSource is UIElement originalSource)
             {
                 var pointer = e.GetCurrentPoint(originalSource);
@@ -90,8 +91,8 @@ namespace ChecklistTracker.Controls.Click
                 {
                     return;
                 }
-                Debug.WriteLine($"OnPointerMoved {button}");
-                Debug.WriteLine($"StartDrag {button}");
+                Logging.WriteLine($"OnPointerMoved {button}");
+                Logging.WriteLine($"StartDrag {button}");
                 StartDrag(button, sender, pointer);
             }
         }
@@ -104,7 +105,7 @@ namespace ChecklistTracker.Controls.Click
                 var drag = CurrentDrag;
                 if (drag != null)
                 {
-                    Debug.WriteLine($"OnDragOver {drag}.CurrentTarget = {sender}");
+                    Logging.WriteLine($"OnDragOver {drag}.CurrentTarget = {sender}");
                     drag.CurrentTarget = sender;
                 }
                 e.Handled |= true;
@@ -115,21 +116,21 @@ namespace ChecklistTracker.Controls.Click
 
         static void StartDrag(MouseButton button, UIElement source, PointerPoint pointer)
         {
-            Debug.WriteLine($"StartDrag pre lock");
-            Debug.WriteLine($"StartDrag");
+            Logging.WriteLine($"StartDrag pre lock");
+            Logging.WriteLine($"StartDrag");
             TrackedEvents.Remove(button);
             if (CurrentDrag?.Button != button)
             {
-                Debug.WriteLine($"StartDrag CancelDrag");
+                Logging.WriteLine($"StartDrag CancelDrag");
                 CancelDrag();
             }
             if (CurrentDrag?.Button == button)
             {
-                Debug.WriteLine($"StartDrag Same drag");
+                Logging.WriteLine($"StartDrag Same drag");
                 return;
             }
 
-            Debug.WriteLine($"StartDrag remove click");
+            Logging.WriteLine($"StartDrag remove click");
 
             var drag = new DragInfo
             {
@@ -151,13 +152,13 @@ namespace ChecklistTracker.Controls.Click
                 // Hopefully usual usage would trigger enough drag and drops to cause a meaningful memory leak.
                 //operations.Enqueue(op);
             }    
-            Debug.WriteLine($"StartDrag Current Drag set");
+            Logging.WriteLine($"StartDrag Current Drag set");
         }
 
         static void CancelDrag()
         {
-            Debug.WriteLine($"CancelDrag pre lock");
-            Debug.WriteLine($"CancelDrag");
+            Logging.WriteLine($"CancelDrag pre lock");
+            Logging.WriteLine($"CancelDrag");
             if (CurrentDrag == null)
             {
                 return;
@@ -185,21 +186,21 @@ namespace ChecklistTracker.Controls.Click
 
         static void OnPointerWheelChanged(UIElement uiElement, PointerRoutedEventArgs winArgs)
         {
-            Debug.WriteLine($"OnPointerWheelChanged");
+            Logging.WriteLine($"OnPointerWheelChanged");
             if (ClickCallbacks.TryGetValue(uiElement, out var sourceCallback) && sourceCallback.OnScroll != null)
             {
-                Debug.WriteLine($"OnPointerWheelChanged has callback");
+                Logging.WriteLine($"OnPointerWheelChanged has callback");
                 var delta = winArgs.GetCurrentPoint(uiElement).Properties.MouseWheelDelta;
                 var dir = Math.Sign(delta);
                 sourceCallback.OnScroll(uiElement, dir);
                 winArgs.Handled = true;
             }
-            Debug.WriteLine($"OnPointerWheelChanged Done");
+            Logging.WriteLine($"OnPointerWheelChanged Done");
         }
 
         static void OnPointerReleased(object s, PointerRoutedEventArgs winArgs)
         {
-            Debug.WriteLine($"OnPointerReleased");
+            Logging.WriteLine($"OnPointerReleased");
             if (s is UIElement sender)
             {
                 var pointer = winArgs.GetCurrentPoint((UIElement)winArgs.OriginalSource);

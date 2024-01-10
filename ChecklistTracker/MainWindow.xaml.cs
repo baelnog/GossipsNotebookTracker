@@ -31,6 +31,10 @@ using Windows.ApplicationModel;
 using System;
 using Microsoft.Graphics.Display;
 using Windows.UI.Core;
+using ChecklistTracker.ANTLR;
+using ChecklistTracker.LogicProvider;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -42,8 +46,13 @@ namespace ChecklistTracker
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public MainWindow()
+        private LogicEngine LogicEngine;
+        private Inventory Inventory;
+
+        public MainWindow(LogicEngine engine)
         {
+            LogicEngine = engine;
+            Inventory = new Inventory(LogicEngine);
             this.InitializeComponent();
             LayoutDesign();
         }
@@ -79,6 +88,18 @@ namespace ChecklistTracker
 
         private void LayoutDesign()
         {
+            CheckPage.Launch(LogicEngine, Inventory);
+            //var parser = new RuleParser();
+            //using (var engine = new LogicEngine())
+            //{
+
+            //}
+            //var logic = LogicFiles.LoadLogicFiles(LogicFileCache.GetCachedLogicFilesForTagAsync("v8.0").Result).Result;
+            //new LogicEngine().Init();
+
+            this.VisibilityChanged += MainWindow_VisibilityChanged;
+
+
             //this.Layout.ConfigureClickHandler(new ClickCallbacks());
             this.Layout.CanDrag = false;
             //this.Layout.ZIndex--;
@@ -107,8 +128,6 @@ namespace ChecklistTracker
             this.Layout.Height = layout.layoutConfig.height;
             this.Layout.Background = new SolidColorBrush(layout.layoutConfig.backgroundColor.ToColor());
             this.Title = layout.layoutConfig.name;
-
-            Inventory inventory = new Inventory();
 
             foreach (var component in layout.components)
             {
@@ -148,16 +167,16 @@ namespace ChecklistTracker
                         switch (type)
                         {
                             case ItemType.Song:
-                                elementControl = new SongControl(item, inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new SongControl(item, Inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Reward:
-                                elementControl = new RewardControl(item, inventory, "dungeons", 3, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new RewardControl(item, Inventory, "dungeons", 3, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Hint:
                                 elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], element, paddingObj);
                                 break;
                             default:
-                                elementControl = new ElementControl(item, inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new ElementControl(item, Inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
 
                         }
@@ -253,7 +272,7 @@ namespace ChecklistTracker
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId);
                     var item = ResourceFinder.FindItem(itemName);
-                    var control = new ElementControl(ResourceFinder.FindItem(itemName), inventory, element.Size[1], element.Size[0], new Thickness(0));
+                    var control = new ElementControl(ResourceFinder.FindItem(itemName), Inventory, element.Size[1], element.Size[0], new Thickness(0));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);
@@ -262,6 +281,23 @@ namespace ChecklistTracker
             }
 
             //this.Content = this.Layout;
+        }
+
+        private void MainWindow_VisibilityChanged(object sender, WindowVisibilityChangedEventArgs args)
+        {
+            //this.Layout.XamlRoot.
+            //CoreApplicationView newView = CoreApplication.CreateNewView();
+            //int newViewId = 0;
+
+            //Frame frame = new Frame();
+            //frame.Navigate(typeof(CheckPage), null);
+            //Window.Current.Content = frame;
+            //// You have to activate the window in order to show it later.
+            //Window.Current.Activate();
+
+            //newViewId = ApplicationView.GetForCurrentView().Id;
+
+            //ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
     }
 }

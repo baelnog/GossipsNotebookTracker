@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ChecklistTracker.Controls.HintRegionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:model="using:ChecklistTracker.ViewModel"
+    xmlns:logic="using:ChecklistTracker.LogicProvider"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <TextBlock Text="{x:Bind Region.Region.Name, Mode=OneWay}" />
+        <ListView x:Name="LocationListView"
+            ItemsSource="{x:Bind Region.Locations, Mode=OneWay}"
+                  SelectionChanged="OnSelectLocation"
+                  SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:LocationViewModel">
+                    <TextBlock Text="{x:Bind Location.ShortName, Mode=OneWay}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
+</UserControl>

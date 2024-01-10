@@ -12,6 +12,7 @@
     <EnableMsixTooling>false</EnableMsixTooling>
     <WindowsPackageType>None</WindowsPackageType>
     <UseRidGraph>true</UseRidGraph>
+    <Nullable>enable</Nullable>
     <WindowsAppSDKBootstrapAutoInitialize>true</WindowsAppSDKBootstrapAutoInitialize>
     <WindowsAppSDKBootstrapAutoInitializeOptions_Default>true</WindowsAppSDKBootstrapAutoInitializeOptions_Default>
     <WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>
@@ -19,8 +20,11 @@
     <WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak_IfDebuggerAttached>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak_IfDebuggerAttached>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="CheckListView.xaml" />
+    <None Remove="CheckPage.xaml" />
     <None Remove="Controls\ElementControl.xaml" />
     <None Remove="Controls\HintControl.xaml" />
+    <None Remove="Controls\HintRegionControl.xaml" />
     <None Remove="Controls\HintStoneControl.xaml" />
     <None Remove="Controls\HintTableControl.xaml" />
     <None Remove="Controls\RewardControl.xaml" />
@@ -35,18 +39,15 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <None Include="Assets\dist\**\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-    <None Remove="Assets\dist\**\*.pdn" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -58,6 +59,27 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChecklistTracker.ANTLR\ChecklistTracker.ANTLR.csproj" />
+    <ProjectReference Include="..\ChecklistTracker.Config\ChecklistTracker.Config.csproj" />
+    <ProjectReference Include="..\ChecklistTracker.CoreUtils\ChecklistTracker.CoreUtils.csproj" />
+    <ProjectReference Include="..\ChecklistTracker.LogicProvider\ChecklistTracker.LogicProvider.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\HintRegionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="CheckPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="CheckListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\HintTableControl.xaml">
