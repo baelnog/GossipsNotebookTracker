@@ -12,7 +12,7 @@
     <RelativePanel>
         <Image 
             x:Name="Image"
-            Source="{x:Bind CurrentImage, Mode=OneWay }"
+            Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay }"
             Width="{x:Bind ImageWidth, Mode=OneWay }"
             Height="{x:Bind ImageHeight, Mode=OneWay }"
             Stretch="Uniform"
@@ -22,7 +22,7 @@
             AllowDrop="False" />
         <Image 
             x:Name="Image2"
-            Source="{x:Bind BottomImage, Mode=OneWay}"
+            Source="{x:Bind ViewModel.BottomImage, Mode=OneWay}"
             Width="{x:Bind BottomImageWidth, Mode=OneWay}"
             Height="{x:Bind BottomImageHeight, Mode=OneWay}"
             Margin="{x:Bind BottomImageMargin, Mode=OneWay}"

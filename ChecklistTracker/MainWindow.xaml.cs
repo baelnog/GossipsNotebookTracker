@@ -169,7 +169,7 @@ namespace ChecklistTracker
                         switch (type)
                         {
                             case ItemType.Song:
-                                elementControl = new SongControl(item, Inventory, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Reward:
                                 elementControl = new RewardControl(item, Inventory, "dungeons", 3, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);

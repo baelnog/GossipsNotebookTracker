@@ -11,7 +11,7 @@
   <RelativePanel>
       <Image 
           x:Name="Image"
-          Source="{x:Bind CurrentImage, Mode=OneWay }"
+          Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay }"
           Width="{x:Bind ImageWidth, Mode=OneWay }"
           Height="{x:Bind ImageHeight, Mode=OneWay }"
           Stretch="Uniform"
