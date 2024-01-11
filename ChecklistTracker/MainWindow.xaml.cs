@@ -172,7 +172,7 @@ namespace ChecklistTracker
                                 elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Reward:
-                                elementControl = new RewardControl(item, Inventory, "dungeons", 3, compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
                                 break;
                             case ItemType.Hint:
                                 elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], element, paddingObj);

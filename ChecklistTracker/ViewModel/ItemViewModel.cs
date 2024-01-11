@@ -123,7 +123,7 @@ namespace ChecklistTracker.ViewModel
             }
         }
 
-        internal void OnScroll(UIElement sender, int scrollAmount)
+        internal virtual void OnScroll(UIElement sender, int scrollAmount)
         {
             Collect(scrollAmount);
         }

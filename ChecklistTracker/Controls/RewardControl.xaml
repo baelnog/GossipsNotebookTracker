@@ -11,7 +11,7 @@
     <RelativePanel>
         <Image 
             x:Name="Image"
-            Source="{x:Bind CurrentImage, Mode=OneWay}"
+            Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay}"
             Width="{x:Bind ImageWidth, Mode=OneWay}"
             Height="{x:Bind ImageHeight, Mode=OneWay}" />
         <StackPanel Background="Black"
@@ -21,7 +21,7 @@
 
             <TextBlock 
                 x:Name="RewardLabel"
-                Text="{x:Bind Label, Mode=OneWay}"
+                Text="{x:Bind ViewModel.Label, Mode=OneWay}"
                 Foreground="White"
                 FontWeight="Bold"
                 FontSize="9.5"
