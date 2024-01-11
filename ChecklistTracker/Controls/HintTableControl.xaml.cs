@@ -1,4 +1,5 @@
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -67,12 +68,12 @@ namespace ChecklistTracker.Controls
             TextColor = new SolidColorBrush(textColor);
 
             Entry = new HintControl(
+                    new HintViewModel(
+                        CheckListViewModel.GlobalInstance,
+                        labelSet: labelSet, isEntry: true),
                     totalWidth: totalWidth,
-                    leftItems: 0,
-                    rightItems: 0,
-                    itemWidth: itemWidth,
-                    itemHeight: itemHeight,
-                    padding: padding,
+                    itemLayout: new LayoutParams(itemWidth, itemHeight, new Thickness(0)),
+                    padding: Padding,
                     backgroundColor: backgroundColor,
                     textColor: textColor,
                     isEntry: true,
@@ -124,37 +125,41 @@ namespace ChecklistTracker.Controls
 
         void CopyHintControl(HintControl source)
         {
-            var hintControl = new HintControl(
-                totalWidth: TotalWidth,
+            var viewModel = new HintViewModel(
+                CheckListViewModel.GlobalInstance,
                 leftItems: LeftItems,
                 rightItems: RightItems,
-                itemWidth: ItemWidth,
-                itemHeight: ItemHeight,
-                padding: Padding,
-                backgroundColor: HintBackgroundColorRaw,
-                textColor: TextColorRaw,
-                text: source.Text,
-                leftImages: source.LeftImages,
-                rightImages: source.RightImages,
                 leftIconSet: LeftIconSet,
                 rightIconSet: RightIconSet);
+
+            viewModel.AdoptFrom(source.ViewModel);
+
+            var hintControl = new HintControl(
+                viewModel,
+                totalWidth: TotalWidth,
+                itemLayout: new LayoutParams(ItemWidth, ItemHeight, new Thickness(0)),
+                padding: Padding,
+                backgroundColor: HintBackgroundColorRaw,
+                textColor: TextColorRaw);
             AddHintControl(hintControl);
         }
 
         void AddHintControl(string text)
         {
             var hintControl = new HintControl(
+                new HintViewModel(
+                    CheckListViewModel.GlobalInstance,
+                    leftItems: LeftItems,
+                    rightItems: RightItems,
+                    leftIconSet: LeftIconSet,
+                    rightIconSet: RightIconSet,
+                    text: text
+                ),
                 totalWidth: TotalWidth,
-                leftItems: LeftItems,
-                rightItems: RightItems,
-                itemWidth: ItemWidth,
-                itemHeight: ItemHeight,
+                itemLayout: new LayoutParams(ItemWidth, ItemHeight, new Thickness(0)),
                 padding: Padding,
                 backgroundColor: HintBackgroundColorRaw,
-                textColor: TextColorRaw,
-                text: text,
-                leftIconSet: LeftIconSet,
-                rightIconSet: RightIconSet);
+                textColor: TextColorRaw);
             AddHintControl(hintControl);
         }
 

@@ -1,3 +1,4 @@
+using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -24,57 +25,51 @@ namespace ChecklistTracker.Controls
 
         private bool IsEntry {  get; set; }
 
-        public string Text { get { return IsEntry ? EntryBox.Text: LabelBox.Text; } }
+        //public string Text { get { return IsEntry ? EntryBox.Text: LabelBox.Text; } }
         public UIElement TextBox { get { return IsEntry ? EntryBox : LabelBox; } }
 
         private List<HintStoneControl> LeftStones { get; set; }
-        public List<ImageSource> LeftImages { get { return LeftStones.Select(stone => stone.CurrentImage).ToList(); } }
+        //public List<ImageSource> LeftImages { get { return LeftStones.Select(stone => stone.ViewModel.CurrentImage).ToList(); } }
         private List<HintStoneControl> RightStones { get; set; }
-        public List<ImageSource> RightImages { get { return RightStones.Select(stone => stone.CurrentImage).ToList(); } }
+        //public List<ImageSource> RightImages { get { return RightStones.Select(stone => stone.ViewModel.CurrentImage).ToList(); } }
 
-        public HintControl(
+        internal HintViewModel ViewModel;
+
+        internal HintControl(
+            HintViewModel viewModel,
             int totalWidth, 
-            int leftItems, int rightItems, 
-            int itemWidth, int itemHeight,
+            //int leftItems, int rightItems, 
+            LayoutParams itemLayout,
             Thickness padding,
             Color backgroundColor, Color textColor,
-            string? leftIconSet = "bosses", string? rightIconSet = "sometimes",
-            string? labelSet = null, string text = "", bool isEntry = false,
-            List<ImageSource> leftImages = null, List<ImageSource> rightImages = null,
+            //string? leftIconSet = "bosses", string? rightIconSet = "sometimes",
+            string? labelSet = null, bool isEntry = false,
+            //List<ImageSource> leftImages = null, List<ImageSource> rightImages = null,
             string placeholderText = "")
         {
             InitializeComponent();
+            ViewModel = viewModel;
+
             LeftStones = new List<HintStoneControl>();
             RightStones = new List<HintStoneControl>();
-            for (int i = 0; i < leftItems; i++)
+            foreach (HintStoneViewModel stone in ViewModel.LeftStones)
             {
-                ImageSource startingImage = null;
-                if (leftImages != null && leftImages.Count > i)
-                {
-                    startingImage = leftImages[i];
-                }
-                var image = new HintStoneControl(itemWidth, itemHeight, leftIconSet, new Thickness(0), startingImage: startingImage);
-                image.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Center);
-                LeftStones.Add(image);
-                this.Layout.Children.Insert(0, image);
+                var control = new HintStoneControl(stone, itemLayout);
+                LeftStones.Add(control);
+                this.LeftItemsLayout.Children.Add(control);
             }
-            for (int i = 0; i < rightItems; i++)
+            foreach (HintStoneViewModel stone in ViewModel.RightStones)
             {
-                ImageSource startingImage = null;
-                if (rightImages != null && rightImages.Count > i)
-                {
-                    startingImage = rightImages[i];
-                }
-                var image = new HintStoneControl(itemWidth, itemHeight, rightIconSet, new Thickness(0), startingImage: startingImage);
-                RightStones.Add(image);
-                this.Layout.Children.Add(image);
+                var control = new HintStoneControl(stone, itemLayout);
+                RightStones.Add(control);
+                this.RightItemsLayout.Children.Add(control);
             }
 
             Margin = new Thickness(padding.Left, padding.Top * .4, padding.Right, padding.Bottom * .4);
-            TextWidth = totalWidth - (rightItems + leftItems) * itemWidth;
-            Height = itemHeight;
-            TextHeight = itemHeight;
-            FullHeight = itemHeight + padding.Bottom + padding.Top;
+            TextWidth = totalWidth - (ViewModel.RightStones.Count + ViewModel.LeftStones.Count) * itemLayout.Width;
+            Height = itemLayout.Height;
+            TextHeight = itemLayout.Height;
+            FullHeight = itemLayout.Height + padding.Bottom + padding.Top;
             TextFontSize = 12;
             TextBackgroundColorRaw = backgroundColor;
             TextColorRaw = textColor;
@@ -97,12 +92,12 @@ namespace ChecklistTracker.Controls
             {
                 EntryBox.Visibility = Visibility.Collapsed;
                 LabelBox.Visibility = Visibility.Visible;
-                LabelBox.Text = text;
+                LabelBox.Text = viewModel.Text;
             }
 
             this.EntryBox.TextChanged += OnTextChanged;
             this.EntryBox.QuerySubmitted += OnQuerySubmitted;
-            this.Width = TextWidth + (leftItems + rightItems) * itemWidth + padding.Left + padding.Right;
+            this.Width = totalWidth;// TextWidth + (ViewModel.RightStones.Count + ViewModel.LeftStones.Count) * itemLayout.Width + itemLayout.Padding.Left + itemLayout.Padding.Right;
         }
 
         internal AutoSuggestBox GetEntryBox()

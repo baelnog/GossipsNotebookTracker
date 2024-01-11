@@ -12,14 +12,14 @@
       <Image 
           x:Name="Image"
           Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay }"
-          Width="{x:Bind ImageWidth, Mode=OneWay }"
-          Height="{x:Bind ImageHeight, Mode=OneWay }"
+          Width="{x:Bind Layout.Width, Mode=OneWay }"
+          Height="{x:Bind Layout.Height, Mode=OneWay }"
           Stretch="Uniform"
           VerticalAlignment="Center"
           HorizontalAlignment="Center" />
     <TextBlock 
           x:Name="Counter"
-          Text="{x:Bind Count, Mode=OneWay }"
+          Text="{x:Bind ViewModel.Count, Mode=OneWay }"
           Visibility="{x:Bind CountVisibility}"
           TextAlignment="End"
           Margin="0,0,0,-8"

@@ -165,28 +165,40 @@ namespace ChecklistTracker
                     {
                         var item = ResourceFinder.FindItem(element);
                         var type = item?.type ?? ItemType.Hint;
-                        UIElement elementControl = null;
+
+                        var layoutParams = new LayoutParams(compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+
+                        UIElement elementControl;
                         switch (type)
                         {
                             case ItemType.Song:
-                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                if (item == null)
+                                {
+                                    throw new ArgumentNullException(nameof(item));
+                                }
+                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance), layoutParams);
                                 break;
                             case ItemType.Reward:
-                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                if (item == null)
+                                {
+                                    throw new ArgumentNullException(nameof(item));
+                                }
+                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3), layoutParams);
                                 break;
                             case ItemType.Hint:
-                                elementControl = new HintStoneControl(compTable.elementsSize[1], compTable.elementsSize[0], element, paddingObj);
+                                elementControl = new HintStoneControl(new HintStoneViewModel(CheckListViewModel.GlobalInstance, element), layoutParams);
                                 break;
                             default:
-                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                                if (item == null)
+                                {
+                                    throw new ArgumentNullException(nameof(item));
+                                }
+                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), layoutParams);
                                 break;
 
                         }
-                        if (elementControl != null)
-                        {
-                            elementControl.SetValue(FrameworkElement.MarginProperty, paddingObj);
-                            grid.Children.Add(elementControl);
-                        }
+                        elementControl.SetValue(FrameworkElement.MarginProperty, paddingObj);
+                        grid.Children.Add(elementControl);
                     }
                     grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[0]) + 10;
                     grid.SetValue(Canvas.LeftProperty, compTable.position[1]);
@@ -245,17 +257,20 @@ namespace ChecklistTracker
 
                         for (int i = 0; i < sometimesHintTable.hintNumber; i++)
                         {
-                            var hintControl = new HintControl(
-                                totalWidth: hintTable.width,
+                            var model = new HintViewModel(
+                                CheckListViewModel.GlobalInstance,
                                 leftItems: 0,
                                 rightItems: itemCount,
-                                itemWidth: sometimesHintTable.itemSize[1],
-                                itemHeight: sometimesHintTable.itemSize[0],
+                                labelSet: sometimesHintTable.labels
+                                );
+                            var hintControl = new HintControl(
+                                model,
+                                totalWidth: hintTable.width,
+                                itemLayout: new LayoutParams(sometimesHintTable.itemSize[1], sometimesHintTable.itemSize[0], new Thickness(0)),
                                 padding: paddingObj,
                                 backgroundColor: sometimesHintTable.backgroundColor.ToColor(),
                                 textColor: sometimesHintTable.color.ToColor(),
                                 isEntry: true,
-                                labelSet: sometimesHintTable.labels,
                                 placeholderText: sometimesHintTable.placeholderText);
                             hintControl.Width = elementWidth;
 
@@ -274,7 +289,7 @@ namespace ChecklistTracker
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId);
                     var item = ResourceFinder.FindItem(itemName);
-                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), element.Size[1], element.Size[0], new Thickness(0));
+                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), new LayoutParams(element.Size[1], element.Size[0], new Thickness(0)));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);

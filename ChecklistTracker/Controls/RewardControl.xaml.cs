@@ -9,23 +9,16 @@ namespace ChecklistTracker.Controls
 {
     public sealed partial class RewardControl : UserControl
     {
-        public double ImageWidth { get; set; }
-        public double ImageHeight { get; set; }
+        internal LayoutParams Layout { get; private set; }
 
         internal RewardViewModel ViewModel { get; private set; }
 
-        internal RewardControl(RewardViewModel viewModel, double width, double height, Thickness padding)
+        internal RewardControl(RewardViewModel viewModel, LayoutParams layout)
         {
             InitializeComponent();
 
             ViewModel = viewModel;
-
-            var textSize = 10;
-            Padding = padding;
-            ImageWidth = width;
-            ImageHeight = height;
-
-            var littleY = height - textSize;
+            Layout = layout;
 
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = ViewModel.OnClick;

@@ -11,23 +11,20 @@ namespace ChecklistTracker.Controls
 {
     public sealed partial class ElementControl : UserControl, INotifyPropertyChanged
     {
-        public int ImageWidth { get; set; }
-        public int ImageHeight { get; set; }
-        public int Count { get => ViewModel.Count; }
         public Visibility CountVisibility { get { return ViewModel.HasCount ? Visibility.Visible: Visibility.Collapsed; } }
 
         internal ItemViewModel ViewModel;
+        internal LayoutParams Layout { get; private set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        internal ElementControl(ItemViewModel viewModel, int width, int height, Thickness padding)
+        internal ElementControl(ItemViewModel viewModel, LayoutParams layout)
         {
             InitializeComponent();
             ViewModel = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
 
-            ImageWidth = width; ImageHeight = height;
-            Padding = padding;
+            Layout = layout;
 
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = ViewModel.OnClick;

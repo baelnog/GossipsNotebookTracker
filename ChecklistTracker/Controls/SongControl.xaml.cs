@@ -11,29 +11,25 @@ namespace ChecklistTracker.Controls;
 
 public partial class SongControl : UserControl, INotifyPropertyChanged
 {
-    public double ImageWidth { get; set; }
-    public double ImageHeight { get; set; }
-
     public double BottomImageWidth { get; set; }
     public double BottomImageHeight { get; set; }
     public Thickness BottomImageMargin { get; set; }
 
+    internal LayoutParams Layout { get; private set; }
     internal SongViewModel ViewModel { get; private set; }
 
-    internal SongControl(SongViewModel viewModel, double width, double height, Thickness padding)
+    internal SongControl(SongViewModel viewModel, LayoutParams layout)
     {
         InitializeComponent();
         ViewModel = viewModel;
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
-        ImageWidth = width;
-        ImageHeight = height;
+        Layout = layout;
 
         var bottomScale = 0.6;
-        BottomImageWidth = bottomScale * width;
-        BottomImageHeight = bottomScale * height;
+        BottomImageWidth = bottomScale * Layout.Width;
+        BottomImageHeight = bottomScale * Layout.Height;
 
-        Padding = new Thickness(padding.Left, padding.Top, padding.Right, padding.Bottom);
         BottomImageMargin = new Thickness(0, 0, 0, -0.6 * BottomImageWidth);
 
         var callbacks = new ClickCallbacks();

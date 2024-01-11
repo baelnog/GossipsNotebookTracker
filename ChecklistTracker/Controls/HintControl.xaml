@@ -4,37 +4,52 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChecklistTracker.Controls"
+    xmlns:model="using:ChecklistTracker.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel
-        x:Name="Layout"
-        Orientation="Horizontal">
+    <RelativePanel
+        x:Name="Layout">
+        <StackPanel
+            x:Name="LeftItemsLayout"
+            RelativePanel.AlignLeftWithPanel="True"
+            Orientation="Horizontal"
+            />
         <RelativePanel
             Background="{x:Bind TextBackgroundColor, Mode=OneWay}"
-            Width="{x:Bind TextWidth, Mode=OneWay}">
+            RelativePanel.RightOf="LeftItemsLayout"
+            RelativePanel.LeftOf="RightItemsLayout"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True">
             <AutoSuggestBox
                 x:Name="EntryBox"
                 Foreground="{x:Bind TextColor, Mode=OneWay}"
                 FontSize="{x:Bind TextFontSize, Mode=OneWay}"
                 FontWeight="Bold"
-                Width="{x:Bind TextWidth, Mode=OneWay}"
                 VerticalAlignment="Center"
                 BorderThickness="1"
-                CornerRadius="0,0,0,0"/>
+                CornerRadius="0,0,0,0"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
             <TextBlock
                 x:Name="LabelBox"
                 Foreground="{x:Bind TextColor, Mode=OneWay}"
                 FontSize="{x:Bind TextFontSize, Mode=OneWay}"
                 FontWeight="Bold"
-                Width="{x:Bind TextWidth, Mode=OneWay}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 TextWrapping="NoWrap"
                 MaxLines="1"
                 RelativePanel.AlignVerticalCenterWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
                 Padding="4,0"/>
         </RelativePanel>
-    </StackPanel>
+        <StackPanel
+            x:Name="RightItemsLayout"
+            RelativePanel.AlignRightWithPanel="True"
+            Orientation="Horizontal"
+            />
+    </RelativePanel>
 </UserControl>

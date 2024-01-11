@@ -1,5 +1,6 @@
 using ChecklistTracker.Config;
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -7,78 +8,25 @@ using System;
 
 namespace ChecklistTracker.Controls
 {
-    public sealed partial class HintStoneControl : UserControl
+    internal partial class HintStoneControl : UserControl
     {
-        private ImageSource _currentImage;
-        public ImageSource CurrentImage { get => _currentImage; private set { _currentImage = value; Bindings.Update(); } }
+        internal LayoutParams Layout { get; private set; }
+        internal HintStoneViewModel ViewModel { get; private set; }
 
-        public int ImageWidth { get; set; }
-        public int ImageHeight { get; set; }
-
-        private string ImageGroupName;
-        private int ImageGroupIndex = 0;
-
-        public HintStoneControl(int width, int height, string elementId, Thickness padding, ImageSource startingImage = null)
+        internal HintStoneControl(HintStoneViewModel viewModel, LayoutParams layout)
         {
             InitializeComponent();
-            ImageWidth = width; ImageHeight = height;
-            Margin = padding;
-
-            ImageGroupName = ResourceFinder.FindItemById(elementId) ?? elementId;
-            CurrentImage = startingImage ?? ResourceFinder.FindImageGroupImage(ImageGroupName, ImageGroupIndex);
+            ViewModel = viewModel;
+            Layout = layout;
+            Margin = layout.Padding;
 
             var callbacks = new ClickCallbacks();
-            callbacks.OnClick = OnClick;
-            callbacks.OnScroll = OnScroll;
-            callbacks.OnDragImageCompleted = OnDragImageCompleted;
-            callbacks.OnDropImageCompleted = OnDropImageCompleted;
+            callbacks.OnClick = ViewModel.OnClick;
+            callbacks.OnScroll = ViewModel.OnScroll;
+            callbacks.OnDragImageCompleted = ViewModel.OnDrag;
+            callbacks.OnDropImageCompleted = ViewModel.OnDrop;
 
             this.ConfigureClickHandler(callbacks);
-
-            Bindings.Update();
-        }
-
-        internal void OnClick(UIElement sender, MouseButton button)
-        {
-            switch (button)
-            {
-                case MouseButton.Left:
-                    ImageGroupIndex = Math.Min(ImageGroupIndex + 1, ResourceFinder.GetImageSet(ImageGroupName).Count - 1);
-                    break;
-                case MouseButton.Right:
-                    ImageGroupIndex = Math.Max(ImageGroupIndex - 1, 0);
-                    break;
-                default:
-                    return;
-            }
-
-            CurrentImage = ResourceFinder.FindImageGroupImage(ImageGroupName, ImageGroupIndex);
-        }
-
-        internal ImageSource OnDragImageCompleted(UIElement sender, MouseButton button)
-        {
-
-            var rc = CurrentImage;
-
-            if (button == MouseButton.Right)
-            {
-                CurrentImage = ResourceFinder.FindItem("sometimes", 0);
-            }
-
-            return rc;
-        }
-
-        internal void OnDropImageCompleted(UIElement sender, MouseButton button, ImageSource image)
-        {
-            CurrentImage = image;
-        }
-
-        internal void OnScroll(UIElement sender, int scrollAmount)
-        {
-            for (int i = 0; i  < Math.Abs(scrollAmount); i++)
-            {
-                OnClick(sender, scrollAmount < 0 ? MouseButton.Right : MouseButton.Left);
-            }
         }
     }
 }
