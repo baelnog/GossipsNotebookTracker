@@ -12,8 +12,8 @@
         <Image
             x:Name="Image"
             Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay}"
-            Width="{x:Bind Layout.Width, Mode=OneWay}"
-            Height="{x:Bind Layout.Width, Mode=OneWay}"
+            Width="{x:Bind LayoutParams.Width, Mode=OneWay}"
+            Height="{x:Bind LayoutParams.Height, Mode=OneWay}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"/>
     </RelativePanel>

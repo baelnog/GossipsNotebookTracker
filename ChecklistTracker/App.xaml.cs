@@ -55,7 +55,7 @@ namespace ChecklistTracker
             var settings = Settings.ReadFromJson($"{ProgramDir.Value}/settings/season7-base.json").Result;
             var logicEngine = new LogicEngine("v8.0", settings);
 
-            m_window = new MainWindow(logicEngine);
+            m_window = new MainWindow(null);// logicEngine);
             m_window.Activate();
 
             //var window = AppWindow.Create();

@@ -12,236 +12,439 @@
 			{ "name": "SHADOW" }
 		],
 		"sometimes": [
-				{ "name": "Market 10 Big Poes", "alias": [ "10 Big Poes", "Big Poes" ] },
-				{ "name": "20 Skulls", "alias": [ "20", "Skulls 20" ]},
-				{ "name": "Adult Shooting Gallery", "alias": [ "Adult Shooting Game", "Kakariko Archery", "Kak Shooting", "Kak Archery" ] },
-				{ "name": "Anju's Chickens", "alias": [ "Cuccos", "Chickens" ] },
-				{ "name": "Biggoron Claim Check Return", "alias": [ "Claim Check", "Biggoron" ] },
-				{ "name": "Boomerang Chest", "alias":  [ "Stingers", "Jabu Stingers", "Rang Chest" ] },
-				{ "name": "Dead Hand in the Well", "alias": [ "BotW Dead Hand" ] },
-				{ "name": "Treasure Chest Game", "alias":  [ "Chest Mini Game", "TCMG", "TCG", "Lens Game", "Lens Minigame" ] },
-				{ "name": "Royal Family Tomb Chest", "alias": [ "Composer's Grave Flames" ] },
-				{ "name": "Royal Family Tomb Song", "alias": [ "Composer's Grave Song", "Composers Grave Song", "Suns Song Check", "Sun's Song Check"] },
-				{ "name": "Darunia's Joy", "alias": [ "Darunia", "Dancing Dad", "Papa D"] },
-				{ "name": "DMC Deku Scrub Bombs", "alias": [ "Worst Scrub" ] },
-				{ "name": "Fire Temple Hammer Chest", "alias": [ "Flare Dancer", "Fire Flare Dancer", "Fire Dancer", "Hammer Chest" ] },
-				{ "name": "Fire Temple Pierre", "alias": [ "Pierre Fire Temple", "Fire Scarecrow", "Scarecrow Fire" ] },
-				{ "name": "ZR Frogs in the Rain", "alias": [ "Frogs 1", "Frogs in the Rain"] },
-				{ "name": "Goron City Left Maze Chest", "alias": [ "GC Maze Left Chest", "GC Left Side Maze", "GC Hammer", "Hammer GC" ] },
-				{ "name": "Goron City Smiling Pot", "alias": [ "GC Pot", "Spinning Pot", "Goron Pot", "Goron Spinning Pot" ] },
-				{ "name": "GTG Maze Final Chest", "alias": [ "Final Chest GTG", "GTG Final Chest" ] },
-				{ "name": "GTG Sunken Rupees", "alias": [ "GTG Underwater Rupees", "GTG Toilet" ] },
-				{ "name": "Redead Grave", "alias": [ "Sun's Song Grave", "Suns Song Grave", "Heart Piece Grave", "HP Grave" ] },
-				{ "name": "Horseback Archery 1500", "alias": [ "HBA 1500", "HBA", "1500 HBA" ] },
-				{ "name": "Hyrule Castle Fairy", "alias": [ "HC Fairy", "Castle Fairy", "Dins Fairy"] },
-				{ "name": "Ice Cavern Map Chest", "alias": [ "Pillar of Ice" ] },
-				{ "name": "Ice Cavern Final Reward (Iron Boots)", "alias": [ "Ice Cavern Final Reward", "IC Final" ] },
-				{ "name": "King Zora Thawed", "alias": [ "kz", "kz thawed", "mweep" ] },
-				{ "name": "Lake Hylia Shoot the Sun", "alias": [ "LH Shoot the Sun", "LH Sun", "Shoot the Sun", "STS" ] },
-				{ "name": "Lake Hylia Lab Dive", "alias": [ "Lab Dive", "Lake Lab", "LH Lab" ] },
-				{ "name": "Link's House Cow", "alias": [ "House Cow" ] },
-				{ "name": "Spirit Temple Left Hand", "alias": [ "Left Hand Spirit", "Mirror Chest", "Spirit Left Hand", "Colossus Left Hand", "Left Hand Colossus" ] },
-				{ "name": "Spirit Temple Right Hand", "alias": [ "Right Hand Spirit", "Strength 2 Chest", "Spirit Right Hand", "Colossus Right Hand", "Right Hand Colossus" ] },
-				{ "name": "Outside Ganon's Castle Fairy", "alias": [ "ogc fairy", "Outside Ganons Castle Fairy" ] },
-				{ "name": "Shadow Trial 2", "alias": [ "like like castle", "GC like like", "st2", "Shadow 2",  "IGC Like Like"] },
-				{ "name": "Sheik at Colossus", "alias": [ "Requiem" ] },
-				{ "name": "Sheik at Temple of Time", "alias": [ "Prelude" ] },
-				{ "name": "Sheik Forest Song", "alias": [ "Minuet" ] },
-				{ "name": "Sheik in Crater", "alias": [ "Bolero" ] },
-				{ "name": "Sheik in Ice Cave", "alias": [ "Serenade", "Seranade" ] },
-				{ "name": "Sheik in Kakariko", "alias": [ "Burning Kak", "BKak", "Nocturne" ] },
-				{ "name": "Shadow Temple Freestanding Key (Pot Key)", "alias": [ "Shadow Pot", "Giant Pot Shadow Key" ] },
-				{ "name": "Lost Woods Skull Kid", "alias": [ "Skull Kid", "LW Skull Kid" ] },
-				{ "name": "Lost Woods Target in the Woods", "alias": [ "LW Target", "TITW" ] },
-				{ "name": "Gerudo Valley Hammer Rocks", "alias": [ "GV Hammer", "Hammer Rocks", "Valley Hammer Rocks" ] },
-				{ "name": "Haunted Wasteland Chest", "alias": [ "HW Chest", "Wasteland Chest", "Deep in the Wasteland" ] },
-				{ "name": "Water BK Chest", "alias": [ "Rolling Bouadling", "BK Water", "WT BK Chest"] },
-				{ "name": "Water River Chest", "alias": [ "River Chest", "WT River"] },
-				{ "name": "Water Central Pillar", "alias": [ "Central Pillar", "WT Central Pillar"] },
-				{ "name": "ZF Bottom", "alias": [ "Icy Waters", "Fountain Bottom" ] },
-				{ "name": "Bombchu Bowling" },
-				{ "name": "Lake Roof and Fishing" },
-				{ "name": "Domain Child Torches and Diving" },
-				{ "name": "Fire Dual Scarecrow and Hammer" },
-				{ "name": "Dual Fairies Castle and OGC" },
-				{ "name": "Royal Family Tomb" },
-				{ "name": "Composers Grave" },
-				{ "name": "Dark Link + River Chest" },
-				{ "name": "Spirit Temple Hands" },
-				{ "name": "Colossus Hands Silver + Mirror" },
-				{ "name": "desert rock grotto" },
-				{ "name": "Desert Colossus Grotto" },
-				{ "name": "valley ledge grotto" },
-				{ "name": "GV Ledge Grotto" },
-				{ "name": "lava pool grotto" },
-				{ "name": "GC Scrubs Grotto" },
-				{ "name": "storm GF" },
-				{ "name": "GF storms grotto" },
-				{ "name": "storm ZD" },
-				{ "name": "ZD storms grotto" },
-				{ "name": "storm castle" },
-				{ "name": "Castle Storms Grotto" },
-				{ "name": "storm valley" },
-				{ "name": "GV Tent Storms Grotto" },
-				{ "name": "fractured desert wall" },
-				{ "name": "Colossus Fairy Entrance" },
-				{ "name": "heavy pillar" },
-				{ "name": "OGC Fairy Entrance" },
-				{ "name": "fountain wall" },
-				{ "name": "ZF Fairy Entrance" },
-				{ "name": "tent valley" },
-				{ "name": "GV Tent Entrance" },
-				{ "name": "back GY" },
-				{ "name": "vast lake" },
-				{ "name": "Water Temple Entrance" },
-				{ "name": "paying fee" },
-				{ "name": "GTG Entrance" },
-				{ "name": "Jabu Jabu Entrance" },
-				{ "name": "village well" },
-				{ "name": "BOTW Entrance" }
-			],
-			"locations": [
-				{
-					"name": "Gerudo Valley",
-					"alias": [ "gv" ]
-				},
-				{
-					"name": "Gerudo Fortress",
-					"alias": [ "gf" ]
-				},
-				{
-					"name": "Gerudo Training Grounds",
-					"alias": [ "gtg" ]
-				},
-				{
-					"name": "Thieve's Hideout",
-					"alias": [ "th" ]
-				},
-				{
-					"name": "Haunted Wasteland",
-					"alias": [ "hw" ]
-				},
-				{
-					"name": "Desert Colossus",
-					"alias": [ "dc" ]
-				},
-				{
-					"name": "Spirit Temple",
-					"alias": [ "sp", "st" ]
-				},
-				{
-					"name": "Kokiri Forest",
-					"alias": [ "kf" ]
-				},
-				{
-					"name": "Lost Woods",
-					"alias": [ "lw" ]
-				},
-				{
-					"name": "Sacred Forest Meadow",
-					"alias": [ "sfm" ]
-				},
-				{
-					"name": "Deku Tree",
-					"alias": [ "dt" ]
-				},
-				{
-					"name": "Forest Temple",
-					"alias": [ "ft" ]
-				},
-				{
-					"name": "Outside Ganon's Castle",
-					"alias": [ "ogc" ]
-				},
-				{
-					"name": "Inside Ganon's Castle",
-					"alias": [ "igc" ]
-				},
-				{
-					"name": "Hyrule Field",
-					"alias": [ "hf" ]
-				},
-				{
-					"name": "Hyrule Castle",
-					"alias": [ "hc" ]
-				},
-				{
-					"name": "Market",
-					"alias": [ "mk" ]
-				},
-				{
-					"name": "Lon Lon Ranch",
-					"alias": [ "ll", "llr" ]
-				},
-				{
-					"name": "Temple of Time",
-					"alias": [ "tot" ]
-				},
-				{
-					"name": "Kakariko",
-					"alias": [ "kak", "kv" ]
-				},
-				{
-					"name": "Bottom of the Well",
-					"alias": [ "bot", "botw" ]
-				},
-				{
-					"name": "Graveyard",
-					"alias": [ "gy" ]
-				},
-				{
-					"name": "Goron City",
-					"alias": [ "gc" ]
-				},
-				{
-					"name": "Death Mountain Trail",
-					"alias": [ "dmt" ]
-				},
-				{
-					"name": "Death Mountain Crater",
-					"alias": [ "dmc" ]
-				},
-				{
-					"name": "Dodongo's Cavern",
-					"alias": [ "dc", "ddc" ]
-				},
-				{
-					"name": "Shadow Temple",
-					"alias": [ "sh", "st" ]
-				},
-				{
-					"name": "Fire Temple",
-					"alias": [ "fit", "ft" ]
-				},
-				{
-					"name": "Zora's River",
-					"alias": [ "zr" ]
-				},
-				{
-					"name": "Zora's Domain",
-					"alias": [ "zd" ]
-				},
-				{
-					"name": "Zora's Fountain",
-					"alias": [ "zf" ]
-				},
-				{
-					"name": "Ice Cavern",
-					"alias": [ "ic" ]
-				},
-				{
-					"name": "Lake Hylia",
-					"alias": [ "lh" ]
-				},
-				{
-					"name": "Jabu Jabu's Belly",
-					"alias": [ "jj", "jjb" ]
-				},
-				{
-					"name": "Water Temple",
-					"alias": [ "wt" ]
-				}
-			]
+			{
+				"name": "Market 10 Big Poes",
+				"alias": [ "10 Big Poes", "Big Poes" ]
+			},
+			{
+				"name": "20 Skulls",
+				"alias": [ "20", "Skulls 20" ]
+			},
+			{
+				"name": "Adult Shooting Gallery",
+				"alias": [ "Adult Shooting Game", "Kakariko Archery", "Kak Shooting", "Kak Archery" ]
+			},
+			{
+				"name": "Anju's Chickens",
+				"alias": [ "Cuccos", "Chickens" ]
+			},
+			{
+				"name": "Biggoron Claim Check Return",
+				"alias": [ "Claim Check", "Biggoron" ]
+			},
+			{
+				"name": "Boomerang Chest",
+				"alias": [ "Stingers", "Jabu Stingers", "Rang Chest" ]
+			},
+			{
+				"name": "Dead Hand in the Well",
+				"alias": [ "BotW Dead Hand" ]
+			},
+			{
+				"name": "Treasure Chest Game",
+				"alias": [ "Chest Mini Game", "TCMG", "TCG", "Lens Game", "Lens Minigame" ]
+			},
+			{
+				"name": "Royal Family Tomb Chest",
+				"alias": [ "Composer's Grave Flames" ]
+			},
+			{
+				"name": "Royal Family Tomb Song",
+				"alias": [ "Composer's Grave Song", "Composers Grave Song", "Suns Song Check", "Sun's Song Check" ]
+			},
+			{
+				"name": "Darunia's Joy",
+				"alias": [ "Darunia", "Dancing Dad", "Papa D" ]
+			},
+			{
+				"name": "DMC Deku Scrub Bombs",
+				"alias": [ "Worst Scrub" ]
+			},
+			{
+				"name": "Fire Temple Hammer Chest",
+				"alias": [ "Flare Dancer", "Fire Flare Dancer", "Fire Dancer", "Hammer Chest" ]
+			},
+			{
+				"name": "Fire Temple Pierre",
+				"alias": [ "Pierre Fire Temple", "Fire Scarecrow", "Scarecrow Fire" ]
+			},
+			{
+				"name": "ZR Frogs in the Rain",
+				"alias": [ "Frogs 1", "Frogs in the Rain" ]
+			},
+			{
+				"name": "Goron City Left Maze Chest",
+				"alias": [ "GC Maze Left Chest", "GC Left Side Maze", "GC Hammer", "Hammer GC" ]
+			},
+			{
+				"name": "Goron City Smiling Pot",
+				"alias": [ "GC Pot", "Spinning Pot", "Goron Pot", "Goron Spinning Pot" ]
+			},
+			{
+				"name": "GTG Maze Final Chest",
+				"alias": [ "Final Chest GTG", "GTG Final Chest" ]
+			},
+			{
+				"name": "GTG Sunken Rupees",
+				"alias": [ "GTG Underwater Rupees", "GTG Toilet" ]
+			},
+			{
+				"name": "Redead Grave",
+				"alias": [ "Sun's Song Grave", "Suns Song Grave", "Heart Piece Grave", "HP Grave" ]
+			},
+			{
+				"name": "Horseback Archery 1500",
+				"alias": [ "HBA 1500", "HBA", "1500 HBA" ]
+			},
+			{
+				"name": "Hyrule Castle Fairy",
+				"alias": [ "HC Fairy", "Castle Fairy", "Dins Fairy" ]
+			},
+			{
+				"name": "Ice Cavern Map Chest",
+				"alias": [ "Pillar of Ice" ]
+			},
+			{
+				"name": "Ice Cavern Final Reward (Iron Boots)",
+				"alias": [ "Ice Cavern Final Reward", "IC Final" ]
+			},
+			{
+				"name": "King Zora Thawed",
+				"alias": [ "kz", "kz thawed", "mweep" ]
+			},
+			{
+				"name": "Lake Hylia Shoot the Sun",
+				"alias": [ "LH Shoot the Sun", "LH Sun", "Shoot the Sun", "STS" ]
+			},
+			{
+				"name": "Lake Hylia Lab Dive",
+				"alias": [ "Lab Dive", "Lake Lab", "LH Lab" ]
+			},
+			{
+				"name": "Link's House Cow",
+				"alias": [ "House Cow" ]
+			},
+			{
+				"name": "Spirit Temple Left Hand",
+				"alias": [ "Left Hand Spirit", "Mirror Chest", "Spirit Left Hand", "Colossus Left Hand", "Left Hand Colossus" ]
+			},
+			{
+				"name": "Spirit Temple Right Hand",
+				"alias": [ "Right Hand Spirit", "Strength 2 Chest", "Spirit Right Hand", "Colossus Right Hand", "Right Hand Colossus" ]
+			},
+			{
+				"name": "Outside Ganon's Castle Fairy",
+				"alias": [ "ogc fairy", "Outside Ganons Castle Fairy" ]
+			},
+			{
+				"name": "Shadow Trial 2",
+				"alias": [ "like like castle", "GC like like", "st2", "Shadow 2", "IGC Like Like" ]
+			},
+			{
+				"name": "Sheik at Colossus",
+				"alias": [ "Requiem" ]
+			},
+			{
+				"name": "Sheik at Temple of Time",
+				"alias": [ "Prelude" ]
+			},
+			{
+				"name": "Sheik Forest Song",
+				"alias": [ "Minuet" ]
+			},
+			{
+				"name": "Sheik in Crater",
+				"alias": [ "Bolero" ]
+			},
+			{
+				"name": "Sheik in Ice Cave",
+				"alias": [ "Serenade", "Seranade" ]
+			},
+			{
+				"name": "Sheik in Kakariko",
+				"alias": [ "Burning Kak", "BKak", "Nocturne" ]
+			},
+			{
+				"name": "Shadow Temple Freestanding Key (Pot Key)",
+				"alias": [ "Shadow Pot", "Giant Pot Shadow Key" ]
+			},
+			{
+				"name": "Lost Woods Skull Kid",
+				"alias": [ "Skull Kid", "LW Skull Kid" ]
+			},
+			{
+				"name": "Lost Woods Target in the Woods",
+				"alias": [ "LW Target", "TITW" ]
+			},
+			{
+				"name": "Gerudo Valley Hammer Rocks",
+				"alias": [ "GV Hammer", "Hammer Rocks", "Valley Hammer Rocks" ]
+			},
+			{
+				"name": "Haunted Wasteland Chest",
+				"alias": [ "HW Chest", "Wasteland Chest", "Deep in the Wasteland" ]
+			},
+			{
+				"name": "Water BK Chest",
+				"alias": [ "Rolling Bouadling", "BK Water", "WT BK Chest" ]
+			},
+			{
+				"name": "Water River Chest",
+				"alias": [ "River Chest", "WT River" ]
+			},
+			{
+				"name": "Water Central Pillar",
+				"alias": [ "Central Pillar", "WT Central Pillar" ]
+			},
+			{
+				"name": "ZF Bottom",
+				"alias": [ "Icy Waters", "Fountain Bottom" ]
+			},
+			{ "name": "Bombchu Bowling" },
+			{ "name": "Lake Roof and Fishing" },
+			{ "name": "Domain Child Torches and Diving" },
+			{ "name": "Fire Dual Scarecrow and Hammer" },
+			{ "name": "Dual Fairies Castle and OGC" },
+			{ "name": "Royal Family Tomb" },
+			{ "name": "Composers Grave" },
+			{ "name": "Dark Link + River Chest" },
+			{ "name": "Spirit Temple Hands" },
+			{ "name": "Colossus Hands Silver + Mirror" },
+			{ "name": "desert rock grotto" },
+			{ "name": "Desert Colossus Grotto" },
+			{ "name": "valley ledge grotto" },
+			{ "name": "GV Ledge Grotto" },
+			{ "name": "lava pool grotto" },
+			{ "name": "GC Scrubs Grotto" },
+			{ "name": "storm GF" },
+			{ "name": "GF storms grotto" },
+			{ "name": "storm ZD" },
+			{ "name": "ZD storms grotto" },
+			{ "name": "storm castle" },
+			{ "name": "Castle Storms Grotto" },
+			{ "name": "storm valley" },
+			{ "name": "GV Tent Storms Grotto" },
+			{ "name": "fractured desert wall" },
+			{ "name": "Colossus Fairy Entrance" },
+			{ "name": "heavy pillar" },
+			{ "name": "OGC Fairy Entrance" },
+			{ "name": "fountain wall" },
+			{ "name": "ZF Fairy Entrance" },
+			{ "name": "tent valley" },
+			{ "name": "GV Tent Entrance" },
+			{ "name": "back GY" },
+			{ "name": "vast lake" },
+			{ "name": "Water Temple Entrance" },
+			{ "name": "paying fee" },
+			{ "name": "GTG Entrance" },
+			{ "name": "Jabu Jabu Entrance" },
+			{ "name": "village well" },
+			{ "name": "BOTW Entrance" }
+		],
+		"locations": [
+			{
+				"name": "Gerudo Valley",
+				"alias": [ "gv" ]
+			},
+			{
+				"name": "Gerudo Fortress",
+				"alias": [ "gf" ]
+			},
+			{
+				"name": "Gerudo Training Grounds",
+				"alias": [ "gtg" ]
+			},
+			{
+				"name": "Thieve's Hideout",
+				"alias": [ "th" ]
+			},
+			{
+				"name": "Haunted Wasteland",
+				"alias": [ "hw" ]
+			},
+			{
+				"name": "Desert Colossus",
+				"alias": [ "dc" ]
+			},
+			{
+				"name": "Spirit Temple",
+				"alias": [ "sp", "st" ]
+			},
+			{
+				"name": "Kokiri Forest",
+				"alias": [ "kf" ]
+			},
+			{
+				"name": "Lost Woods",
+				"alias": [ "lw" ]
+			},
+			{
+				"name": "Sacred Forest Meadow",
+				"alias": [ "sfm" ]
+			},
+			{
+				"name": "Deku Tree",
+				"alias": [ "dt" ]
+			},
+			{
+				"name": "Forest Temple",
+				"alias": [ "ft" ]
+			},
+			{
+				"name": "Outside Ganon's Castle",
+				"alias": [ "ogc" ]
+			},
+			{
+				"name": "Inside Ganon's Castle",
+				"alias": [ "igc" ]
+			},
+			{
+				"name": "Hyrule Field",
+				"alias": [ "hf" ]
+			},
+			{
+				"name": "Hyrule Castle",
+				"alias": [ "hc" ]
+			},
+			{
+				"name": "Market",
+				"alias": [ "mk" ]
+			},
+			{
+				"name": "Lon Lon Ranch",
+				"alias": [ "ll", "llr" ]
+			},
+			{
+				"name": "Temple of Time",
+				"alias": [ "tot" ]
+			},
+			{
+				"name": "Kakariko",
+				"alias": [ "kak", "kv" ]
+			},
+			{
+				"name": "Bottom of the Well",
+				"alias": [ "bot", "botw" ]
+			},
+			{
+				"name": "Graveyard",
+				"alias": [ "gy" ]
+			},
+			{
+				"name": "Goron City",
+				"alias": [ "gc" ]
+			},
+			{
+				"name": "Death Mountain Trail",
+				"alias": [ "dmt" ]
+			},
+			{
+				"name": "Death Mountain Crater",
+				"alias": [ "dmc" ]
+			},
+			{
+				"name": "Dodongo's Cavern",
+				"alias": [ "dc", "ddc" ]
+			},
+			{
+				"name": "Shadow Temple",
+				"alias": [ "sh", "st" ]
+			},
+			{
+				"name": "Fire Temple",
+				"alias": [ "fit", "ft" ]
+			},
+			{
+				"name": "Zora's River",
+				"alias": [ "zr" ]
+			},
+			{
+				"name": "Zora's Domain",
+				"alias": [ "zd" ]
+			},
+			{
+				"name": "Zora's Fountain",
+				"alias": [ "zf" ]
+			},
+			{
+				"name": "Ice Cavern",
+				"alias": [ "ic" ]
+			},
+			{
+				"name": "Lake Hylia",
+				"alias": [ "lh" ]
+			},
+			{
+				"name": "Jabu Jabu's Belly",
+				"alias": [ "jj", "jjb" ]
+			},
+			{
+				"name": "Water Temple",
+				"alias": [ "wt" ]
+			}
+		],
+		"indoor_locations": [
+			{
+				"name": "Gerudo Valley",
+				"alias": [ "gv" ]
+			},
+			{
+				"name": "Desert Colossus",
+				"alias": [ "dc" ]
+			},
+			{
+				"name": "Kokiri Forest",
+				"alias": [ "kf" ]
+			},
+			{
+				"name": "Outside Ganon's Castle",
+				"alias": [ "ogc" ]
+			},
+			{
+				"name": "Hyrule Castle",
+				"alias": [ "hc" ]
+			},
+			{
+				"name": "Market",
+				"alias": [ "mk" ]
+			},
+			{
+				"name": "Lon Lon Ranch",
+				"alias": [ "ll", "llr" ]
+			},
+			{
+				"name": "Kakariko",
+				"alias": [ "kak", "kv" ]
+			},
+			{
+				"name": "Graveyard",
+				"alias": [ "gy" ]
+			},
+			{
+				"name": "Goron City",
+				"alias": [ "gc" ]
+			},
+			{
+				"name": "Death Mountain Trail",
+				"alias": [ "dmt" ]
+			},
+			{
+				"name": "Death Mountain Crater",
+				"alias": [ "dmc" ]
+			},
+			{
+				"name": "Zora's Domain",
+				"alias": [ "zd" ]
+			},
+			{
+				"name": "Zora's Fountain",
+				"alias": [ "zf" ]
+			},
+			{
+				"name": "Lake Hylia",
+				"alias": [ "lh" ]
+			}
+		]
 	},
 	"image_groups": {
 		"bosses": [
@@ -1089,6 +1292,131 @@
 		"unkown": {
 			"images": [
 				"bosses/unknown_32x32.png"
+			]
+		},
+		"temple_of_time": {
+			"images": [
+				"entrances/entrance_house_tot.png"
+			]
+		},
+		"links_house": {
+			"images": [
+				"entrances/entrance_house_link.png"
+			]
+		},
+		"windmill": {
+			"images": [
+				"entrances/entrance_house_windmill.png"
+			]
+		},
+		"skull_house": {
+			"images": [
+				"entrances/entrance_house_skull.png"
+			]
+		},
+		"mask_shop": {
+			"images": [
+				"entrances/entrance_house_masks.png"
+			]
+		},
+		"bazaar": {
+			"images": [
+				"entrances/entrance_house_shop.png"
+			]
+		},
+		"potion_shop": {
+			"images": [
+				"entrances/entrance_house_potion_front.png"
+			]
+		},
+		"adult_potion_shop": {
+			"images": [
+				"entrances/entrance_house_front.png"
+			]
+		},
+		"kokiri_shop": {
+			"images": [
+				"deku-shield_32x32.png"
+			]
+		},
+		"goron_shop": {
+			"images": [
+				"goron-tunic_32x32.png"
+			]
+		},
+		"zora_shop": {
+			"images": [
+				"zora-tunic_32x32.png"
+			]
+		},
+		"child_shooting": {
+			"images": [
+				"entrances/entrance_house_shoot_child.png"
+			]
+		},
+		"adult_shooting": {
+			"images": [
+				"entrances/entrance_house_shoot_adult.png"
+			]
+		},
+		"bowling_alley": {
+			"images": [
+				"entrances/entrance_house_bowling.png"
+			]
+		},
+		"bombchu_shop": {
+			"images": [
+				"bomb-chu_32x32.png"
+			]
+		},
+		"treasure_chest_game": {
+			"images": [
+				"entrances/entrance_house_chest.png"
+			]
+		},
+		"granny_potion_shop": {
+			"images": [
+				"entrances/entrance_house_hag.png"
+			]
+		},
+		"impas_house_cow": {
+			"images": [
+				"entrances/entrance_overworld_kak_impa.png"
+			]
+		},
+		"lake_lab": {
+			"images": [
+				"entrances/entrance_house_lab.png"
+			]
+		},
+		"fishing": {
+			"images": [
+				"entrances/entrance_house_fishing.png"
+			]
+		},
+		"midos_house": {
+			"images": [
+				"chest_brown_closed.png"
+			]
+		},
+		"great_fairy_fountain": {
+			"images": [
+				"entrances/entrance_house_fairy.png"
+			]
+		},
+		"pot_house": {
+			"images": [
+				"entrances/entrance_house_pot.png"
+			]
+		},
+		"talon": {
+			"images": [
+				"entrances/entrance_house_talon_child.png"
+			]
+		},
+		"lon_lon_silo": {
+			"images": [
+				"cow_32x32.png"
 			]
 		}
 	}

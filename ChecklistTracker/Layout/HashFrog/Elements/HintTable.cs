@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ChecklistTracker.Layout.HashFrog.Elements
 {
     [JsonDiscriminatorValue("hinttable")]
-    public record HintTable : Element, ISometimesHintTable, ILocationHintTable
+    public record HintTable : Element, ISometimesHintTable, ILocationHintTable, IEntranceTable
     {
         public HintType hintType { get; set; }
         public int width { get; set; }

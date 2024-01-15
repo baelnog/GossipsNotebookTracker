@@ -76,8 +76,6 @@ namespace ChecklistTracker.Controls
                     padding: Padding,
                     backgroundColor: backgroundColor,
                     textColor: textColor,
-                    isEntry: true,
-                    labelSet: labelSet,
                     placeholderText: placeholderText);
 
             Entry.Padding = new Thickness(0);

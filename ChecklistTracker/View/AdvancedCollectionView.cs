@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI;
+﻿using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml.Data;
 using System;
 using System.Collections;
@@ -14,6 +14,8 @@ using Windows.Foundation.Collections;
 using Windows.Foundation;
 using Windows.UI.Xaml.Interop;
 using CommunityToolkit.WinUI.Helpers;
+//using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI.Collections;
 
 namespace ChecklistTracker.View
 {

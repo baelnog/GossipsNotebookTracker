@@ -47,10 +47,10 @@ namespace ChecklistTracker
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private LogicEngine LogicEngine;
+        private LogicEngine? LogicEngine;
         private Inventory Inventory;
 
-        public MainWindow(LogicEngine engine)
+        public MainWindow(LogicEngine? engine)
         {
             LogicEngine = engine;
             Inventory = new Inventory(LogicEngine);
@@ -89,15 +89,13 @@ namespace ChecklistTracker
 
         private void LayoutDesign()
         {
-            CheckListViewModel.GlobalInstance = new CheckListViewModel(Inventory, LogicEngine);
-            CheckPage.Launch();
-            //var parser = new RuleParser();
-            //using (var engine = new LogicEngine())
-            //{
+            this.AppWindow.SetIcon(@"Assets/notebook.ico");
 
-            //}
-            //var logic = LogicFiles.LoadLogicFiles(LogicFileCache.GetCachedLogicFilesForTagAsync("v8.0").Result).Result;
-            //new LogicEngine().Init();
+            CheckListViewModel.GlobalInstance = new CheckListViewModel(Inventory, LogicEngine);
+            if (LogicEngine != null)
+            {
+                CheckPage.Launch();
+            }
 
             this.VisibilityChanged += MainWindow_VisibilityChanged;
 
@@ -237,6 +235,47 @@ namespace ChecklistTracker
                         tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
                         this.Layout.Children.Add(tableControl);
                     }
+                    else if (hintTable.hintType == HintType.Entrance)
+                    {
+                        var entranceHintTable = hintTable as IEntranceTable;
+
+                        var layoutParams = new LayoutParams(
+                            width: entranceHintTable.width,
+                            height: 0,
+                            padding: paddingObj
+                        );
+
+                        var itemLayoutParams = new LayoutParams(
+                            width: entranceHintTable.itemSize[1],
+                            height: entranceHintTable.itemSize[0],
+                            padding: paddingObj
+                        );
+
+                        var textParams = new TextParams
+                        {
+                            FontColor = entranceHintTable.color.ToColor(),
+                            FontSize = 10,
+                            BackgroundColor = entranceHintTable.backgroundColor.ToColor(),
+                        };
+
+                        var viewMode = new EntranceTableViewModel(
+                            CheckListViewModel.GlobalInstance,
+                            entranceHintTable.icons,
+                            entranceHintTable.labels,
+                            layoutParams,
+                            itemLayoutParams,
+                            textParams);
+
+                        var tableControl = new EntranceTableControl
+                        {
+                            ViewModel = viewMode,
+                            Layout = layoutParams
+                        };
+
+                        tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
+                        tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
+                        this.Layout.Children.Add(tableControl);
+                    }
                     else
                     {
                         var tableControl = new VariableSizedWrapGrid();
@@ -261,7 +300,8 @@ namespace ChecklistTracker
                                 CheckListViewModel.GlobalInstance,
                                 leftItems: 0,
                                 rightItems: itemCount,
-                                labelSet: sometimesHintTable.labels
+                                labelSet: sometimesHintTable.labels,
+                                isEntry: true
                                 );
                             var hintControl = new HintControl(
                                 model,
@@ -270,7 +310,6 @@ namespace ChecklistTracker
                                 padding: paddingObj,
                                 backgroundColor: sometimesHintTable.backgroundColor.ToColor(),
                                 textColor: sometimesHintTable.color.ToColor(),
-                                isEntry: true,
                                 placeholderText: sometimesHintTable.placeholderText);
                             hintControl.Width = elementWidth;
 

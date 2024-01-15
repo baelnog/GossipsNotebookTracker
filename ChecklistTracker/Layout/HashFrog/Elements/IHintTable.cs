@@ -29,6 +29,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
     public enum HintType
     {
         Sometimes,
-        Location
+        Location,
+        Entrance
     }
 }

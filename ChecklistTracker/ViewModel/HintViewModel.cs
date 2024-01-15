@@ -10,13 +10,12 @@ using System.Collections.ObjectModel;
 
 namespace ChecklistTracker.ViewModel
 {
-    internal class HintViewModel
+    public class HintViewModel
     {
-
         internal bool IsEntry { get; set; }
-        internal string Text { get; set; }
-        private string? LabelSet { get; set; }
-        private List<Config.Label>? BaseLabelSet { get; set; }
+        public string Text { get; set; }
+        internal string? LabelSet { get; set; }
+        internal List<Config.Label>? BaseLabelSet { get; set; }
 
         internal ObservableCollection<HintStoneViewModel> LeftStones { get; private set; }
         internal ObservableCollection<HintStoneViewModel> RightStones { get; private set; }

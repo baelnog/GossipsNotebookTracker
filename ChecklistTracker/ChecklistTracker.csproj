@@ -18,11 +18,16 @@
     <WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnNoMatch_ShowUI>
     <WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak>
     <WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak_IfDebuggerAttached>true</WindowsAppSDKBootstrapAutoInitializeOptions_OnError_DebugBreak_IfDebuggerAttached>
+    <ApplicationIcon>Assets\notebook.ico</ApplicationIcon>
+
+    <CommunityToolsetVersion>8.0.240109</CommunityToolsetVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="CheckListView.xaml" />
     <None Remove="CheckPage.xaml" />
     <None Remove="Controls\ElementControl.xaml" />
+    <None Remove="Controls\EntranceControl.xaml" />
+    <None Remove="Controls\EntranceTableControl.xaml" />
     <None Remove="Controls\HintControl.xaml" />
     <None Remove="Controls\HintRegionControl.xaml" />
     <None Remove="Controls\HintStoneControl.xaml" />
@@ -42,10 +47,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
+    <!--<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />-->
+    <!--<PackageReference Include="CommunityToolkit.WinUI" Version="$(CommunityToolsetVersion)" />-->
+    <!--<PackageReference Include="CommunityToolkit.WinUI.UI" Version="$(CommunityToolsetVersion)" />-->
+    <!--<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="$(CommunityToolsetVersion)" />-->
+    <!--<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="$(CommunityToolsetVersion)" />-->
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="$(CommunityToolsetVersion)" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -65,6 +75,16 @@
     <ProjectReference Include="..\ChecklistTracker.Config\ChecklistTracker.Config.csproj" />
     <ProjectReference Include="..\ChecklistTracker.CoreUtils\ChecklistTracker.CoreUtils.csproj" />
     <ProjectReference Include="..\ChecklistTracker.LogicProvider\ChecklistTracker.LogicProvider.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\EntranceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\EntranceTableControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\HintRegionControl.xaml">
@@ -118,6 +138,6 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  <ProjectExtensions><VisualStudio><UserProperties assets_4dist_4config_4image-table_1json__JsonSchema="https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>
 

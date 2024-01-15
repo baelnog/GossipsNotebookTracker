@@ -1,7 +1,9 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
-using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI;
+//using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+
 namespace ChecklistTracker.ViewModel
 {
     internal class HintRegionViewModel : INotifyPropertyChanged
@@ -20,7 +24,7 @@ namespace ChecklistTracker.ViewModel
 
         public CheckListViewModel Model { get; private set; }
         public HintRegion Region { get; private set; }
-        public ChecklistTracker.View.AdvancedCollectionView Locations { get; private set; }
+        public AdvancedCollectionView Locations { get; private set; }
 
         public bool AnyLocations { get => Locations.Any(); }
 
@@ -33,7 +37,7 @@ namespace ChecklistTracker.ViewModel
 
             var locationsCollection = new ObservableCollection<LocationViewModel>(region.Locations.Select(location => new LocationViewModel(model, location)));
 
-            Locations = new ChecklistTracker.View.AdvancedCollectionView(locationsCollection, isLiveShaping: true);
+            Locations = new AdvancedCollectionView(locationsCollection, isLiveShaping: true);
             Locations.Filter = Model.LocationFilter;
             Locations.SortDescriptions.Add(new SortDescription(SortDirection.Ascending, new FuncComparer(SortLocations)));
             model.RegisterFilterCallbacks(Locations);

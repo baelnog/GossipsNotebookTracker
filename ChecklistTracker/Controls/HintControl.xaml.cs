@@ -37,14 +37,10 @@ namespace ChecklistTracker.Controls
 
         internal HintControl(
             HintViewModel viewModel,
-            int totalWidth, 
-            //int leftItems, int rightItems, 
+            int totalWidth,
             LayoutParams itemLayout,
             Thickness padding,
             Color backgroundColor, Color textColor,
-            //string? leftIconSet = "bosses", string? rightIconSet = "sometimes",
-            string? labelSet = null, bool isEntry = false,
-            //List<ImageSource> leftImages = null, List<ImageSource> rightImages = null,
             string placeholderText = "")
         {
             InitializeComponent();
@@ -74,13 +70,13 @@ namespace ChecklistTracker.Controls
             TextBackgroundColorRaw = backgroundColor;
             TextColorRaw = textColor;
 
-            IsEntry = isEntry;
-            if (isEntry)
+            IsEntry = viewModel.IsEntry;
+            if (IsEntry)
             {
-                if (labelSet != null)
+                if (ViewModel.LabelSet != null)
                 {
-                    BaseLabelSet = ResourceFinder.GetLabels(labelSet);
-                    EntryBox.ItemsSource = BaseLabelSet;
+                    BaseLabelSet = ViewModel.BaseLabelSet;
+                    EntryBox.ItemsSource = ViewModel.BaseLabelSet;
                     EntryBox.TextMemberPath = "name";
                     EntryBox.DisplayMemberPath = "name";
                 }
@@ -105,7 +101,7 @@ namespace ChecklistTracker.Controls
             return EntryBox;
         }
 
-        private static double[] MatchScore(string text, Config.Label label)
+        internal static double[] MatchScore(string text, Config.Label label)
         {
             var aliasScores = label.alias.Select(alias => {
                 if (!alias.StartsWith(text, StringComparison.InvariantCultureIgnoreCase)) { return 0; }

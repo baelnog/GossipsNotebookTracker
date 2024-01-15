@@ -21,11 +21,11 @@ namespace ChecklistTracker
         private Stack<(Action undo, Action redo)> UndoActions = new Stack<(Action undo, Action redo)>();
         private Stack<(Action undo, Action redo)> RedoActions = new Stack<(Action undo, Action redo)>();
 
-        private LogicEngine LogicEngine;
+        private LogicEngine? LogicEngine;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        internal Inventory(LogicEngine engine)
+        internal Inventory(LogicEngine? engine)
         {
             ItemCounts = ResourceFinder.GetItems().ToDictionary(item => item, item => 0);
             LogicEngine = engine;
@@ -125,8 +125,11 @@ namespace ChecklistTracker
                 ItemCounts[item] = value;
                 if (item.logic_name != null)
                 {
-                    LogicEngine.Inventory[item.logic_name] = value;
-                    LogicEngine.UpdateItems(LogicEngine.Inventory);
+                    if (LogicEngine != null)
+                    {
+                        LogicEngine.Inventory[item.logic_name] = value;
+                        LogicEngine.UpdateItems(LogicEngine.Inventory);
+                    }
                     this.RaisePropertyChanged(PropertyChanged, item.logic_name);
                 }
             };

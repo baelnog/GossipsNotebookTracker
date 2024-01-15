@@ -78,7 +78,7 @@ namespace ChecklistTracker
             return null;
         }
 
-        public static List<string> GetImageSet(string setName)
+        public static List<string>? GetImageSet(string setName)
         {
             if (Config.Value.image_groups.TryGetValue(setName, out var imageSet))
             {
@@ -97,8 +97,15 @@ namespace ChecklistTracker
         public static ImageSource FindImageGroupImage(string setName, int index)
         {
             var imageSet = GetImageSet(setName);
-
-            var item = imageSet[Math.Min(index, imageSet.Count - 1)];
+            string item;
+            if (imageSet != null)
+            {
+                item = imageSet[Math.Min(index, imageSet.Count - 1)];
+            }
+            else
+            {
+                item = setName;
+            }
 
             return FindItem(item, 1);
         }

@@ -105,6 +105,7 @@ namespace ChecklistTracker
             frame.Navigate(typeof(CheckPage));
             window.Content = frame;
             window.Activate();
+            window.AppWindow.SetIcon(@"Assets/notebook.ico");
         }
     }
 }

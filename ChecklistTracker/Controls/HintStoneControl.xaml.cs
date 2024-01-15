@@ -10,16 +10,47 @@ namespace ChecklistTracker.Controls
 {
     internal partial class HintStoneControl : UserControl
     {
-        internal LayoutParams Layout { get; private set; }
-        internal HintStoneViewModel ViewModel { get; private set; }
+        internal LayoutParams _LayoutParams;
+        internal LayoutParams LayoutParams 
+        {
+            get => _LayoutParams;
+            set
+            {
+                if (_LayoutParams != value)
+                {
+                    _LayoutParams = value;
+                    Margin = _LayoutParams.Padding;
+                }
+            }
+        }
 
-        internal HintStoneControl(HintStoneViewModel viewModel, LayoutParams layout)
+        private HintStoneViewModel _ViewModel;
+        internal HintStoneViewModel ViewModel 
+        {
+            get => _ViewModel;
+            set
+            {
+                if (_ViewModel != value)
+                {
+                    _ViewModel = value;
+                    InitClickCallbacks();
+                }
+            }
+        }
+
+        internal HintStoneControl()
         {
             InitializeComponent();
-            ViewModel = viewModel;
-            Layout = layout;
-            Margin = layout.Padding;
+        }
 
+        internal HintStoneControl(HintStoneViewModel viewModel, LayoutParams layout) : this()
+        {
+            ViewModel = viewModel;
+            LayoutParams = layout;
+        }
+
+        private void InitClickCallbacks()
+        {
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = ViewModel.OnClick;
             callbacks.OnScroll = ViewModel.OnScroll;

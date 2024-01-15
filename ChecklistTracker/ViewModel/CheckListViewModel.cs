@@ -1,11 +1,18 @@
 ﻿using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
-using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI;
+//using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI.Collections;
+
+//using CommunityToolkit.WinUI.Collections;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+
+using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
 
 namespace ChecklistTracker.ViewModel
 {
@@ -14,30 +21,30 @@ namespace ChecklistTracker.ViewModel
         internal static CheckListViewModel? GlobalInstance { get; set; }
 
         internal Inventory Inventory { get; private set; }
-        internal LogicEngine Engine { get; private set; }
+        internal LogicEngine? Engine { get; private set; }
 
         internal ObservableCollection<HintRegionViewModel> HintRegions { get; private set; }
-        internal View.AdvancedCollectionView PaneRegions { get; private set; }
-        internal View.AdvancedCollectionView ViewRegions { get; private set; }
+        internal AdvancedCollectionView PaneRegions { get; private set; }
+        internal AdvancedCollectionView ViewRegions { get; private set; }
 
         internal ObservableCollection<string> CheckedLocations = new ObservableCollection<string>();
 
         internal bool SkullsToggle { get; private set; } = false;
 
-        internal CheckListViewModel(Inventory inventory, LogicEngine engine)
+        internal CheckListViewModel(Inventory inventory, LogicEngine? engine)
         {
             Inventory = inventory;
             Engine = engine;
-            HintRegions = new ObservableCollection<HintRegionViewModel>(Engine.GetRegions().Select(hr => new HintRegionViewModel(this, hr)));
+            HintRegions = new ObservableCollection<HintRegionViewModel>(Engine?.GetRegions()?.Select(hr => new HintRegionViewModel(this, hr)) ?? new List<HintRegionViewModel>());
 
-            PaneRegions = new View.AdvancedCollectionView(HintRegions, isLiveShaping: true);
+            PaneRegions = new AdvancedCollectionView(HintRegions, isLiveShaping: true);
             PaneRegions.SortDescriptions.Add(new SortDescription(SortDirection.Ascending, new FuncComparer(SortRegions)));
             PaneRegions.Filter = RegionPaneFilter;
             PaneRegions.ObserveFilterProperty(nameof(HintRegionViewModel.AnyLocations));
             PaneRegions.ObserveFilterProperty(nameof(HintRegionViewModel.Region));
             RegisterFilterCallbacks(PaneRegions);
 
-            ViewRegions = new View.AdvancedCollectionView(HintRegions, isLiveShaping: true);
+            ViewRegions = new AdvancedCollectionView(HintRegions, isLiveShaping: true);
             ViewRegions.SortDescriptions.Add(new SortDescription(SortDirection.Ascending, new FuncComparer(SortRegions)));
             ViewRegions.Filter = RegionViewFilter;
             ViewRegions.ObserveFilterProperty(nameof(HintRegionViewModel.AnyLocations));
@@ -186,7 +193,7 @@ namespace ChecklistTracker.ViewModel
             this.RaisePropertyChanged(PropertyChanged, "ViewModelFilters");
         }
 
-        internal void RegisterFilterCallbacks(View.AdvancedCollectionView collection)
+        internal void RegisterFilterCallbacks(AdvancedCollectionView collection)
         {
             collection.ObserveFilterProperty("ViewModelFilters");
         }
