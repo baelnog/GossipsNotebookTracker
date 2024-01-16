@@ -36,6 +36,9 @@ using ChecklistTracker.LogicProvider;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using ChecklistTracker.ViewModel;
+using ChecklistTracker.CoreUtils;
+using Windows.Storage.Pickers;
+using AppUIBasics.Helper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,19 +50,24 @@ namespace ChecklistTracker
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private LogicEngine? LogicEngine;
-        private Inventory Inventory;
+        private TrackerConfig Config;
 
-        public MainWindow(LogicEngine? engine)
+        public MainWindow(TrackerConfig config)
         {
-            LogicEngine = engine;
-            Inventory = new Inventory(LogicEngine);
+            Config = config;
             this.InitializeComponent();
             LayoutDesign();
+            Config.UserConfig.OnPropertyChanged(
+                nameof(UserConfig.LayoutPath),
+                (o, args) => DispatcherQueue.TryEnqueue(LayoutDesign));
         }
+
+        private bool SetupWindowSizeHanders = false;
+        private (int width, int height)? ConstrainedSize { get; set; }
 
         private void SetWindowSize(int width, int height)
         {
+            ConstrainedSize = (width, height);
             var setSize = () =>
             {
                 var titleBarHeight = 32;
@@ -69,42 +77,59 @@ namespace ChecklistTracker
                 }
                 var size = new SizeInt32
                 {
-                    Height = (int)((height + titleBarHeight) * this.Layout.XamlRoot.RasterizationScale),
-                    Width = (int)((width + 12) * this.Layout.XamlRoot.RasterizationScale)
+                    Height = (int)(this.Menu.Height) + (int)((ConstrainedSize.Value.height + titleBarHeight) * this.Layout.XamlRoot.RasterizationScale),
+                    Width = (int)((ConstrainedSize.Value.width + 12) * this.Layout.XamlRoot.RasterizationScale)
                 };
 
-                this.AppWindow.Resize(size);
+                if (this.AppWindow.Size != size)
+                {
+                    this.AppWindow.Resize(size);
+                }
             };
             if (this.Layout.XamlRoot != null)
             {
                 setSize();
             }
-            RoutedEventHandler handler = (object s, RoutedEventArgs e) =>
+            if (!SetupWindowSizeHanders)
             {
-                setSize();
-            };
-            this.Layout.Loaded += handler;
-            this.SizeChanged += (object s, Microsoft.UI.Xaml.WindowSizeChangedEventArgs e) => { setSize(); };
+                SetupWindowSizeHanders = true;
+                RoutedEventHandler handler = (object s, RoutedEventArgs e) =>
+                {
+                    setSize();
+                };
+                this.Layout.Loaded += handler;
+                this.SizeChanged += (object s, Microsoft.UI.Xaml.WindowSizeChangedEventArgs e) => { setSize(); };
+            }
         }
 
         private void LayoutDesign()
         {
+            this.Layout.Children.Clear();
             this.AppWindow.SetIcon(@"Assets/notebook.ico");
 
-            CheckListViewModel.GlobalInstance = new CheckListViewModel(Inventory, LogicEngine);
-            if (LogicEngine != null)
+            foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag == "LayoutPath").ToList())
             {
-                CheckPage.Launch();
+                LayoutsMenu.Items.Remove(oldItem);
+            }
+
+            foreach (string layoutPath in Config.UserConfig.LayoutHistory)
+            {
+                if (layoutPath != Config.UserConfig.LayoutPath)
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = layoutPath,
+                        Tag = "LayoutPath"
+                    };
+                    item.Click += (s, e) => { OpenLayout(layoutPath); };
+                    this.LayoutsMenu.Items.Add(item);
+                }
             }
 
             this.VisibilityChanged += MainWindow_VisibilityChanged;
 
-
-            //this.Layout.ConfigureClickHandler(new ClickCallbacks());
             this.Layout.CanDrag = false;
-            //this.Layout.ZIndex--;
-            var layoutDoc = ResourceFinder.ReadResourceFile("layouts/season7.json").Result;
-            //var layoutDoc = ResourceFinder.ReadResourceFile("layouts/season7.json").Result;
+            var layoutDoc = ResourceFinder.ReadResourceFile(Config.UserConfig.LayoutPath).Result;
             var layout = JsonSerializer.Deserialize<HashFrogLayout>(
                 layoutDoc,
                 new JsonSerializerOptions
@@ -354,6 +379,37 @@ namespace ChecklistTracker
             //newViewId = ApplicationView.GetForCurrentView().Id;
 
             //ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+        }
+
+        private void MenuOpenLayout(object sender, RoutedEventArgs e)
+        {
+            // Create a file picker
+            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+            // Initialize the file picker with the window handle (HWND).
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+
+            // Set options for your file picker
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.FileTypeFilter.Add(".json");
+
+            // Open the picker for the user to pick a file
+            var pickTask = openPicker.PickSingleFileAsync();
+            pickTask.AsTask().ContinueWith(task =>
+            {
+                var file = task.Result;
+                if (file != null)
+                {
+                    Config.UserConfig.SetLayout(file.Path);
+                }
+            });
+        }
+
+        private void OpenLayout(string layout)
+        {
+            Config.UserConfig.SetLayout(layout);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using ChecklistTracker.CoreUtils;
+﻿using ChecklistTracker.Config;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
+using ChecklistTracker.ViewModel;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -52,11 +54,26 @@ namespace ChecklistTracker
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            var settings = Settings.ReadFromJson($"{ProgramDir.Value}/settings/season7-base.json").Result;
-            var logicEngine = new LogicEngine("v8.0", settings);
 
-            m_window = new MainWindow(null);// logicEngine);
+            var config = TrackerConfig.Init().Result;
+
+            var settings = Settings.ReadFromJson($"{ProgramDir.Value}/settings/season7-base.json").Result;
+            var logicEngine = new LogicEngine(config, "v8.0", settings);
+
+            var inventory = new Inventory(logicEngine);
+
+            CheckListViewModel.GlobalInstance = new CheckListViewModel(
+                config,
+                inventory,
+                config.UserConfig.ShowLocationTracker ? logicEngine : null);
+
+            m_window = new MainWindow(config);
             m_window.Activate();
+
+            if (config.UserConfig.ShowLocationTracker)
+            {
+                CheckPage.Launch();
+            }
 
             //var window = AppWindow.Create();
             //Frame appWindowContentFrame = new Frame();

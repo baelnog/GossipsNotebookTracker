@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChecklistTracker.ANTLR\ChecklistTracker.ANTLR.csproj" />
+    <ProjectReference Include="..\ChecklistTracker.CoreUtils\ChecklistTracker.CoreUtils.csproj" />
   </ItemGroup>
   <!--<None Include="Assets\dist\**\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)">
     <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>

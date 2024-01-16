@@ -23,7 +23,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_SphereZero()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var expected = new HashSet<string>
                 {
@@ -71,7 +72,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_Bombs()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var locations = testEngine.GetLocations().ToHashSet();
             var inventory = testEngine.Inventory;
@@ -149,7 +151,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_Bow()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var inventory = testEngine.Inventory;
             inventory["Bow"] = 1;
@@ -203,7 +206,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_Hookshot()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var inventory = testEngine.Inventory;
             inventory["Progressive_Hookshot"] = 1;
@@ -258,7 +262,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_ZL_Bomb_Boomerang_Letter()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var expected = new HashSet<string>()
             {
@@ -359,7 +364,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_ZL_Bomb_Boomerang_Letter_Hookshot()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var expected = new HashSet<string>()
             {
@@ -464,7 +470,8 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_ZL_Bomb_Bow_Boomerang_Letter_Longshot_Str2_Magic_Lens()
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
 
             var expected= new HashSet<string>()
             {
@@ -609,7 +616,9 @@ namespace ChecklistTracker.LogicProvider.Test
         public void Season7Base_WastelandAccess()
         {
             var settings = Settings.ReadFromJson(@"settings\season7-base.json").Result;
-            var testEngine = new LogicEngine("v8.0", settings);
+            var config = TrackerConfig.Init().Result;
+            var testEngine = new LogicEngine(config, "v8.0", settings);
+
             testEngine.Inventory["Progressive_Hookshot"] = 2;
             testEngine.Inventory["Dins_Fire"] = 1;
             testEngine.Inventory["Magic_Meter"] = 1;

@@ -7,9 +7,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <StackPanel
+        VerticalAlignment="Top">
 
-    <Canvas
+        <MenuBar x:Name="Menu">
+            <MenuBarItem Title="Layout" x:Name="LayoutsMenu">
+                <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout"/>
+                <MenuFlyoutSeparator />
+            </MenuBarItem>
+
+            <!--<MenuBarItem Title="Edit">
+                <MenuFlyoutItem Text="Undo"/>
+                <MenuFlyoutItem Text="Cut"/>
+                <MenuFlyoutItem Text="Copy"/>
+                <MenuFlyoutItem Text="Paste"/>
+            </MenuBarItem>
+
+            <MenuBarItem Title="View">
+                <MenuFlyoutItem Text="Output"/>
+                <MenuFlyoutSeparator/>
+                <RadioMenuFlyoutItem Text="Landscape" GroupName="OrientationGroup"/>
+                <RadioMenuFlyoutItem Text="Portrait" GroupName="OrientationGroup" IsChecked="True"/>
+                <MenuFlyoutSeparator/>
+                <RadioMenuFlyoutItem Text="Small icons" GroupName="SizeGroup"/>
+                <RadioMenuFlyoutItem Text="Medium icons" IsChecked="True" GroupName="SizeGroup"/>
+                <RadioMenuFlyoutItem Text="Large icons" GroupName="SizeGroup"/>
+            </MenuBarItem>
+
+            <MenuBarItem Title="Help">
+                <MenuFlyoutItem Text="About"/>
+            </MenuBarItem>-->
+        </MenuBar>
+        <Canvas
             x:Name="Layout">
 
-    </Canvas>
+        </Canvas>
+    </StackPanel>
 </Window>

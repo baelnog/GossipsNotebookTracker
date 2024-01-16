@@ -1,4 +1,5 @@
-﻿using ChecklistTracker.CoreUtils;
+﻿using ChecklistTracker.Config;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
 using CommunityToolkit.WinUI;
 //using CommunityToolkit.WinUI.UI;
@@ -20,6 +21,7 @@ namespace ChecklistTracker.ViewModel
     {
         internal static CheckListViewModel? GlobalInstance { get; set; }
 
+        internal TrackerConfig Config { get; private set; }
         internal Inventory Inventory { get; private set; }
         internal LogicEngine? Engine { get; private set; }
 
@@ -31,8 +33,10 @@ namespace ChecklistTracker.ViewModel
 
         internal bool SkullsToggle { get; private set; } = false;
 
-        internal CheckListViewModel(Inventory inventory, LogicEngine? engine)
+        internal CheckListViewModel(TrackerConfig config, Inventory inventory, LogicEngine? engine)
         {
+            Config = config;
+
             Inventory = inventory;
             Engine = engine;
             HintRegions = new ObservableCollection<HintRegionViewModel>(Engine?.GetRegions()?.Select(hr => new HintRegionViewModel(this, hr)) ?? new List<HintRegionViewModel>());

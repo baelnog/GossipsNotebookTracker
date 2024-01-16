@@ -1,6 +1,19 @@
 <Project>
-	<PropertyGroup>
-        <!-- https://github.com/microsoft/WindowsAppSDK/issues/3548 -->
-        <EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
-    </PropertyGroup>
+  <PropertyGroup>
+      <!-- https://github.com/microsoft/WindowsAppSDK/issues/3548 -->
+      <EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
+
+    <PropertyChangedAnalyzerConfiguration>
+      <IsCodeGeneratorDisabled>false</IsCodeGeneratorDisabled>
+      <EventInvokerName>RaisePropertyChanged</EventInvokerName>
+    </PropertyChangedAnalyzerConfiguration>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
+  </ItemGroup>
 </Project>

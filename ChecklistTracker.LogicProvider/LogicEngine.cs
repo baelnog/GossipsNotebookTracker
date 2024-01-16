@@ -22,9 +22,9 @@ namespace ChecklistTracker.LogicProvider
 
         private ConcurrentDictionary<string, HintRegion> HintRegions;
 
-        public LogicEngine(string version, Settings settings)
+        public LogicEngine(TrackerConfig config, string version, Settings settings)
         {
-            Config = TrackerConfig.Init().Result;
+            Config = config;
 
             var logicFiles = LogicFiles.LoadLogicFiles(LogicFileCache.GetCachedLogicFilesForTagAsync(version).Result).Result;
 

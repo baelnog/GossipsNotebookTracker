@@ -8,13 +8,15 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
+using ChecklistTracker.CoreUtils;
 
 namespace ChecklistTracker.Config
 {
     public class TrackerConfig
     {
-        private static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
+        internal static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
 
+        public UserConfig UserConfig { get; private set; }
         public ItemTable ItemTable { get; private set; }
         public IDictionary<string, ISet<string>> HintRegions { get; private set; }
         public IDictionary<string, string> HintRegionShortNames { get; private set; }
@@ -26,6 +28,7 @@ namespace ChecklistTracker.Config
         public IDictionary<string, int> DefaultInventory { get; private set; }
 
         private TrackerConfig(
+            UserConfig userConfig,
             ItemTable itemTable,
             IDictionary<string, ISet<string>> hintRegions,
             IDictionary<string, string> hintRegionShortNames,
@@ -36,6 +39,7 @@ namespace ChecklistTracker.Config
             IDictionary<string, int> defaultInventory
         )
         {
+            UserConfig = userConfig;
             ItemTable = itemTable;
             HintRegions = hintRegions;
             HintRegionShortNames = hintRegionShortNames;
@@ -48,6 +52,14 @@ namespace ChecklistTracker.Config
 
         public static async Task<TrackerConfig> Init()
         {
+            var userConfig = await LoadUserConfig().ConfigureAwait(false);
+            var userConfigSaveTask = Task.CompletedTask;
+            userConfig.PropertyChanged += (o, e) =>
+            {
+                Logging.WriteLine($"Saving user config change to {e.PropertyName}.");
+                userConfigSaveTask.ContinueWith((t, o) => SaveUserConfig(userConfig).ConfigureAwait(false), o);
+            };
+
             var itemTable = await LoadItemTable().ConfigureAwait(false);
 
             var hintRegions = await LoadHintRegions().ConfigureAwait(false);
@@ -63,6 +75,7 @@ namespace ChecklistTracker.Config
             var dungeons = await LoadDungeons().ConfigureAwait(false);
 
             return new TrackerConfig(
+                userConfig: userConfig,
                 itemTable: itemTable,
                 hintRegions: hintRegions,
                 hintRegionShortNames: hintRegionShortNames,
@@ -77,6 +90,18 @@ namespace ChecklistTracker.Config
         private static async Task<ItemTable> LoadItemTable()
         {
             return await ParseJson<ItemTable>($"{ProgramDir}/config/image-table.json").ConfigureAwait(false);
+        }
+
+        private static async Task<UserConfig> LoadUserConfig()
+        {
+            return await ParseJson<UserConfig>(UserConfig.UserConfigFile, () => new UserConfig())
+                .ConfigureAwait(false);
+        }
+
+        private static async Task SaveUserConfig(UserConfig userConfig)
+        {
+            await SaveJson(UserConfig.UserConfigFile, userConfig)
+                .ConfigureAwait(false);
         }
 
         private static async Task<IDictionary<string, ISet<string>>> LoadHintRegions()
@@ -123,13 +148,20 @@ namespace ChecklistTracker.Config
             );
         }
 
-        public static async Task<T> ParseJson<T>(string file)
+        public static async Task<T> ParseJson<T>(string file, Func<T>? defaultFactory = null)
         {
+            if (!File.Exists(file))
+            {
+                if (defaultFactory != null)
+                {
+                    return defaultFactory.Invoke();
+                }
+            }
             using Stream stream = File.Open(file, FileMode.Open, FileAccess.Read);
 
             if (stream == null)
             {
-                throw new IOException("Failed to load image-table.json");
+                throw new IOException($"Failed to load {file}");
             }
 
             var options = new JsonSerializerOptions
@@ -146,5 +178,29 @@ namespace ChecklistTracker.Config
 
             return result != null ? result : throw new IOException($"Failed to parse {file}");
         }
+
+        public static async Task SaveJson<T>(string file, T data)
+        {
+            using Stream stream = File.Open(file, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            if (stream == null)
+            {
+                throw new IOException($"Failed to load {file}");
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                PropertyNameCaseInsensitive = true,
+                WriteIndented = true,
+                Converters = {
+                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
+                }
+            };
+
+            await JsonSerializer.SerializeAsync(stream, data, options)
+                .ConfigureAwait(false); ;
+        }
+
     }
 }
