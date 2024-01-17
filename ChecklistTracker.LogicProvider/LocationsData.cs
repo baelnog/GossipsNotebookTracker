@@ -180,19 +180,19 @@ namespace ChecklistTracker.LogicProvider
         bool IsAlwaysPlacedLocation(RuleData location)
         {
             return location.Type == "Drop" ||
-                new List<string>() { "Triforce", "Scarecrow Song", "Deliver Letter", "Time Travel", "Bombchu Drop" }.Contains(location.VanillaItem);
+                new List<string>() { "Triforce", "Scarecrow_Song", "Deliver_Letter", "Time_Travel", "Bombchu_Drop" }.Contains(location.VanillaItem);
         }
 
         bool IsGuaranteedKey(RuleData location)
         {
             var itemName = location.VanillaItem;
 
-            return (Settings.ShuffleGanonsBK == "vanilla" && itemName == "Boss Key (Ganons Castle)") ||
-                   (Settings.ShuffleBossKeys == "vanilla" && itemName.StartsWith("Boss Key ")) ||
-                   (Settings.ShuffleHideoutKeys == "vanilla" && itemName == "Small Key (Thieves Hideout)") ||
-                   (Settings.ShuffleSilverRupees == "vanilla" && itemName.StartsWith("Silver Rupee ")) ||
-                   (Settings.ShuffleSmallKeys == "vanilla" && itemName.StartsWith("Small Key ")) ||
-                   (Settings.ShuffleTreasureChestGameKeys == "vanilla" && itemName == "Small Key (Treasure Chest Game)");
+            return (Settings.ShuffleGanonsBK == "vanilla" && itemName == "Boss_Key_Ganons_Castle)") ||
+                   (Settings.ShuffleBossKeys == "vanilla" && itemName.StartsWith("Boss_Key_")) ||
+                   (Settings.ShuffleHideoutKeys == "vanilla" && itemName == "Small_Key_Thieves_Hideout)") ||
+                   (Settings.ShuffleSilverRupees == "vanilla" && itemName.StartsWith("Silver_Rupee_")) ||
+                   (Settings.ShuffleSmallKeys == "vanilla" && itemName.StartsWith("Small_Key_")) ||
+                   (Settings.ShuffleTreasureChestGameKeys == "vanilla" && itemName == "Small_Key_Treasure_Chest_Game");
         }
 
         public bool IsProgessLocation(RuleData location)
@@ -217,7 +217,7 @@ namespace ChecklistTracker.LogicProvider
                 return false;
             }
 
-            if (location.VanillaItem == "Gold Skulltula Token")
+            if (location.VanillaItem == "Gold_Skulltula_Token")
             {
                 return Settings.Tokensanity == "all" ||
                        location.IsDungeon && Settings.Tokensanity == "dungeon" ||
@@ -250,12 +250,12 @@ namespace ChecklistTracker.LogicProvider
                     return true;
                 }
 
-                return location.VanillaItem == "Piece of Heart" ||
-                       location.VanillaItem == "Deku Stick Capacity" ||
-                       location.VanillaItem == "Deku Nut Capacity";
+                return location.VanillaItem == "Piece_of_Heart" ||
+                       location.VanillaItem == "Deku_Stick_Capacity" ||
+                       location.VanillaItem == "Deku_Nut_Capacity";
             }
 
-            if (location.VanillaItem == "Kokiri Sword")
+            if (location.VanillaItem == "Kokiri_Sword")
             {
                 return Settings.ShuffleKokiriSword;
             }
@@ -265,7 +265,7 @@ namespace ChecklistTracker.LogicProvider
                 return Settings.ShuffleOcarinas;
             }
 
-            if (location.VanillaItem == "Giants Knife")
+            if (location.VanillaItem == "Giants_Knife")
             {
                 return Settings.ShuffleExpensiveMerchants;
             }
@@ -276,13 +276,13 @@ namespace ChecklistTracker.LogicProvider
                 return false;
             }
 
-            if (new Regex(@"Bombchus( \(\d+\))").IsMatch(location.VanillaItem))
+            if (new Regex(@"Bombchus(_\d+)").IsMatch(location.VanillaItem))
             {
                 return location.LocationName != "Wasteland Bombchu Salesman" ||
                        Settings.ShuffleExpensiveMerchants;
             }
 
-            if (location.VanillaItem == "Blue Potion")
+            if (location.VanillaItem == "Blue_Potion")
             {
                 return Settings.ShuffleExpensiveMerchants;
             }
@@ -292,18 +292,18 @@ namespace ChecklistTracker.LogicProvider
                 return Settings.ShuffleCows;
             }
 
-            if (location.VanillaItem == "Gerudo Membership Card")
+            if (location.VanillaItem == "Gerudo_Membership_Card")
             {
                 return Settings.ShuffleGerudoCard && Settings.GerudoFortress != "open";
             }
 
-            if (location.VanillaItem == "Buy Magic Bean")
+            if (location.VanillaItem == "Buy_Magic_Bean")
             {
                 return Settings.ShuffleBeans;
             }
 
             if (location.LocationName.StartsWith("ZR Frogs ") &&
-                location.VanillaItem == "Rupees (50)")
+                location.VanillaItem == "Rupees_50")
             {
                 return Settings.ShuffleFrogSongRupees;
             }
@@ -313,23 +313,23 @@ namespace ChecklistTracker.LogicProvider
                 return Settings.ShuffleLoach != "off";
             }
 
-            if (TrackerConfig.AdultTradeItems.Contains(location.VanillaItem))
+            if (TrackerConfig.AdultTradeItems.Contains(location.VanillaItem.Replace("_", " ")))
             {
                 if (!Settings.FullAdultTradeShuffle)
                 {
-                    return location.VanillaItem == "Pocket Egg" && Settings.AdultTradeItemStart.Any();
+                    return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Any();
                 }
-                if (Settings.AdultTradeItemStart.Contains(location.VanillaItem))
+                if (Settings.AdultTradeItemStart.Contains(location.VanillaItem.Replace("_", " ")))
                 {
                     return true;
                 }
 
-                return location.VanillaItem == "Pocket Egg" && Settings.AdultTradeItemStart.Contains("Pocket Cucco");
+                return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Contains("Pocket Cucco");
             }
 
-            if (TrackerConfig.ChildTradeItems.Contains(location.VanillaItem))
+            if (TrackerConfig.ChildTradeItems.Contains(location.VanillaItem.Replace("_", " ")))
             {
-                if (location.VanillaItem == "Weird Egg" && Settings.SkipChildZelda())
+                if (location.VanillaItem == "Weird_Egg" && Settings.SkipChildZelda())
                 {
                     return false;
                 }
@@ -337,21 +337,21 @@ namespace ChecklistTracker.LogicProvider
                 {
                     return false;
                 }
-                if (Settings.ChildTradeEarliestItem.Contains(location.VanillaItem))
+                if (Settings.ChildTradeEarliestItem.Contains(location.VanillaItem.Replace("_", " ")))
                 {
                     return true;
                 }
-                return location.VanillaItem == "Weird Egg" &&
+                return location.VanillaItem == "Weird_Egg" &&
                        Settings.ChildTradeEarliestItem.Contains("Chicken");
             }
 
-            if (location.VanillaItem == "Small Key (Thieves Hideout)")
+            if (location.VanillaItem == "Small_Key_Thieves_Hideout")
             {
                 return Settings.ShuffleHideoutKeys != "vanilla";
             }
 
             if (location.LocationName.StartsWith("Market Treasure Chest Game ") &&
-                location.VanillaItem != "Piece of Heart (Treasure Chest Game)")
+                location.VanillaItem != "Piece_of_Heart_Treasure_Chest_Game")
             {
                 return Settings.ShuffleTreasureChestGameKeys != "vanilla";
             }
@@ -414,19 +414,19 @@ namespace ChecklistTracker.LogicProvider
 
             if (location.IsDungeon)
             {
-                if (location.VanillaItem.StartsWith("Boss Key"))
+                if (location.VanillaItem.StartsWith("Boss_Key_"))
                 {
                     // Always show the boss key location even if they are vanilla.
                     return true;
                 }
 
-                if (location.VanillaItem.StartsWith("Map") || location.VanillaItem.StartsWith("Compass"))
+                if (location.VanillaItem.StartsWith("Map_") || location.VanillaItem.StartsWith("Compass_"))
                 {
                     // Show vanilla Maps and Compasses if they give info
                     return Settings.ShuffleMapAndCompass != "vanilla" || Settings.MapAndCompassGiveInfo;
                 }
 
-                if (location.VanillaItem.StartsWith("Small Key"))
+                if (location.VanillaItem.StartsWith("Small_Key_"))
                 {
                     // Always show small key chests
                     return true;

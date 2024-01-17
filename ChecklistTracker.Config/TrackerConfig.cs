@@ -143,9 +143,18 @@ namespace ChecklistTracker.Config
                 {
                     Name = entry.Key,
                     Type = entry.Value[0],
-                    VanillaItem = entry.Value[1],
+                    VanillaItem = ToLogicItem(entry.Value[1]),
                 }
             );
+        }
+
+
+        private static string ToLogicItem(string vanillaItem)
+        {
+            return vanillaItem
+                .Replace(")", "")
+                .Replace("(", "")
+                .Replace(" ", "_");
         }
 
         public static async Task<T> ParseJson<T>(string file, Func<T>? defaultFactory = null)

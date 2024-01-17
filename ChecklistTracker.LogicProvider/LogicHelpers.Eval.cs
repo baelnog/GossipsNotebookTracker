@@ -11,6 +11,13 @@ namespace ChecklistTracker.LogicProvider
 {
     internal partial class LogicHelpers
     {
+        private const string SyntheticTag = "Synthetic_";
+
+        private string Synthetic(string item)
+        {
+            return SyntheticTag + item;
+        }
+
         private void RegisterCaches()
         {
             _IsLocationAvailableMemoized = Cache.Memoize<string, string, bool>("IsLocationAvailable", _IsLocationAvailable);
@@ -100,8 +107,8 @@ namespace ChecklistTracker.LogicProvider
                     return this.SeedSettings.StartingTimeOfDay.IsNight();
                 case "has_bottle":
                     return HasBottle(age);
-                case "Big Poe":
-                    return CanAccessDrop("Big Poe", age);
+                case "Big_Poe":
+                    return CanAccessDrop("Big_Poe", age);
                 case "Bombchu_Drop":
                     return IsLocationAvailable("Market Bombchu Bowling Bombchus", age);
                 case "Deliver_Letter":
@@ -170,10 +177,10 @@ namespace ChecklistTracker.LogicProvider
                 return EvalRuleAlias(name, age);
             }
 
-            var escapedId = name.Replace("_", " ").Replace("'", "");
-            if (Locations.ActiveEvents.ContainsKey(escapedId))
+            var eventId = unquotedName.Replace("_", " ");
+            if (Locations.ActiveEvents.ContainsKey(eventId))
             {
-                return EvalEvent(escapedId);
+                return EvalEvent(eventId);
             }
 
             if (name.StartsWith("logic_"))
@@ -192,9 +199,10 @@ namespace ChecklistTracker.LogicProvider
                 return CanBuy(name, age);
             }
 
-            if (Locations.ActiveDropLocations.ContainsKey(escapedId))
+            var dropId = unquotedName.Replace(" ", "_");
+            if (Locations.ActiveDropLocations.ContainsKey(dropId))
             {
-                return CanAccessDrop(escapedId, age);
+                return CanAccessDrop(dropId, age);
             }
 
             throw new NotImplementedException($"Unknown identifier: {name}");
@@ -602,10 +610,6 @@ namespace ChecklistTracker.LogicProvider
                 {
                     return true;
                 }
-                if (HasItemCountRaw($"Synthetic_{itemName}", count))
-                {
-                    return true;
-                }
                 if (itemName.StartsWith("Small_Key_Treasure_Chest_Game"))
                 {
                     if (SeedSettings.ShuffleTreasureChestGameKeys == "vanilla")
@@ -621,16 +625,6 @@ namespace ChecklistTracker.LogicProvider
                     {
                         return true;
                     }
-                    //if (SeedSettings.ShuffleSmallKeys == "vanilla")
-                    //{
-                    //    // TODO: Map to Vanilla Key Locations
-                    //    return true;
-                    //}
-                    //if (SeedSettings.ShuffleSmallKeys == "dungeon")
-                    //{
-                    //    return false;
-                    //    //return HasAvailableDungeonKeys(itemName.Replace("Small_Key_", "").Replace("_", " "), count);
-                    //}
                 }
             }
 
@@ -671,10 +665,6 @@ namespace ChecklistTracker.LogicProvider
                 {
                     return true;
                 }
-                if (HasItemCountRaw($"Synthetic_{itemName}", count))
-                {
-                    return true;
-                }
             }
 
             if (itemName == "Bottle_with_Big_Poe")
@@ -687,8 +677,15 @@ namespace ChecklistTracker.LogicProvider
 
         private bool HasItemCountRaw(string itemName, int count)
         {
-
-            return Items.ContainsKey(itemName) && Items[itemName] >= count;
+            if (Items.ContainsKey(itemName) && Items[itemName] >= count)
+            {
+                return true;
+            }
+            if (!itemName.StartsWith(SyntheticTag))
+            {
+                return HasItemCountRaw(Synthetic(itemName), count);
+            }
+            return false;
         }
 
         Func<string, int, bool, bool> HasAvailableDungeonKeysMemoized;

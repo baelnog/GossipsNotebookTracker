@@ -248,14 +248,13 @@ namespace ChecklistTracker.LogicProvider
                                 guaranteedKeys.Add(keyLocation.Value.LocationName);
                                 // Location is Accessible. Count it towards same-dungeon key-items.
 
-                                if (keyLocation.Value.IsDungeon)
+                                if (keyLocation.Value.VanillaItem.Equals("Gold_Skulltula_Token"))
                                 {
-                                    if (SeedSettings.ShuffleSmallKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small Key") ||
-                                        SeedSettings.ShuffleSmallKeys == "dungeon" && Locations.IsProgessLocation(keyLocation.Value))
+                                    if (SeedSettings.Tokensanity == "dungeon" && !keyLocation.Value.IsDungeon ||
+                                        SeedSettings.Tokensanity == "overworld" && keyLocation.Value.IsDungeon ||
+                                        SeedSettings.Tokensanity == "off")
                                     {
-                                        var dungeon = Locations.RegionMap[keyLocation.Value.ParentRegion];
-
-                                        var smallKeyItem = $"Synthetic_Small_Key_{dungeon.Replace(" ", "_")}";
+                                        var smallKeyItem = Synthetic("Gold_Skulltula_Token");
                                         if (!Items.ContainsKey(smallKeyItem))
                                         {
                                             Items[smallKeyItem] = 0;
@@ -263,13 +262,26 @@ namespace ChecklistTracker.LogicProvider
                                         Items[smallKeyItem]++;
                                         updatedKeys = true;
                                     }
-                                    else if (keyLocation.Value.VanillaItem.StartsWith("Silver Rupee"))
+                                }
+
+                                if (keyLocation.Value.IsDungeon)
+                                {
+                                    if (SeedSettings.ShuffleSmallKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small_Key_") ||
+                                        SeedSettings.ShuffleSmallKeys == "dungeon" && Locations.IsProgessLocation(keyLocation.Value))
                                     {
-                                        var item = keyLocation.Value.VanillaItem
-                                            .Replace("(", "")
-                                            .Replace(")", "")
-                                            .Replace(" ", "_");
-                                        var silverRupeeItem = $"Synthetic_{item}";
+                                        var dungeon = Locations.RegionMap[keyLocation.Value.ParentRegion];
+
+                                        var smallKeyItem = Synthetic($"Small_Key_{dungeon.Replace(" ", "_")}");
+                                        if (!Items.ContainsKey(smallKeyItem))
+                                        {
+                                            Items[smallKeyItem] = 0;
+                                        }
+                                        Items[smallKeyItem]++;
+                                        updatedKeys = true;
+                                    }
+                                    else if (keyLocation.Value.VanillaItem.StartsWith("Silver_Rupee"))
+                                    {
+                                        var silverRupeeItem = Synthetic(keyLocation.Value.VanillaItem);
                                         if (!Items.ContainsKey(silverRupeeItem))
                                         {
                                             Items[silverRupeeItem] = 0;
@@ -278,11 +290,11 @@ namespace ChecklistTracker.LogicProvider
                                         updatedKeys = true;
                                     }
                                 }
-                                else if (Locations.RegionMap[keyLocation.Value.ParentRegion] != "Thieves Hideout")
+                                else if (Locations.RegionMap[keyLocation.Value.ParentRegion] == "Thieves Hideout")
                                 {
-                                    if (SeedSettings.ShuffleHideoutKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small Key"))
+                                    if (SeedSettings.ShuffleHideoutKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small_Key_"))
                                     {
-                                        var smallKeyItem = $"Synthetic_Small_Key_Thieves_Hideout";
+                                        var smallKeyItem = Synthetic(keyLocation.Value.VanillaItem);
                                         if (!Items.ContainsKey(smallKeyItem))
                                         {
                                             Items[smallKeyItem] = 0;
