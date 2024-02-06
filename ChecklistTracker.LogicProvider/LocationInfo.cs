@@ -11,122 +11,37 @@ using System.Threading.Tasks;
 
 namespace ChecklistTracker.LogicProvider
 {
-    public class LocationInfo : INotifyPropertyChanged
+    public partial class LocationInfo : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string _Name;
-        public string Name
-        {
-            get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public string Name { get; private set; }
 
-        private string _ShortName;
-        public string ShortName
-        {
-            get => _ShortName;
-            private set
-            {
-                if (_ShortName != value)
-                {
-                    _ShortName = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public string ShortName { get; private set; }
 
-        public ObservableCollection<LocationInfo> Locations { get; private set; } = [];
+        public bool IsActive { get; internal set; }
 
-        private bool _IsActive = false;
-        public bool IsActive
-        {
-            get => _IsActive;
-            internal set
-            {
-                if (_IsActive != value)
-                {
-                    _IsActive = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        //public bool IsAccessible { get => Accessiblity.HasFlag(Accessibility.SyntheticAssumed); }
+        
+        public Accessibility Accessiblity { get; internal set; }
 
-        private bool _IsAccessible = false;
-        public bool IsAccessible
-        {
-            get => _IsAccessible;
-            internal set
-            {
-                if (_IsAccessible != value)
-                {
-                    _IsAccessible = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public bool IsProgress { get; internal set; }
 
-        private bool _IsProgress = false;
-        public bool IsProgress
-        {
-            get => _IsProgress;
-            internal set
-            {
-                if (_IsProgress != value)
-                {
-                    _IsProgress = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public bool IsSkull { get; internal set; }
 
-        private bool _IsSkull = false;
-        public bool IsSkull
-        {
-            get => _IsSkull;
-            internal set
-            {
-                if (_IsSkull != value)
-                {
-                    _IsSkull = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private bool _IsChecked = false;
-        public bool IsChecked
-        {
-            get => _IsChecked;
-            set
-            {
-                if (_IsChecked != value)
-                {
-                    Logging.WriteLine($"{Name} {value}");
-                    _IsChecked = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public bool IsChecked { get; set; }
 
         internal LocationInfo(HintRegion parent, string name)
         {
-            _Name = name;
-            _ShortName = name;
-            if (_ShortName.StartsWith($"{parent.Name} "))
+            Name = name;
+            ShortName = name;
+            if (ShortName.StartsWith($"{parent.Name} "))
             {
-                _ShortName = _ShortName.Substring(parent.Name.Length + 1);
+                ShortName = ShortName.Substring(parent.Name.Length + 1);
             }
             if (ShortName.StartsWith($"{parent.ShortName} "))
             {
-                _ShortName = _ShortName.Substring(parent.ShortName.Length + 1);
+                ShortName = ShortName.Substring(parent.ShortName.Length + 1);
             }
         }
 

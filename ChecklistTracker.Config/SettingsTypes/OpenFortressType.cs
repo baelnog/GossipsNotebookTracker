@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+namespace ChecklistTracker.Config.SettingsTypes;
+
+[JsonConverter(typeof(JsonStringEnumMemberConverter))]
+public enum OpenFortressType
+{
+    [EnumMember(Value = "normal")]
+    Normal,
+    [EnumMember(Value = "fast")]
+    OneCarpenter,
+    [EnumMember(Value = "open")]
+    Open,
+}
+
+public static class OpenFortressTypeExtensions
+{
+    public static bool IsOpen(this OpenFortressType value)
+    {
+        return value == OpenFortressType.Open;
+    }
+}

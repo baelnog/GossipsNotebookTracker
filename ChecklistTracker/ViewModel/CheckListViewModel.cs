@@ -13,7 +13,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+//using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;
 
 namespace ChecklistTracker.ViewModel
 {
@@ -31,7 +32,10 @@ namespace ChecklistTracker.ViewModel
 
         internal ObservableCollection<string> CheckedLocations = new ObservableCollection<string>();
 
+        internal SettingsViewModel SettingsViewModel { get; private set; }
+
         internal bool SkullsToggle { get; private set; } = false;
+        internal bool InLogicToggle { get; private set; } = false;
 
         internal CheckListViewModel(TrackerConfig config, Inventory inventory, LogicEngine? engine)
         {
@@ -40,6 +44,8 @@ namespace ChecklistTracker.ViewModel
             Inventory = inventory;
             Engine = engine;
             HintRegions = new ObservableCollection<HintRegionViewModel>(Engine?.GetRegions()?.Select(hr => new HintRegionViewModel(this, hr)) ?? new List<HintRegionViewModel>());
+
+            SettingsViewModel = new(config);
 
             PaneRegions = new AdvancedCollectionView(HintRegions, isLiveShaping: true);
             PaneRegions.SortDescriptions.Add(new SortDescription(SortDirection.Ascending, new FuncComparer(SortRegions)));
@@ -109,7 +115,11 @@ namespace ChecklistTracker.ViewModel
             {
                 return false;
             }
-            if (!location.IsAccessible)
+            if (location.Accessiblity == Accessibility.None)
+            {
+                return false;
+            }
+            if (location.Accessiblity < Accessibility.Synthetic && InLogicToggle)
             {
                 return false;
             }
@@ -188,6 +198,15 @@ namespace ChecklistTracker.ViewModel
             if (SkullsToggle != isChecked)
             {
                 SkullsToggle = isChecked;
+                OnFiltersChanged();
+            }
+        }
+
+        internal void ToggleInLogic(bool isChecked)
+        {
+            if (InLogicToggle != isChecked)
+            {
+                InLogicToggle = isChecked;
                 OnFiltersChanged();
             }
         }

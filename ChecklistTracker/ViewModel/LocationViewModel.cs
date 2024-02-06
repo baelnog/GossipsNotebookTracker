@@ -1,5 +1,6 @@
 ﻿using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,15 +11,30 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Windows.UI;
 
 namespace ChecklistTracker.ViewModel
 {
     internal class LocationViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public CheckListViewModel Model { get; private set; }
         public LocationInfo Location { get; private set; }
+
+        public SolidColorBrush TextColor {
+            get
+            {
+                if (Location.Accessiblity >= Accessibility.Synthetic)
+                {
+                    return new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                }
+                else
+                {
+                    return new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
+                }
+            }
+        }
 
         internal LocationViewModel(CheckListViewModel model, LocationInfo location)
         {

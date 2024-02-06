@@ -57,8 +57,7 @@ namespace ChecklistTracker
 
             var config = TrackerConfig.Init().Result;
 
-            var settings = Settings.ReadFromJson($"{ProgramDir.Value}/settings/season7-base.json").Result;
-            var logicEngine = new LogicEngine(config, "v8.0", settings);
+            var logicEngine = new LogicEngine(config, "v8.0");
 
             var inventory = new Inventory(logicEngine);
 

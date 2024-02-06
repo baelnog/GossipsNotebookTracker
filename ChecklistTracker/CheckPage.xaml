@@ -8,7 +8,7 @@
     xmlns:model="using:ChecklistTracker.ViewModel"
     xmlns:localControls="using:ChecklistTracker.Controls"
     xmlns:logic="using:ChecklistTracker.LogicProvider"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:forks="using:ChecklistTracker.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,7 +16,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ItemsPanelTemplate x:Key="ItemsWrapGridHorizontalTemplate">
-            <forks:StaggeredPanel DesiredColumnWidth="250" RowSpacing="4" MinWidth="280"/>
+            <controls:StaggeredPanel DesiredColumnWidth="250" RowSpacing="4" MinWidth="280"/>
         </ItemsPanelTemplate>
         <DataTemplate x:Name="HintRegionDataTemplate"
             x:DataType="model:HintRegionViewModel">
@@ -48,42 +48,60 @@
             </ListView>
         </SplitView.Pane>
 
-        <RelativePanel>
-            <ScrollViewer 
+        <SplitView
+            DisplayMode="CompactInline"
+               OpenPaneLength="280"
+               CompactPaneLength="40"
+            IsPaneOpen="True"
+            PanePlacement="Right">
+            <RelativePanel>
+                <ScrollViewer 
                 VerticalScrollMode="Auto"    
                 HorizontalScrollMode="Auto"    
                 RelativePanel.Above="CommandBar"
                 RelativePanel.AlignTopWithPanel="True"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.AlignRightWithPanel="True">
-                <ItemsControl
+                    <ItemsControl
                         ItemsSource="{x:Bind ViewModel.ViewRegions, Mode=OneWay}"
                         ItemTemplate="{StaticResource HintRegionDataTemplate}"
                         ItemsPanel="{StaticResource ItemsWrapGridHorizontalTemplate}"
                         Margin="8"/>
-            </ScrollViewer>
-            <CommandBar x:Name="CommandBar" AccessKey="M" RelativePanel.AlignBottomWithPanel="True" OverflowButtonVisibility="Auto">
-                <AppBarButton 
+                </ScrollViewer>
+                <CommandBar x:Name="CommandBar" AccessKey="M" RelativePanel.AlignBottomWithPanel="True" OverflowButtonVisibility="Auto">
+                    <AppBarButton 
                             Icon="Undo" 
                             Label="Undo" 
                             Click="OnUndo"
                             AccessKey="Z" />
-                <AppBarButton 
+                    <AppBarButton 
                             Icon="Redo" 
                             Label="Redo" 
                             Click="OnRedo"
                             AccessKey="Y" />
-                <AppBarSeparator/>
-                <AppBarToggleButton
+                    <AppBarSeparator/>
+                    <AppBarToggleButton
                             Label="Skulls"
                             Click="OnToggleSkulls"
                             AccessKey="K" >
-                    <AppBarToggleButton.Icon>
-                        <ImageIcon Source="items/skulltula.png" Margin="-6"/>
-                    </AppBarToggleButton.Icon>
-                </AppBarToggleButton>
-            </CommandBar>
-        </RelativePanel>
+                        <AppBarToggleButton.Icon>
+                            <ImageIcon Source="items/skulltula.png" Margin="-6"/>
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                    <AppBarToggleButton
+                            Label="In Logic"
+                            Click="OnToggleInLogic"
+                            AccessKey="L" >
+                        <AppBarToggleButton.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA86;" Margin="-2" />
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                </CommandBar>
+            </RelativePanel>
+            <SplitView.Pane>
+                <localControls:SettingsPanel ViewModel="{x:Bind ViewModel.SettingsViewModel}"/>
+            </SplitView.Pane>
+        </SplitView>
     </SplitView>
     
 </Page>

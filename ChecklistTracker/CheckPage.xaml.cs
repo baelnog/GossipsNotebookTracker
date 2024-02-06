@@ -54,6 +54,14 @@ namespace ChecklistTracker
             }
         }
 
+        private void OnToggleInLogic(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarToggleButton toggle)
+            {
+                ViewModel?.ToggleInLogic(toggle.IsChecked == true);
+            }
+        }
+
         private bool UpdatingSelection = false;
         private HintRegionViewModel? Selected = null;
         public void OnRegionSelectionChanged(object sender, SelectionChangedEventArgs e)

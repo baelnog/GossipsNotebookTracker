@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ChecklistTracker.Controls.SettingsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChecklistTracker.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:settings="using:ChecklistTracker.Config.SettingsTypes">
+
+    <ScrollView>
+        <StackPanel Spacing="1">
+            <tk:SettingsExpander
+                     Header="Win Condition">
+                <tk:SettingsExpander.Items>
+                    <tk:SettingsCard>
+                        <ToggleSwitch 
+                        OffContent="Defeat Ganon"
+                        OnContent="Triforce Hunt"
+                        IsOn="{x:Bind ViewModel.Settings.TriforceHunt, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="LACS Condtion">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <NumberBox Value="{x:Bind ViewModel.Settings.LACSMedallions, Mode=TwoWay}" />
+                            <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:WinConditionType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.LACSCondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Bridge Condtion">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <NumberBox Value="{x:Bind ViewModel.Settings.BridgeMedallions, Mode=TwoWay}" />
+                            <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:WinConditionType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.BridgeCondition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Trials">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <NumberBox Value="{x:Bind ViewModel.Settings.TrialsCount, Mode=TwoWay}" />
+                        </StackPanel>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Ganons Boss Key">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <NumberBox Value="{x:Bind ViewModel.Settings.GanonsBKMedallions, Mode=TwoWay}" />
+                            <ComboBox 
+                                ItemsSource="{ui:EnumValues Type=settings:ShuffleGanonsBKType}"
+                                SelectedItem="{x:Bind ViewModel.Settings.ShuffleGanonsBK, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </tk:SettingsCard>
+                </tk:SettingsExpander.Items>
+            </tk:SettingsExpander>
+
+            <tk:SettingsExpander Header="Key Items">
+                <tk:SettingsExpander.Items>
+                    <tk:SettingsCard Header="Small Keys"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/key_32x32.png}" >
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleDungeonItemType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleSmallKeys, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Boss Keys"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/bk_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleDungeonItemType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleBossKeys, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Maps and Compasses"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/compass.png}">
+                        <StackPanel>
+                            <ComboBox 
+                                ItemsSource="{ui:EnumValues Type=settings:ShuffleDungeonItemType}"
+                                SelectedItem="{x:Bind ViewModel.Settings.ShuffleMapAndCompass, Mode=TwoWay}"/>
+                            <ToggleSwitch
+                                OnContent="Give Info"
+                                OffContent="Do Nothing"
+                                IsOn="{x:Bind ViewModel.Settings.MapAndCompassGiveInfo, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Key Rings"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/MM/roomkey.png}">
+                        <StackPanel>
+                            <ComboBox 
+                                ItemsSource="{ui:EnumValues Type=settings:ChoiceType}"
+                                SelectedItem="{x:Bind ViewModel.Settings.KeyRingsChoice, Mode=TwoWay}"/>
+                            <ToggleSwitch
+                                OnContent="Give Boss Key"
+                                OffContent="Small Keys Only"
+                                IsOn="{x:Bind ViewModel.Settings.KeyRingsGiveBK, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Hideout Keys"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/thieves-hideout-key.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleHideoutKeysType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleHideoutKeys, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Treasure Chest Game Keys"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/treasure-box-key.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleTreasureChestGameKeysType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleTreasureChestGameKeys, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Silver Rupees"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/Silver_Rupee.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleSilverRupeesType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleSilverRupees, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Silver Rupee Pouches"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/wallet2_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ChoiceType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.SilverRupeePouchType, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                </tk:SettingsExpander.Items>
+            </tk:SettingsExpander>
+            <tk:SettingsExpander Header="World Shortcuts">
+                <tk:SettingsExpander.Items>
+                    <tk:SettingsCard Header="Door of Time"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/song-of-time_32x32.png}">
+                        <ToggleSwitch
+                            OnContent="Open"
+                            OffContent="Closed"
+                            IsOn="{x:Bind ViewModel.Settings.OpenDoorOfTime, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Kokiri Forest"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/kokiri-sword_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:OpenForestType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.KokiriForest, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Kakariko Gate"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/zeldas-letter_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:OpenKakarikoType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.Kakariko, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Zoras Fountain"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/bottle-rutos-letter_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:OpenFountainType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ZorasFountain, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Gerudo Fortress"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/gerudo-card_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:OpenFortressType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.GerudoFortress, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsExpander Header="Dungeon Shortcuts">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:ChoiceType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.DungeonShortcutsChoice, Mode=TwoWay}"/>
+                    </tk:SettingsExpander>
+                    <tk:SettingsCard Header="Free Scarecrow"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/scarecrow.png}">
+                        <ToggleSwitch
+                            OnContent="Free"
+                            OffContent="Off"
+                            IsOn="{x:Bind ViewModel.Settings.FreeScarecrow, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Preplanted Beans"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/beans_32x32.png}">
+                        <ToggleSwitch
+                            OnContent="Planted"
+                            OffContent="Not Planted"
+                            IsOn="{x:Bind ViewModel.Settings.PreplantBeans, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsExpander Header="Big Poes"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/bottle-big-poe_32x32.png}">
+                        <tk:SettingsExpander.Items>
+                            <ToggleSwitch
+                                OnContent="Random Count"
+                                OffContent="Fixed Count"
+                                IsOn="{x:Bind ViewModel.Settings.BigPoeRandomCount, Mode=TwoWay}" />
+                            <NumberBox Value="{x:Bind ViewModel.Settings.BigPoeCount, Mode=TwoWay}" />
+                        </tk:SettingsExpander.Items>
+                    </tk:SettingsExpander>
+                </tk:SettingsExpander.Items>
+            </tk:SettingsExpander>
+            <tk:SettingsExpander Header="Shuffles">
+                <tk:SettingsExpander.Items>
+                    <tk:SettingsCard Header="Kokiri Sword"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/kokiri-sword_32x32.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleKokiriSword, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Ocarinas"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/ocarina_32x32.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleOcarinas, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Gerudo Card">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleGerudoCard, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Beans">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleBeans, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsExpander Header="Shops"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/wallet2_32x32.png}">
+                        <ComboBox 
+                            ItemsSource="{ui:EnumValues Type=settings:ShopsanityType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.Shopsanity, Mode=TwoWay}"/>
+                    </tk:SettingsExpander>
+                    <tk:SettingsCard Header="Scrubs"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/deku_scrub.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:ScrubShuffleType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ScrubShuffle, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Tokens"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/token.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:BasicShuffleType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.Tokensanity, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Pots"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/pot.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:BasicShuffleType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShufflePots, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Crates"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/crate.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:BasicShuffleType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleCrates, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Freestanding Items"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/green_rupee.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:BasicShuffleType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleFreestandingItems, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Cows"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/cow.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleCows, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Bee Hives"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/beehive.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleBeehives, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Expensive Merchants"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/granny.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleExpensiveMerchants, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Frog Song Rupees"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/frogs_32x32.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleFrogSongRupees, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Ocarina Notes"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/ocarina_c_up.yellow.png}">
+                        <ToggleSwitch
+                            OnContent="Shuffled"
+                            OffContent="Not Shuffled"
+                            IsOn="{x:Bind ViewModel.Settings.ShuffleOcarinaNotes, Mode=TwoWay}" />
+                    </tk:SettingsCard>
+                    <tk:SettingsCard Header="Hylian Loach"
+                                     HeaderIcon="{ui:BitmapIcon Source=/items/loach.png}">
+                        <ComboBox
+                            ItemsSource="{ui:EnumValues Type=settings:ShuffleLoachType}"
+                            SelectedItem="{x:Bind ViewModel.Settings.ShuffleLoach, Mode=TwoWay}"/>
+                    </tk:SettingsCard>
+                </tk:SettingsExpander.Items>
+            </tk:SettingsExpander>
+        </StackPanel>
+    </ScrollView>
+</UserControl>

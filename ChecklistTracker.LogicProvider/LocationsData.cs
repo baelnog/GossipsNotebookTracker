@@ -1,11 +1,14 @@
 ﻿using Antlr4.Runtime.Tree;
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.SettingsTypes;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -15,42 +18,44 @@ using Region = ChecklistTracker.LogicProvider.DataFiles.Region;
 
 namespace ChecklistTracker.LogicProvider
 {
-    internal class LocationsData
+    internal partial class LocationsData : INotifyPropertyChanged
     {
         internal struct RuleData
         {
             internal string ParentRegion;
             internal IParseTree Rule;
             internal bool IsDungeon;
+            internal bool IsMq;
             internal string LocationName;
             internal string Type;
             internal string VanillaItem;
         }
 
-        internal TripleConcurrentDictionary<RuleData> Locations { get; set; } = new TripleConcurrentDictionary<RuleData>();
-        TripleConcurrentDictionary<RuleData> DropLocations { get; set; } = new TripleConcurrentDictionary<RuleData>();
-        TripleConcurrentDictionary<RuleData> SkullsLocations { get; set; } = new TripleConcurrentDictionary<RuleData>();
-        TripleConcurrentDictionary<RuleData> Events { get; set; } = new TripleConcurrentDictionary<RuleData>();
-        TripleConcurrentDictionary<RuleData> Exits { get; set; } = new TripleConcurrentDictionary<RuleData>();
+        //internal DoubleConcurrentDictionary<string, string, RuleData> Locations { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData>();
+        //TripleConcurrentDictionary<string, string, string, RuleData> DropLocations { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
+        //TripleConcurrentDictionary<string, string, string, RuleData> SkullsLocations { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
+        //TripleConcurrentDictionary<string, string, string, RuleData> Events { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
+        //TripleConcurrentDictionary<string, string, string, RuleData> Exits { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
 
         internal ConcurrentDictionary<string, RuleData> ActiveLocations { get; set; } = new ConcurrentDictionary<string, RuleData>();
-        internal DoubleConcurrentDictionary<RuleData> ActiveLocationsByRegion { get; set; } = new DoubleConcurrentDictionary<RuleData>();
-        internal ConcurrentDictionary<string, ISet<RuleData>> ActiveDropLocations { get; set; } = new ConcurrentDictionary<string, ISet<RuleData>>();
+        internal DoubleConcurrentDictionary<string, string, RuleData> ActiveLocationsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData>();
+        internal ConcurrentDictionary<string, ISet<RuleData>> ActiveDropLocationsByItem { get; set; } = new ConcurrentDictionary<string, ISet<RuleData>>();
         internal ConcurrentDictionary<string, RuleData> ActiveSkullsLocations { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal ConcurrentDictionary<string, ISet<RuleData>> ActiveEvents { get; set; } = new ConcurrentDictionary<string, ISet<RuleData>>();
-        internal DoubleConcurrentDictionary<RuleData> ActiveExits { get; set; } = new DoubleConcurrentDictionary<RuleData> ();
+        internal DoubleConcurrentDictionary<string, string, RuleData> ActiveExitsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData> ();
 
         internal IDictionary<string, string> RegionMap { get; set; }
         IDictionary<string, LocationData> LocationTable { get; set; }
 
-        Settings Settings { get; set; }
         TrackerConfig TrackerConfig { get; set; }
+        Settings Settings { get => TrackerConfig.RandomizerSettings; }
 
-        internal static async Task<LocationsData> Initialize(TrackerConfig config, LogicFiles logicFiles, Settings settings)
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        internal static async Task<LocationsData> Initialize(TrackerConfig config, LogicFiles logicFiles)
         {
             var location = new LocationsData();
 
-            location.Settings = settings;
             location.TrackerConfig = config;
 
             location.RegionMap = config.HintRegions
@@ -59,25 +64,39 @@ namespace ChecklistTracker.LogicProvider
 
             location.LocationTable = config.LocationTable;
 
-            foreach (var dungeon in logicFiles.DungeonFiles)
+            // TODO: Don't parse MQ files until there is a better way to disambiguate efficiently
+            foreach (var dungeon in logicFiles.DungeonFiles.Where(df => !df.Key.EndsWith("MQ")))
             {
                 location.ParseLogicFile(dungeon.Value, isDungeon: true, isMQ: dungeon.Key.EndsWith("MQ"));
             }
 
             // Run through the boss file twice, since MQ and non-MQ share the same boss file
-            location.ParseLogicFile(logicFiles.BossesFile, true, true);
+            //location.ParseLogicFile(logicFiles.BossesFile, true, true);
             location.ParseLogicFile(logicFiles.BossesFile, true, false);
 
             location.ParseLogicFile(logicFiles.OverworldFile, false, false);
 
+            location.TrackerConfig.PropertyChanged += location.TrackerConfig_PropertyChanged;
+            location.TrackerConfig.RandomizerSettings.PropertyChanged += location.RandomizerSettings_PropertyChanged;
+
             location.ResetActiveLocations();
-            // TODO: Include this in the normal flow to always have a regions object up to date ?
-            // Not really optimized, so leaving it out for now.
-            // updateHintRegionsJSON(_.set(dungeonFiles, "Overworld", overworldFile));
 
             return location;
         }
 
+        private void TrackerConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(TrackerConfig.RandomizerSettings))
+            {
+                ResetActiveLocations();
+                TrackerConfig.RandomizerSettings.PropertyChanged += RandomizerSettings_PropertyChanged;
+            }
+        }
+
+        private void RandomizerSettings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            ResetActiveLocations();
+        }
 
         void ParseLogicFile(IEnumerable<Region> logicFile, bool isDungeon, bool isMQ)
         {
@@ -92,6 +111,20 @@ namespace ChecklistTracker.LogicProvider
                 foreach (var location in region.Locations)
                 {
                     var locationName = location.Key;
+                    if (isMQ)
+                    {
+                        if (locationName.StartsWith(hintRegion))
+                        {
+                            if (!locationName.Contains("MQ"))
+                            {
+                                locationName = locationName.Replace(hintRegion, $"{hintRegion} MQ");
+                            }
+                        }
+                        else
+                        {
+                            locationName = $"MQ {locationName}";
+                        }
+                    }    
                     var rule = location.Value;
                     try
                     {
@@ -108,12 +141,14 @@ namespace ChecklistTracker.LogicProvider
                             var dropData = new RuleData
                             {
                                 IsDungeon = isDungeon,
+                                IsMq = isMQ,
                                 ParentRegion = parentRegion,
                                 Rule = LogicHelpers.ParseRule(rule),
                                 VanillaItem = data.VanillaItem,
                             };
 
-                            DropLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(data.VanillaItem, dropData);
+                            //DropLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(data.VanillaItem, dropData);
+                            ActiveDropLocationsByItem.GetOrAdd(data.VanillaItem, (s) => new HashSet<RuleData>()).Add(dropData);
                         }
                         else
                         {
@@ -121,18 +156,22 @@ namespace ChecklistTracker.LogicProvider
                             var locationData = new RuleData
                             {
                                 IsDungeon = isDungeon,
+                                IsMq = isMQ,
                                 LocationName = locationName,
                                 ParentRegion = parentRegion,
                                 Rule = LogicHelpers.ParseRule(rule),
                                 Type = data.Type,
                                 VanillaItem = data.VanillaItem,
                             };
-                            Locations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
+                            //Locations.GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
+                            ActiveLocations[locationName] = locationData;
+                            ActiveLocationsByRegion.GetOrNew(parentRegion)[locationName] = locationData;
 
                             // Additionally, if the location contains a skulltula token, record that seperately
                             if (data.Type == "GS Token")
                             {
-                                SkullsLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
+                                //SkullsLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
+                                ActiveSkullsLocations[locationName] = locationData;
                             }
                         }
                     }
@@ -158,7 +197,8 @@ namespace ChecklistTracker.LogicProvider
                         Rule = LogicHelpers.ParseRule(evt.Value),
                     };
 
-                    Events.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(evt.Key, eventData);
+                    //Events.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(evt.Key, eventData);
+                    ActiveEvents.GetOrAdd(evt.Key, (s) => new HashSet<RuleData>()).Add(eventData);
                 }
 
                 foreach (var exit in region.Exits)
@@ -170,7 +210,15 @@ namespace ChecklistTracker.LogicProvider
                         LocationName = exit.Key
                     };
 
-                    Exits.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(exit.Key, exitData);
+                    //Exits.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(exit.Key, exitData);
+                    if(ActiveExitsByRegion.GetOrNew(parentRegion).ContainsKey(exit.Key))
+                    {
+                        throw new Exception($"{parentRegion} -> {exit.Key}");
+                    }
+                    else
+                    {
+                        ActiveExitsByRegion.GetOrNew(parentRegion).PutOrAdd(exit.Key, exitData);
+                    }
                 }
 
             }
@@ -181,18 +229,6 @@ namespace ChecklistTracker.LogicProvider
         {
             return location.Type == "Drop" ||
                 new List<string>() { "Triforce", "Scarecrow_Song", "Deliver_Letter", "Time_Travel", "Bombchu_Drop" }.Contains(location.VanillaItem);
-        }
-
-        bool IsGuaranteedKey(RuleData location)
-        {
-            var itemName = location.VanillaItem;
-
-            return (Settings.ShuffleGanonsBK == "vanilla" && itemName == "Boss_Key_Ganons_Castle)") ||
-                   (Settings.ShuffleBossKeys == "vanilla" && itemName.StartsWith("Boss_Key_")) ||
-                   (Settings.ShuffleHideoutKeys == "vanilla" && itemName == "Small_Key_Thieves_Hideout)") ||
-                   (Settings.ShuffleSilverRupees == "vanilla" && itemName.StartsWith("Silver_Rupee_")) ||
-                   (Settings.ShuffleSmallKeys == "vanilla" && itemName.StartsWith("Small_Key_")) ||
-                   (Settings.ShuffleTreasureChestGameKeys == "vanilla" && itemName == "Small_Key_Treasure_Chest_Game");
         }
 
         public bool IsProgessLocation(RuleData location)
@@ -219,9 +255,9 @@ namespace ChecklistTracker.LogicProvider
 
             if (location.VanillaItem == "Gold_Skulltula_Token")
             {
-                return Settings.Tokensanity == "all" ||
-                       location.IsDungeon && Settings.Tokensanity == "dungeon" ||
-                       !location.IsDungeon && Settings.Tokensanity == "overworld";
+                return location.IsDungeon ?
+                        Settings.Tokensanity.HasFlag(BasicShuffleType.Dungeons) :
+                        Settings.Tokensanity.HasFlag(BasicShuffleType.Overworld);
             }
 
             if (location.Type == "Shop")
@@ -229,13 +265,13 @@ namespace ChecklistTracker.LogicProvider
                 int maxItems;
                 switch (Settings.Shopsanity)
                 {
-                    case "off":
+                    case ShopsanityType.Off:
                         return false;
-                    case "random":
+                    case ShopsanityType.Random:
                         maxItems = 4;
                         break;
                     default:
-                        maxItems = int.Parse(Settings.Shopsanity);
+                        maxItems = (int) Settings.Shopsanity;
                         break;
                 }
                 int itemLocation = int.Parse(location.LocationName.Substring(location.LocationName.Length - 1));
@@ -245,7 +281,7 @@ namespace ChecklistTracker.LogicProvider
 
             if (location.Type == "Scrub" || location.Type == "GrottoScrub")
             {
-                if (Settings.ScrubShuffle != "off")
+                if (Settings.ScrubShuffle.IsEnabled())
                 {
                     return true;
                 }
@@ -294,7 +330,7 @@ namespace ChecklistTracker.LogicProvider
 
             if (location.VanillaItem == "Gerudo_Membership_Card")
             {
-                return Settings.ShuffleGerudoCard && Settings.GerudoFortress != "open";
+                return Settings.ShuffleGerudoCard && !Settings.GerudoFortress.IsOpen();
             }
 
             if (location.VanillaItem == "Buy_Magic_Bean")
@@ -310,101 +346,65 @@ namespace ChecklistTracker.LogicProvider
 
             if (location.LocationName == "LH Loach Fishing")
             {
-                return Settings.ShuffleLoach != "off";
+                return Settings.ShuffleLoach != ShuffleLoachType.Off;
             }
 
-            if (TrackerConfig.AdultTradeItems.Contains(location.VanillaItem.Replace("_", " ")))
+            if (AdultTradeItemExtensions.ItemLookup.ContainsKey(location.VanillaItem))
             {
                 if (!Settings.FullAdultTradeShuffle)
                 {
                     return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Any();
                 }
-                if (Settings.AdultTradeItemStart.Contains(location.VanillaItem.Replace("_", " ")))
+                if (Settings.AdultTradeItemStartLogic.Contains(location.VanillaItem))
                 {
                     return true;
                 }
 
-                return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Contains("Pocket Cucco");
+                return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Contains(Config.SettingsTypes.AdultTradeItem.PocketEgg);
             }
 
-            if (TrackerConfig.ChildTradeItems.Contains(location.VanillaItem.Replace("_", " ")))
+            if (ChildTradeItemExtensions.ItemLookup.ContainsKey(location.VanillaItem))
             {
-                if (location.VanillaItem == "Weird_Egg" && Settings.SkipChildZelda())
+                if (location.VanillaItem == ChildTradeItem.WeirdEgg.ToLogicString() && Settings.SkipChildZelda())
                 {
                     return false;
                 }
-                if (!Settings.ChildTradeEarliestItem.Any())
+                if (!Settings.ChildTradeItemStart.Any())
                 {
                     return false;
                 }
-                if (Settings.ChildTradeEarliestItem.Contains(location.VanillaItem.Replace("_", " ")))
+                if (Settings.ChildTradeItemStartLogic.Contains(location.VanillaItem))
                 {
                     return true;
                 }
-                return location.VanillaItem == "Weird_Egg" &&
-                       Settings.ChildTradeEarliestItem.Contains("Chicken");
+                return location.VanillaItem == ChildTradeItem.WeirdEgg.ToLogicString() &&
+                       Settings.ChildTradeItemStart.Contains(ChildTradeItem.Chicken);
             }
 
             if (location.VanillaItem == "Small_Key_Thieves_Hideout")
             {
-                return Settings.ShuffleHideoutKeys != "vanilla";
+                return Settings.ShuffleHideoutKeys.IsShuffled();
             }
 
             if (location.LocationName.StartsWith("Market Treasure Chest Game ") &&
                 location.VanillaItem != "Piece_of_Heart_Treasure_Chest_Game")
             {
-                return Settings.ShuffleTreasureChestGameKeys != "vanilla";
+                return Settings.ShuffleTreasureChestGameKeys.IsShuffled();
             }
 
             if (location.Type == "ActorOverride" ||
                 location.Type == "Freestanding" ||
                 location.Type == "Rupee Tower")
             {
-                if (Settings.ShuffleFreestandingItems == "all")
-                {
-                    return true;
-                }
-                if (Settings.ShuffleFreestandingItems == "dungeon" && location.IsDungeon)
-                {
-                    return true;
-                }
-                if (Settings.ShuffleFreestandingItems == "dungeon" && !location.IsDungeon)
-                {
-                    return true;
-                }
-                return false;
+                return Settings.ShuffleFreestandingItems.IsShuffled(location.IsDungeon);
             }
             if (location.Type == "Pot" || location.Type == "Flying Pot")
             {
-                if (Settings.ShufflePots == "all")
-                {
-                    return true;
-                }
-                if (Settings.ShufflePots == "dungeon" && location.IsDungeon)
-                {
-                    return true;
-                }
-                if (Settings.ShufflePots == "overworld" && !location.IsDungeon)
-                {
-                    return true;
-                }
-                return false;
+                return Settings.ShufflePots.IsShuffled(location.IsDungeon);
             }
             if (location.Type == "Crate" || location.Type == "Small Crate")
             {
-                if (Settings.ShuffleCrates == "all")
-                {
-                    return true;
-                }
-                if (Settings.ShuffleCrates == "dungeon" && location.IsDungeon)
-                {
-                    return true;
-                }
-                if (Settings.ShuffleCrates == "overworld" && !location.IsDungeon)
-                {
-                    return true;
-                }
-                return false;
+                return Settings.ShuffleCrates.IsShuffled(location.IsDungeon);
             }
 
             if (location.Type == "Beehive")
@@ -422,8 +422,8 @@ namespace ChecklistTracker.LogicProvider
 
                 if (location.VanillaItem.StartsWith("Map_") || location.VanillaItem.StartsWith("Compass_"))
                 {
-                    // Show vanilla Maps and Compasses if they give info
-                    return Settings.ShuffleMapAndCompass != "vanilla" || Settings.MapAndCompassGiveInfo;
+                    // Show vanilla Maps and Compasses only if they give info
+                    return Settings.ShuffleMapAndCompass != ShuffleDungeonItemType.Vanilla || Settings.MapAndCompassGiveInfo;
                 }
 
                 if (location.VanillaItem.StartsWith("Small_Key_"))
@@ -434,7 +434,7 @@ namespace ChecklistTracker.LogicProvider
 
                 if (location.Type == "SilverRupee")
                 {
-                    return Settings.ShuffleSilverRupees != "vanilla";
+                    return Settings.ShuffleSilverRupees != ShuffleSilverRupeesType.Vanilla;
                 }
 
                 if (location.Type == "Chest" ||
@@ -466,25 +466,30 @@ namespace ChecklistTracker.LogicProvider
 
         void ResetActiveLocations()
         {
-            var dungeonsMQ = Settings.MQDungeons;
+            //var dungeonsMQ = Settings.MQDungeons;
 
-            ActiveLocations = ResetActiveLocations(dungeonsMQ, Locations);
-            ActiveLocationsByRegion.Clear();
-            foreach (var location in ActiveLocations)
-            {
-                ActiveLocationsByRegion.GetOrNew(location.Value.ParentRegion)[location.Key] = location.Value;
-            }
+            //var dungeons = Locations["dungeon"];
+            //var dungeonMQ = Locations["dungeon_mq"];
 
-            ActiveSkullsLocations = ResetActiveLocations(dungeonsMQ, SkullsLocations);
+            //ActiveLocations = ResetActiveLocations(dungeonsMQ, Locations);
+            //ActiveLocationsByRegion.Clear();
+            //foreach (var location in ActiveLocations)
+            //{
+            //    ActiveLocationsByRegion.GetOrNew(location.Value.ParentRegion)[location.Key] = location.Value;
+            //}
 
-            ActiveDropLocations = ResetActiveLocationsSets(dungeonsMQ, DropLocations, (key, drop) => drop.VanillaItem);
-            ActiveEvents = ResetActiveLocationsSets(dungeonsMQ, Events, (key, evt) => key);
-            ActiveExits = ResetActiveLocationsMap(dungeonsMQ, Exits);
+            //ActiveSkullsLocations = ResetActiveLocations(dungeonsMQ, SkullsLocations);
+
+            //ActiveDropLocations = ResetActiveLocationsSets(dungeonsMQ, DropLocations, (key, drop) => drop.VanillaItem);
+            //ActiveEvents = ResetActiveLocationsSets(dungeonsMQ, Events, (key, evt) => key);
+            //ActiveExits = ResetActiveLocationsMap(dungeonsMQ, Exits);
+
+            this.RaisePropertyChanged(PropertyChanged);
         }
-        ConcurrentDictionary<string, T> ResetActiveLocations<T>(ISet<string> dungeonsMQ, TripleConcurrentDictionary<T> source)
+        ConcurrentDictionary<string, T> ResetActiveLocations<T>(ISet<DungeonChoiceType> dungeonsMQ, TripleConcurrentDictionary<string, string, string, T> source)
         {
             var destination = new ConcurrentDictionary<string, T>();
-            foreach (var dungeon in TrackerConfig.Dungeons)
+            foreach (var dungeon in Enum.GetValues<DungeonChoiceType>())
             {
                 if (dungeonsMQ.Contains(dungeon))
                 {
@@ -518,11 +523,11 @@ namespace ChecklistTracker.LogicProvider
             return destination;
         }
 
-        ConcurrentDictionary<string, ISet<T>> ResetActiveLocationsSets<T>(ISet<string> dungeonsMQ, TripleConcurrentDictionary<T> source,
+        ConcurrentDictionary<string, ISet<T>> ResetActiveLocationsSets<T>(ISet<DungeonChoiceType> dungeonsMQ, TripleConcurrentDictionary<string, string, string, T> source,
             Func<string, T, string> getKey)
         {
             var destination = new ConcurrentDictionary<string, ISet<T>>();
-            foreach (var dungeon in TrackerConfig.Dungeons)
+            foreach (var dungeon in Enum.GetValues<DungeonChoiceType>())
             {
                 if (dungeonsMQ.Contains(dungeon))
                 {
@@ -556,11 +561,11 @@ namespace ChecklistTracker.LogicProvider
             return destination;
         }
 
-        DoubleConcurrentDictionary<T> ResetActiveLocationsMap<T>(ISet<string> dungeonsMQ, TripleConcurrentDictionary<T> source)
+        DoubleConcurrentDictionary<string, string, T> ResetActiveLocationsMap<T>(ISet<DungeonChoiceType> dungeonsMQ, TripleConcurrentDictionary<string, string, string, T> source)
         {
-            var destination = new DoubleConcurrentDictionary<T>();
+            var destination = new DoubleConcurrentDictionary<string, string, T>();
 
-            foreach (var dungeon in TrackerConfig.Dungeons)
+            foreach (var dungeon in Enum.GetValues<DungeonChoiceType>())
             {
                 if (dungeonsMQ.Contains(dungeon))
                 {

@@ -20,6 +20,12 @@ namespace ChecklistTracker.Config
         [JsonPropertyName("layouts")]
         public List<string> LayoutHistory { get; set; } = new List<string>();
 
+        [JsonPropertyName("settings")]
+        public string SettingsPath { get; set; } = "settings/season7-base.json";
+
+        [JsonPropertyName("settingsPresets")]
+        public List<string> SettingsPresets { get; set; } = new List<string>();
+
         [JsonInclude]
         public bool ShowLocationTracker { get; set; } = true;
 
@@ -44,6 +50,22 @@ namespace ChecklistTracker.Config
             }
 
             LayoutPath = layoutPath;
+        }
+
+        public void SetSettings(string settingsPath)
+        {
+            var trackerDir = new DirectoryInfo(TrackerConfig.ProgramDir);
+            var settingsFile = new FileInfo(settingsPath);
+            if (settingsFile.FullName.StartsWith(trackerDir.FullName))
+            {
+                settingsPath = Path.GetRelativePath(trackerDir.FullName, settingsFile.FullName);
+            }
+            if (!SettingsPresets.Contains(settingsPath))
+            {
+                SettingsPresets.Add(settingsPath);
+            }
+
+            SettingsPath = settingsPath;
         }
     }
 }

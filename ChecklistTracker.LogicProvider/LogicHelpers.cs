@@ -1,10 +1,12 @@
 ﻿using Antlr4.Runtime;
 using ChecklistTracker.ANTLR;
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -12,18 +14,22 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using Access = ChecklistTracker.LogicProvider.AccessibilityExtensions;
+
 namespace ChecklistTracker.LogicProvider
 {
     internal partial class LogicHelpers
     {
         private static MemoizationCache Cache = new MemoizationCache();
 
-        private Settings SeedSettings { get; set; }
+        private TrackerConfig TrackerConfig;
+
+        private Settings SeedSettings { get => TrackerConfig.RandomizerSettings; }
         private IDictionary<string, ParserRuleContext> RuleAliases { get; set; }
         private IDictionary<string, object> RenamedAttributes { get; set; }
 
         private IDictionary<string, int> Items { get; set; }
-        private Dictionary<string, ISet<string>> Regions { get; set; }
+        private Dictionary<string, ConcurrentDictionary<string, Accessibility>> Regions { get; set; }
         private LocationsData Locations { get; set; }
 
         private LogicHelpers()
@@ -39,7 +45,6 @@ namespace ChecklistTracker.LogicProvider
         internal static async Task<LogicHelpers> InitHelpers(
             TrackerConfig config,
             LogicFiles logicFiles,
-            Settings settings,
             LocationsData locations)
         {
             var logicHelpersFile = logicFiles.LogicHelpers;
@@ -49,91 +54,18 @@ namespace ChecklistTracker.LogicProvider
                 kv => kv.Key,
                 kv => Parse(kv.Key, kv.Value));
 
-            var renamedAttributes = InitRenamedAttributes(settings);
-
-            // Fix incompatible closed forest
-            if (settings.KokiriForest == "closed")
-            {
-                if (settings.ShuffleInteriorEntrances == "special" ||
-                    settings.ShuffleInteriorEntrances == "all" ||
-                    settings.ShuffleOverworldEntrances ||
-                    settings.ShuffleWarpSongs ||
-                    settings.ShuffleSpawnLocations.Any())
-                {
-                    settings.KokiriForest = "closed_deku";
-                }
-            }
-
-            if (settings.TriforceHunt)
-            {
-                settings.ShuffleGanonsBK = "triforce";
-            }
-
-            if (settings.DungeonShortcutsChoice == "all")
-            {
-                settings.DungeonShortcuts = new HashSet<string>()
-                {
-                    "Deku Tree",
-                    "Dodongos Cavern",
-                    "Jabu Jabus Belly",
-                    "Forest Temple",
-                    "Fire Temple",
-                    "Water Temple",
-                    "Shadow Temple",
-                    "Spirit Temple",
-                };
-            }
-
-            if (settings.KeyRingsChoice == "all")
-            {
-                settings.KeyRings = new HashSet<string>()
-                {
-                    "Thieves Hideout",
-                    "Forest Temple",
-                    "Fire Temple",
-                    "Water Temple",
-                    "Shadow Temple",
-                    "Spirit Temple",
-                    "Bottom of the Well",
-                    "Gerudo Training Ground",
-                    "Ganons Castle",
-                };
-            }
-
-            if (settings.DungeonMode == MQDungeonModeType.MasterQuest)
-            {
-                settings.MQDungeons = new HashSet<string>()
-                {
-                    "Deku Tree",
-                    "Dodongos Cavern",
-                    "Jabu Jabus Belly",
-                    "Forest Temple",
-                    "Fire Temple",
-                    "Water Temple",
-                    "Shadow Temple",
-                    "Spirit Temple",
-                    "Ganons Castle",
-                    "Bottom of the Well",
-                    "Ice Cavern",
-                    "Gerudo Training Ground",
-                };
-            }
-
-            if (settings.DungeonShortcutsChoice == "random")
-            {
-                settings.DungeonShortcuts = new HashSet<string>();
-            }
+            var renamedAttributes = InitRenamedAttributes(config.RandomizerSettings);
 
             var items = new Dictionary<string, int>(config.DefaultInventory);
-            var regions = new Dictionary<string, ISet<string>>()
+            var regions = new Dictionary<string, ConcurrentDictionary<string, Accessibility>>()
             {
-                ["child"] = new HashSet<string>(),
-                ["adult"] = new HashSet<string>(),
+                ["child"] = new ConcurrentDictionary<string, Accessibility>(),
+                ["adult"] = new ConcurrentDictionary<string, Accessibility>(),
             };
 
             return new LogicHelpers()
             {
-                SeedSettings = settings,
+                TrackerConfig = config,
                 RuleAliases = ruleAliases,
                 RenamedAttributes = renamedAttributes,
                 Items = items,
@@ -144,15 +76,15 @@ namespace ChecklistTracker.LogicProvider
 
         internal static IDictionary<string, object> InitRenamedAttributes(Settings settings)
         {
-            var keysanity = settings.ShuffleSmallKeys.DungeonItemShuffleEnabled();
-            var shuffleSilverRupees = settings.ShuffleSilverRupees != "vanilla";
-            var beatableOnly = settings.ReachableLocations != "all";
-            var shuffleSpecialInteriorEntrances = (settings.ShuffleInteriorEntrances == "special" || settings.ShuffleInteriorEntrances == "all");
-            var shuffleInteriorEntrances = settings.ShuffleInteriorEntrances != "off";
-            var shuffleSpecialDungeonEntrances = (settings.ShuffleDungeonEntrances == "special" || settings.ShuffleDungeonEntrances == "off");
-            var shuffleDungeonEntrances = settings.ShuffleDungeonEntrances == "special" || settings.ShuffleDungeonEntrances == "off";
+            var keysanity = settings.ShuffleSmallKeys.IsShuffled();
+            var shuffleSilverRupees = settings.ShuffleSilverRupees != ShuffleSilverRupeesType.Vanilla;
+            var beatableOnly = settings.ReachableLocations != ReachableLocationsType.AllLocations;
+            var shuffleSpecialInteriorEntrances = settings.ShuffleInteriorEntrances.HasFlag(ShuffleEntranceType.Special);
+            var shuffleInteriorEntrances = settings.ShuffleInteriorEntrances.IsEnabled();
+            var shuffleDungeonEntrances = settings.ShuffleDungeonEntrances.IsEnabled();
+            var shuffleSpecialDungeonEntrances = settings.ShuffleDungeonEntrances.HasFlag(ShuffleEntranceType.Special);
 
-            var shuffleBosses = settings.ShuffleBossEntrances != "off";
+            var shuffleBosses = settings.ShuffleBossEntrances.IsEnabled();
 
             var entranceShuffle = shuffleInteriorEntrances ||
                 settings.ShuffleGrottoEntrances ||
@@ -211,10 +143,10 @@ namespace ChecklistTracker.LogicProvider
         internal void UpdateItems(IDictionary<string, int> newItems)
         {
             Items = new Dictionary<string, int>(newItems);
-            Regions = new Dictionary<string, ISet<string>>()
+            Regions = new Dictionary<string, ConcurrentDictionary<string, Accessibility>>()
             {
-                ["child"] = new HashSet<string>(),
-                ["adult"] = new HashSet<string>(),
+                ["child"] = new ConcurrentDictionary<string, Accessibility>() { ["Root"] = Accessibility.All },
+                ["adult"] = new ConcurrentDictionary<string, Accessibility>() { ["Root"] = Accessibility.All },
             };
 
             ISet<string> accessibleChildRegions;
@@ -236,23 +168,21 @@ namespace ChecklistTracker.LogicProvider
                 {
                     foreach (var region in Regions[age])
                     {
-                        if (!Locations.ActiveLocationsByRegion.ContainsKey(region))
+                        if (!Locations.ActiveLocationsByRegion.ContainsKey(region.Key) || region.Value < Accessibility.Synthetic)
                         {
                             continue;
                         }
-                        foreach (var keyLocation in Locations.ActiveLocationsByRegion[region])
+                        foreach (var keyLocation in Locations.ActiveLocationsByRegion[region.Key])
                         {
                             if (!guaranteedKeys.Contains(keyLocation.Value.LocationName) &&
-                                EvalNode(keyLocation.Value.Rule, region, age))
+                                EvalNode(keyLocation.Value.Rule, region.Key, age).HasFlag(Accessibility.InLogic))
                             {
                                 guaranteedKeys.Add(keyLocation.Value.LocationName);
                                 // Location is Accessible. Count it towards same-dungeon key-items.
 
                                 if (keyLocation.Value.VanillaItem.Equals("Gold_Skulltula_Token"))
                                 {
-                                    if (SeedSettings.Tokensanity == "dungeon" && !keyLocation.Value.IsDungeon ||
-                                        SeedSettings.Tokensanity == "overworld" && keyLocation.Value.IsDungeon ||
-                                        SeedSettings.Tokensanity == "off")
+                                    if (!SeedSettings.Tokensanity.IsShuffled(keyLocation.Value.IsDungeon))
                                     {
                                         var smallKeyItem = Synthetic("Gold_Skulltula_Token");
                                         if (!Items.ContainsKey(smallKeyItem))
@@ -266,8 +196,8 @@ namespace ChecklistTracker.LogicProvider
 
                                 if (keyLocation.Value.IsDungeon)
                                 {
-                                    if (SeedSettings.ShuffleSmallKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small_Key_") ||
-                                        SeedSettings.ShuffleSmallKeys == "dungeon" && Locations.IsProgessLocation(keyLocation.Value))
+                                    if (SeedSettings.ShuffleSmallKeys == ShuffleDungeonItemType.Vanilla && keyLocation.Value.VanillaItem.StartsWith("Small_Key_") ||
+                                        SeedSettings.ShuffleSmallKeys == ShuffleDungeonItemType.OwnDungeon && Locations.IsProgessLocation(keyLocation.Value))
                                     {
                                         var dungeon = Locations.RegionMap[keyLocation.Value.ParentRegion];
 
@@ -292,7 +222,7 @@ namespace ChecklistTracker.LogicProvider
                                 }
                                 else if (Locations.RegionMap[keyLocation.Value.ParentRegion] == "Thieves Hideout")
                                 {
-                                    if (SeedSettings.ShuffleHideoutKeys == "vanilla" && keyLocation.Value.VanillaItem.StartsWith("Small_Key_"))
+                                    if (!SeedSettings.ShuffleHideoutKeys.IsShuffled() && keyLocation.Value.VanillaItem.StartsWith("Small_Key_"))
                                     {
                                         var smallKeyItem = Synthetic(keyLocation.Value.VanillaItem);
                                         if (!Items.ContainsKey(smallKeyItem))
@@ -334,24 +264,26 @@ namespace ChecklistTracker.LogicProvider
 
             Cache.Clear();
             var regionsToCheck = new List<string>();
+            var rootRegionAccessibility = Regions[age][rootRegion];
 
-            if (!Locations.ActiveExits.ContainsKey(rootRegion))
+            if (!Locations.ActiveExitsByRegion.ContainsKey(rootRegion))
             {
                 return new HashSet<string>(regionsToCheck);
             }
 
-            foreach(var exit in Locations.ActiveExits[rootRegion])
+            foreach(var exit in Locations.ActiveExitsByRegion[rootRegion])
             {
-                if (!Regions[age].Contains(exit.Value.LocationName))
+                if (!Regions[age].TryGetValue(exit.Value.LocationName, out var regionAccessibility) || regionAccessibility < Accessibility.InLogic)
                 {
                     //Logging.LogMessage($"Testing Exit {exit.Value.LocationName} is accessible as {age}");
-                    if (EvalNode(exit.Value.Rule, rootRegion, age))
+                    var exitAccessibility = EvalNode(exit.Value.Rule, rootRegion, age);
+                    var accessibility = ((rootRegionAccessibility & exitAccessibility) | regionAccessibility);
+                    Regions[age][exit.Value.LocationName] = accessibility;
+                    if (accessibility > regionAccessibility)
                     {
-                        //Logging.LogMessage($"Exit {exit.Value.LocationName} is accessible as {age}");
-                        Regions[age].Add(exit.Value.LocationName);
                         regionsToCheck.AddRange(RecalculateAccessibleRegions(exit.Key, age));
                     }
-                    else
+                    if (accessibility < rootRegionAccessibility)
                     {
                         //Logging.LogMessage($"Exit {exit.Value.LocationName} is not accessible as {age}");
                         regionsToCheck.Add(rootRegion);
@@ -362,32 +294,49 @@ namespace ChecklistTracker.LogicProvider
             return new HashSet<string>(regionsToCheck);
         }
 
-        internal bool IsLocationAvailable(string location)
+        internal Accessibility IsLocationAvailable(string location)
         {
             return IsLocationAvailable(location, null);
         }
 
-        internal bool IsLocationAvailable(string location, string? age)
+        internal Accessibility IsLocationAvailable(string location, string? age)
         {
             return _IsLocationAvailableMemoized(location, age);
         }
 
-        private Func<string, string, bool> _IsLocationAvailableMemoized;
-        internal bool _IsLocationAvailable(string locationName, string? age)
+        private Func<string, string, Accessibility> _IsLocationAvailableMemoized;
+        internal Accessibility _IsLocationAvailable(string locationName, string? age)
         {
             using var indent = Logging.Indented();
             Logging.WriteLine("{0} as {1}", locationName, age);
 
-            var parentRegion = Locations.ActiveLocations[locationName].ParentRegion;
-            var locationRule = Locations.ActiveLocations[locationName].Rule;
+            var locationData = Locations.ActiveLocations[locationName];
+
+            if (locationData.IsDungeon)
+            {
+                if (locationData.IsMq)
+                {
+                    // TODO: MQ Support
+                    return Accessibility.None;
+                }
+            }
+
+            var parentRegion = locationData.ParentRegion;
+            var locationRule = locationData.Rule;
 
             if (age == null)
             {
-                return IsLocationAvailable(locationName, "child") || IsLocationAvailable(locationName, "adult");
+                return Access.Or(
+                    () => IsLocationAvailable(locationName, "child"),
+                    () => IsLocationAvailable(locationName, "adult")
+                );
             }
             else
             {
-                return IsRegionAccessible(parentRegion, age) && EvalNode(locationRule, parentRegion, age, allowReentrance: true);
+                return Access.And(
+                    () => IsRegionAccessible(parentRegion, age),
+                    () => EvalNode(locationRule, parentRegion, age, allowReentrance: true)
+                );
             }
         }
 
@@ -395,7 +344,7 @@ namespace ChecklistTracker.LogicProvider
         {
             return Locations.ActiveSkullsLocations
                 .Select(kv => kv.Key)
-                .Where(IsLocationAvailable)
+                .Where(loc => IsLocationAvailable(loc).HasFlag(Accessibility.Synthetic))
                 .ToHashSet();
         }
 
@@ -405,9 +354,9 @@ namespace ChecklistTracker.LogicProvider
                 .Count();
         }
 
-        internal bool IsRegionAccessible(string regionName, string age)
+        internal Accessibility IsRegionAccessible(string regionName, string age)
         {
-            return Regions[age].Contains(regionName);
+            return Regions[age].TryGetValue(regionName, out var accessibility) ? accessibility: Accessibility.None;
         }
     }
 }

@@ -15,6 +15,10 @@
                 <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout"/>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
+            <MenuBarItem Title="Settings" x:Name="SettingsMenu">
+                <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
+                <MenuFlyoutSeparator />
+            </MenuBarItem>
 
             <!--<MenuBarItem Title="Edit">
                 <MenuFlyoutItem Text="Undo"/>

@@ -102,12 +102,9 @@ namespace ChecklistTracker
             }
         }
 
-        private void LayoutDesign()
+        private void SetupMenus()
         {
-            this.Layout.Children.Clear();
-            this.AppWindow.SetIcon(@"Assets/notebook.ico");
-
-            foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag == "LayoutPath").ToList())
+            foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag?.ToString() == "LayoutPath").ToList())
             {
                 LayoutsMenu.Items.Remove(oldItem);
             }
@@ -125,6 +122,28 @@ namespace ChecklistTracker
                     this.LayoutsMenu.Items.Add(item);
                 }
             }
+
+            foreach (string settingsPresetPath in Config.UserConfig.SettingsPresets)
+            {
+                if (!SettingsMenu.Items.Any(item => (item as MenuFlyoutItem)?.Text == settingsPresetPath))
+                {
+                    var item = new MenuFlyoutItem()
+                    {
+                        Text = settingsPresetPath,
+                        Tag = "SettingsPath"
+                    };
+                    item.Click += (s, e) => { LoadSettings(settingsPresetPath); };
+                    this.SettingsMenu.Items.Add(item);
+                }
+            }
+        }
+
+        private void LayoutDesign()
+        {
+            this.Layout.Children.Clear();
+            this.AppWindow.SetIcon(@"Assets/notebook.ico");
+
+            SetupMenus();
 
             this.VisibilityChanged += MainWindow_VisibilityChanged;
 
@@ -410,6 +429,38 @@ namespace ChecklistTracker
         private void OpenLayout(string layout)
         {
             Config.UserConfig.SetLayout(layout);
+        }
+
+        private void MenuLoadSettings(object sender, RoutedEventArgs e)
+        {
+            // Create a file picker
+            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+            // Initialize the file picker with the window handle (HWND).
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+
+            // Set options for your file picker
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.FileTypeFilter.Add(".json");
+
+            // Open the picker for the user to pick a file
+            var pickTask = openPicker.PickSingleFileAsync();
+            pickTask.AsTask().ContinueWith(task =>
+            {
+                var file = task.Result;
+                if (file != null)
+                {
+                    Config.UserConfig.SetSettings(file.Path);
+                }
+            });
+        }
+
+        private void LoadSettings(string settingsFile)
+        {
+            Logging.WriteLine($"Loading settings preset {settingsFile}");
+            Config.SetRandomizerSettings(settingsFile);
         }
     }
 }

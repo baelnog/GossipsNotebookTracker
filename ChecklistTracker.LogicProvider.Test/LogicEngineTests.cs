@@ -1,5 +1,4 @@
 using ChecklistTracker.Config;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine;
 using System.Collections.Immutable;
@@ -22,9 +21,8 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_SphereZero()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var expected = new HashSet<string>
                 {
@@ -62,7 +60,7 @@ namespace ChecklistTracker.LogicProvider.Test
                     "ZR Open Grotto Chest",
                 }.ToHashSet();
 
-            testEngine.CanAccess("Market Treasure Chest Game Reward");
+            testEngine.CanAccess("Kak Man on Roof");
 
             AssertExpectedRegions(testEngine, expected);
 
@@ -74,7 +72,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var locations = testEngine.GetLocations().ToHashSet();
             var inventory = testEngine.Inventory;
@@ -146,6 +144,8 @@ namespace ChecklistTracker.LogicProvider.Test
                 "Graveyard Freestanding PoH",
             };
 
+            testEngine.CanAccess("GC Pot Freestanding PoH");
+
             AssertExpectedRegions(testEngine, expected);
             Assert.AreEqual(21, testEngine.GetAvailableSkulls().Count());
         }
@@ -155,7 +155,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var inventory = testEngine.Inventory;
             inventory["Bow"] = 1;
@@ -211,7 +211,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var inventory = testEngine.Inventory;
             inventory["Progressive_Hookshot"] = 1;
@@ -268,7 +268,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var expected = new HashSet<string>()
             {
@@ -362,6 +362,13 @@ namespace ChecklistTracker.LogicProvider.Test
             inventory["Zeldas_Lullaby"] = 1;
             testEngine.UpdateItems(inventory);
 
+            Assert.IsTrue(testEngine.CanAccess("Deliver Rutos Letter"), "Deliver Rutos Letter");
+            Assert.IsTrue(testEngine.CanAccessRegion("Zoras Fountain", "child"), "Zoras Fountain");
+            Assert.IsTrue(testEngine.CanAccessRegion("Jabu Jabus Belly Beginning", "child"), "Jabu Jabus Belly Beginning");
+            Assert.IsTrue(testEngine.CanAccessRegion("Jabu Jabus Belly Main", "child"), "Jabu Jabus Belly Main");
+            Assert.IsTrue(testEngine.CanAccess("Jabu Jabus Belly Boomerang Chest"), "Jabu Jabus Belly Boomerang Chest");
+            Assert.IsTrue(testEngine.CanAccess("Jabu Jabus Belly Map Chest"), "Jabu Jabus Belly Map Chest");
+
             AssertExpectedRegions(testEngine, expected);
 
 
@@ -374,7 +381,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var expected = new HashSet<string>()
             {
@@ -485,7 +492,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             var expected= new HashSet<string>()
             {
@@ -636,7 +643,7 @@ namespace ChecklistTracker.LogicProvider.Test
         {
             var settings = Settings.ReadFromJson(@"settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
-            var testEngine = new LogicEngine(config, "v8.0", settings);
+            var testEngine = new LogicEngine(config, "v8.0");
 
             testEngine.Inventory["Progressive_Hookshot"] = 2;
             testEngine.Inventory["Dins_Fire"] = 1;

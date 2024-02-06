@@ -8,9 +8,9 @@ using static ChecklistTracker.ANTLR.Python3Parser;
 
 namespace ChecklistTracker.LogicProvider
 {
-    internal partial class LogicHelpers : IPython3ParserVisitor<bool>
+    internal partial class LogicHelpers : IPython3ParserVisitor<Accessibility>
     {
-        public bool VisitExpr_stmt([Antlr4.Runtime.Misc.NotNull] Expr_stmtContext context)
+        public Accessibility VisitExpr_stmt([Antlr4.Runtime.Misc.NotNull] Expr_stmtContext context)
         {
             /*
             : testlist_star_expr (
@@ -24,10 +24,10 @@ namespace ChecklistTracker.LogicProvider
             {
                 throw new NotImplementedException($"Unexpected complexe expr_stmt {context.GetText()}");
             }
-            return testlist_star_expr[0].Accept(this);
+            return testlist_star_expr[0].Accept<Accessibility>(this);
         }
 
-        public bool VisitTestlist_star_expr([Antlr4.Runtime.Misc.NotNull] Testlist_star_exprContext context)
+        public Accessibility VisitTestlist_star_expr([Antlr4.Runtime.Misc.NotNull] Testlist_star_exprContext context)
         {
             // (test | star_expr) (',' (test | star_expr))* ','?
             // no star_expr expected.
@@ -36,10 +36,10 @@ namespace ChecklistTracker.LogicProvider
             {
                 throw new NotImplementedException($"Unexpected complex testlist_star_expr {context.GetText()}");
             }
-            return tests[0].Accept(this);
+            return tests[0].Accept<Accessibility>(this);
         }
 
-        public bool VisitTest([Antlr4.Runtime.Misc.NotNull] TestContext context)
+        public Accessibility VisitTest([Antlr4.Runtime.Misc.NotNull] TestContext context)
         {
             // : or_test ('if' or_test 'else' test) ? // just the one or_test
             // | lambdef // lol no
@@ -50,42 +50,42 @@ namespace ChecklistTracker.LogicProvider
                 throw new NotImplementedException($"Unexpectd if/else test {context.GetText()}");
             }
 
-            var result = or_test[0].Accept(this);
+            var result = or_test[0].Accept<Accessibility>(this);
             return result;
         }
 
-        public bool VisitOr_test([Antlr4.Runtime.Misc.NotNull] Or_testContext context)
+        public Accessibility VisitOr_test([Antlr4.Runtime.Misc.NotNull] Or_testContext context)
         {
             // : and_test ('or' and_test)*
-            var result = false;
+            var result = Accessibility.None;
             foreach (var child in context.and_test())
             {
                 // TODO: add switch to early return
-                result |= child.Accept(this);
-                if (result) return true;
+                result |= child.Accept<Accessibility>(this);
+                if (result == Accessibility.All) return result;
             }
             return result;
         }
 
-        public bool VisitAnd_test([Antlr4.Runtime.Misc.NotNull] And_testContext context) 
+        public Accessibility VisitAnd_test([Antlr4.Runtime.Misc.NotNull] And_testContext context) 
         {
             // not_test ('and' not_test)*
-            var result = true;
+            var result = Accessibility.All;
             foreach (var child in context.not_test())
             {
                 // TODO: add switch to early return
                 result &= child.Accept(this);
-                if (!result) return false;
+                if (result == Accessibility.None) return result;
             }
             return result;
         }
 
-        public bool VisitNot_test([Antlr4.Runtime.Misc.NotNull] Not_testContext context)
+        public Accessibility VisitNot_test([Antlr4.Runtime.Misc.NotNull] Not_testContext context)
         {
             // 'not' not_test
             if (context.NOT() != null)
             {
-                return !context.not_test().Accept(this);
+                return context.not_test().Accept(this) ^ Accessibility.All;
             }
 
             // | comparison
@@ -93,7 +93,7 @@ namespace ChecklistTracker.LogicProvider
             return result;
         }
 
-        public bool VisitComparison([Antlr4.Runtime.Misc.NotNull] ComparisonContext context)
+        public Accessibility VisitComparison([Antlr4.Runtime.Misc.NotNull] ComparisonContext context)
         {
             //     : expr (comp_op expr)*
             var exprs = context.expr();
@@ -116,7 +116,7 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException($"Comparison with {exprs.Length} elements, {context.GetText}");
         }
 
-        public bool VisitExpr([Antlr4.Runtime.Misc.NotNull] ExprContext context)
+        public Accessibility VisitExpr([Antlr4.Runtime.Misc.NotNull] ExprContext context)
         {
             /*
              * expr
@@ -141,13 +141,13 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException($"Unsupported expr {context.GetText()}");
         }
 
-        public bool VisitComp_op([Antlr4.Runtime.Misc.NotNull] Comp_opContext context)
+        public Accessibility VisitComp_op([Antlr4.Runtime.Misc.NotNull] Comp_opContext context)
         {
             // Being handled directly in VisitComparison
             throw new NotImplementedException();
         }
 
-        public bool VisitTestlist_comp([Antlr4.Runtime.Misc.NotNull] Python3Parser.Testlist_compContext context)
+        public Accessibility VisitTestlist_comp([Antlr4.Runtime.Misc.NotNull] Python3Parser.Testlist_compContext context)
         {
             // (test | star_expr) (comp_for | (',' (test | star_expr))* ','?)
 
@@ -174,7 +174,7 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException();
         }
 
-        public bool VisitAtom([Antlr4.Runtime.Misc.NotNull] AtomContext context)
+        public Accessibility VisitAtom([Antlr4.Runtime.Misc.NotNull] AtomContext context)
         {
             /*
                 atom
@@ -216,7 +216,7 @@ namespace ChecklistTracker.LogicProvider
             return result;
         }
 
-        public bool VisitAtom_expr([Antlr4.Runtime.Misc.NotNull] Atom_exprContext context)
+        public Accessibility VisitAtom_expr([Antlr4.Runtime.Misc.NotNull] Atom_exprContext context)
         {
             var trailer = context.trailer();
             if (!trailer.Any())
@@ -247,7 +247,7 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException();
         }
 
-        public bool VisitArgument([Antlr4.Runtime.Misc.NotNull] ArgumentContext context)
+        public Accessibility VisitArgument([Antlr4.Runtime.Misc.NotNull] ArgumentContext context)
         {
             // (test comp_for? | test '=' test | '**' test | '*' test)
             // We only need to handle the raw test.

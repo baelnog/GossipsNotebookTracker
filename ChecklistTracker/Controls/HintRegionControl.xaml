@@ -17,7 +17,9 @@
                   SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:LocationViewModel">
-                    <TextBlock Text="{x:Bind Location.ShortName, Mode=OneWay}"/>
+                    <TextBlock
+                        Text="{x:Bind Location.ShortName, Mode=OneWay}"
+                        Foreground="{x:Bind TextColor, Mode=OneWay}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

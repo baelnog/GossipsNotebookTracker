@@ -14,7 +14,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+//using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;
 
 namespace ChecklistTracker.ViewModel
 {
@@ -42,7 +43,7 @@ namespace ChecklistTracker.ViewModel
             Locations.SortDescriptions.Add(new SortDescription(SortDirection.Ascending, new FuncComparer(SortLocations)));
             model.RegisterFilterCallbacks(Locations);
             Locations.ObserveFilterProperty(nameof(LocationInfo.IsChecked));
-            Locations.ObserveFilterProperty(nameof(LocationInfo.IsAccessible));
+            Locations.ObserveFilterProperty(nameof(LocationInfo.Accessiblity));
             Locations.ObserveFilterProperty(nameof(LocationInfo.IsSkull));
             Locations.ObserveFilterProperty(nameof(LocationInfo.IsActive));
             Locations.PropertyChanged += Locations_PropertyChanged;

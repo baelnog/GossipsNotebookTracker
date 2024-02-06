@@ -14,47 +14,11 @@ namespace ChecklistTracker.LogicProvider
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string _Name;
-        public string Name
-        {
-            get => _Name;
-            private set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public string Name { get; private set; }
 
-        private string _ShortName;
-        public string ShortName
-        {
-            get => _ShortName;
-            private set
-            {
-                if (_ShortName != value)
-                {
-                    _ShortName = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public string ShortName { get; private set; }
 
-        private bool _IsActive = false;
-        public bool IsActive
-        {
-            get => _IsActive;
-            set
-            {
-                if (_IsActive != value)
-                {
-                    _IsActive = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public bool IsActive { get; set; }
 
         public ObservableCollection<LocationInfo> Locations { get; private set; }
 
@@ -62,8 +26,8 @@ namespace ChecklistTracker.LogicProvider
 
         internal HintRegion(string name, string? shortName)
         {
-            _Name = name;
-            _ShortName = shortName ?? Name;
+            Name = name;
+            ShortName = shortName ?? Name;
             Locations = [];
             LocationsByName = Locations.ToLookup(loc => loc.Name);
         }
@@ -76,11 +40,6 @@ namespace ChecklistTracker.LogicProvider
         public override int GetHashCode()
         {
             return Name.GetHashCode();
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

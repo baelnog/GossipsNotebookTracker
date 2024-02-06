@@ -1,18 +1,22 @@
 using ChecklistTracker.Config;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
+using Microsoft.UI.Dispatching;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using static ChecklistTracker.LogicProvider.LocationsData;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ChecklistTracker.LogicProvider
 {
-    public class LogicEngine
+    public partial class LogicEngine : INotifyPropertyChanged
     {
         private ISet<string> CheckedLocations = new HashSet<string>();
 
@@ -21,32 +25,35 @@ namespace ChecklistTracker.LogicProvider
         private TrackerConfig Config;
 
         private ConcurrentDictionary<string, HintRegion> HintRegions;
+        private IDictionary<string, (HintRegion, LocationInfo, RuleData)> ActiveLocations;
 
-        public LogicEngine(TrackerConfig config, string version, Settings settings)
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public LogicEngine(TrackerConfig config, string version)
         {
             Config = config;
 
             var logicFiles = LogicFiles.LoadLogicFiles(LogicFileCache.GetCachedLogicFilesForTagAsync(version).Result).Result;
 
-            Locations = LocationsData.Initialize(Config, logicFiles, settings).Result;
+            Locations = LocationsData.Initialize(Config, logicFiles).Result;
 
-            Helpers = LogicHelpers.InitHelpers(Config, logicFiles, settings, Locations).Result;
+            Helpers = LogicHelpers.InitHelpers(Config, logicFiles, Locations).Result;
 
             Inventory = new Dictionary<string, int>(Config.DefaultInventory);
             
-            foreach (var equip in settings.StartingEquipment)
+            foreach (var equip in Config.RandomizerSettings.StartingEquipment)
             {
                 Inventory[equip.Replace(" ", "_")] = 1;
             }
-            foreach (var inv in settings.StartingInventory)
+            foreach (var inv in Config.RandomizerSettings.StartingInventory)
             {
                 Inventory[inv.Replace(" ", "_")] = 1;
             }
-            foreach (var items in settings.StartingItems)
+            foreach (var items in Config.RandomizerSettings.StartingItems)
             {
                 Inventory[items.Key.Replace(" ", "_")] += items.Value;
             }
-            foreach (var song in settings.StartingSongs)
+            foreach (var song in Config.RandomizerSettings.StartingSongs)
             {
                 Inventory[song.Replace(" ", "_")] = 1;
             }
@@ -54,22 +61,32 @@ namespace ChecklistTracker.LogicProvider
             InitRegions();
 
             UpdateItems(Inventory);
+
+            Locations.PropertyChanged += LocationDataChanged;
+        }
+
+        private void LocationDataChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            UpdateItems(Inventory);
         }
 
         public IDictionary<string, int> Inventory { get; private set; }
 
         public void UpdateItems(IDictionary<string, int> items)
         {
-            Inventory = items;
-            Helpers.UpdateItems(Inventory);
-            UpdateLocationData();
+            lock(this)
+            {
+                Inventory = items;
+                Helpers.UpdateItems(Inventory);
+                UpdateLocationData();
+            }
         }
 
         private void InitRegions()
         {
             HintRegions = new ConcurrentDictionary<string, HintRegion>();
 
-            foreach (var location in Locations.Locations.SelectMany(kv => kv.Value.Values).SelectMany(kv => kv.Values))
+            foreach (var location in Locations.ActiveLocations.Values)
             {
                 var hintRegionName = Locations.RegionMap.TryGetValue(location.ParentRegion, out var mappedRegion) ? mappedRegion : location.ParentRegion;
                 Config.HintRegionShortNames.TryGetValue(hintRegionName, out var regionShortName);
@@ -87,20 +104,21 @@ namespace ChecklistTracker.LogicProvider
                 var active = false;
                 foreach (var location in hintRegion.Locations)
                 {
-                    location.IsActive = Locations.ActiveLocations.ContainsKey(location.Name);
+                    var locationData = Locations.ActiveLocations[location.Name];
+                    location.IsActive = locationData.IsDungeon ? !locationData.IsMq : true;
                     if (location.IsActive)
                     {
-                        location.IsAccessible = Helpers.IsLocationAvailable(location.Name);
+                        location.Accessiblity = Helpers.IsLocationAvailable(location.Name);
                         location.IsProgress = Locations.IsProgessLocation(Locations.ActiveLocations[location.Name]);
                         location.IsSkull = Locations.ActiveSkullsLocations.ContainsKey(location.Name);
                     }
                     else
                     {
-                        location.IsAccessible = false;
+                        location.Accessiblity = Accessibility.None;
                         location.IsProgress = false;
                         location.IsSkull = false;
                     }
-                    active |= location.IsAccessible;
+                    active |= location.Accessiblity > 0;
                 }
                 hintRegion.IsActive = active;
             }
@@ -114,9 +132,9 @@ namespace ChecklistTracker.LogicProvider
         public IList<string> GetLocations()
         {
             return Locations.ActiveLocations
-                .Where(kv => CanAccess(kv.Key) && Locations.IsProgessLocation(kv.Value))
-                .Select(kv => kv.Key)
-                .ToList();
+                    .Where(kv => CanAccess(kv.Key) && Locations.IsProgessLocation(kv.Value))
+                    .Select(kv => kv.Key)
+                    .ToList();
         }
 
         public void CheckLocation(string location)
@@ -131,12 +149,7 @@ namespace ChecklistTracker.LogicProvider
 
         public bool CanAccess(string location)
         {
-            if (!Locations.ActiveLocations.ContainsKey(location))
-            {
-                return false;
-            }
-
-            return Helpers.IsLocationAvailable(location);
+            return Helpers.IsLocationAvailable(location).HasFlag(Accessibility.Synthetic);
         }
 
         public bool CanAccessEvent(string eventName)
@@ -146,12 +159,12 @@ namespace ChecklistTracker.LogicProvider
                 return false;
             }
 
-            return Helpers.EvalEvent(eventName);
+            return Helpers.EvalEvent(eventName).HasFlag(Accessibility.Synthetic);
         }
 
         public bool CanAccessRegion(string region, string age)
         {
-            return Helpers.IsRegionAccessible(region, age);
+            return Helpers.IsRegionAccessible(region, age).HasFlag(Accessibility.Synthetic);
         }
 
         public bool IsProgressLocation(string location)

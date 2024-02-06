@@ -13,8 +13,6 @@
       <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
       <PackageReference Include="Antlr4BuildTasks" Version="12.7.0" />
       <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
-      <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
   </ItemGroup>
 
   <ItemGroup>

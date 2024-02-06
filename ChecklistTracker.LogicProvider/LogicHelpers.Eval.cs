@@ -1,11 +1,17 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using ChecklistTracker.ANTLR;
+using ChecklistTracker.Config;
+using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Devices;
+
+using Access = ChecklistTracker.LogicProvider.AccessibilityExtensions;
 
 namespace ChecklistTracker.LogicProvider
 {
@@ -20,29 +26,29 @@ namespace ChecklistTracker.LogicProvider
 
         private void RegisterCaches()
         {
-            _IsLocationAvailableMemoized = Cache.Memoize<string, string, bool>("IsLocationAvailable", _IsLocationAvailable);
-            _EvalNodeMemoized = Cache.Memoize<IParseTree, string, string, bool>("EvalNode", _EvalNode, onReentrance: () => false);
-            EvalIdentifier = Cache.Memoize<string, string, bool>("EvalIdentifier", _EvalIdentifier);
-            EvalEvent = Cache.Memoize<string, bool>("EvalEvent", _EvalEvent);
-            EvalCall = Cache.Memoize<string, Python3Parser.ArgumentContext[], bool>("EvalCall", _EvalCall);
-            EvalLookup = Cache.Memoize<string, Python3Parser.Subscript_Context[], bool>("EvalLookup", _EvalLookup);
-            EvalRuleAlias = Cache.Memoize<string, string, bool>("EvalRuleAlias", _EvalRuleAlias);
-            CanBuy = Cache.Memoize<string, string, bool>("CanBuy", _CanBuy);
-            CanAccessDrop = Cache.Memoize<string, string, bool>("CanAccessDrop", _CanAccessDrop);
-            HasBottle = Cache.Memoize<string, bool>("HasBottle", _HasBottle);
-            CanPlay = Cache.Memoize<string, string, bool>("CanPlay", _CanPlay);
-            CanUse = Cache.Memoize<string, string?, bool>("CanUse", _CanUse);
-            EvalBinaryComparison = Cache.Memoize<string, string, string, string, bool>("EvalBinaryComparison", _EvalBinaryComparison);
-            EvalCountCheck = Cache.Memoize<string, string, bool>("EvalCountCheck", _EvalCountCheck);
-            HasItemMemoized = Cache.Memoize<string, int, bool>("HasItem", _HasItem);
-            HasMedallions = Cache.Memoize<string, bool>("HasMedallions", _HasMedallions);
-            HasStones = Cache.Memoize<string, bool>("HasStones", _HasStones);
-            HasDungeonRewards = Cache.Memoize<string, bool>("HasDungeonRewards", _HasDungeonRewards);
-            HasHearts = Cache.Memoize<string, bool>("HasHearts", _HasHearts);
-            HasProjectile = Cache.Memoize<string, bool>("HasProjectile", _HasProjectile);
-            RegionHasShortcuts = Cache.Memoize<string, bool>("RegionHasShortcuts", _RegionHasShortcuts);
-            HasAllNotesForSong = Cache.Memoize<string, bool>("HasAllNotesForSong", _HasAllNotesForSong);
-            HasAvailableDungeonKeysMemoized = Cache.Memoize<string, int, bool>("HasAvailableDungeonKeys", _HasAvailableDungeonKeys, onReentrance: () => false);
+            _IsLocationAvailableMemoized = Cache.Memoize<string, string, Accessibility>("IsLocationAvailable", _IsLocationAvailable);
+            _EvalNodeMemoized = Cache.Memoize<IParseTree, string, string, Accessibility>("EvalNode", _EvalNode, onReentrance: () => Accessibility.None);
+            EvalIdentifier = Cache.Memoize<string, string, Accessibility>("EvalIdentifier", _EvalIdentifier);
+            EvalEvent = Cache.Memoize<string, Accessibility>("EvalEvent", _EvalEvent);
+            EvalCall = Cache.Memoize<string, Python3Parser.ArgumentContext[], Accessibility>("EvalCall", _EvalCall);
+            EvalLookup = Cache.Memoize<string, Python3Parser.Subscript_Context[], Accessibility>("EvalLookup", _EvalLookup);
+            EvalRuleAlias = Cache.Memoize<string, string, Accessibility>("EvalRuleAlias", _EvalRuleAlias);
+            CanBuy = Cache.Memoize<string, string, Accessibility>("CanBuy", _CanBuy);
+            CanAccessDrop = Cache.Memoize<string, string, Accessibility>("CanAccessDrop", _CanAccessDrop);
+            HasBottle = Cache.Memoize<string, Accessibility>("HasBottle", _HasBottle);
+            CanPlay = Cache.Memoize<string, string, Accessibility>("CanPlay", _CanPlay);
+            CanUse = Cache.Memoize<string, string?, Accessibility>("CanUse", _CanUse);
+            EvalBinaryComparison = Cache.Memoize<string, string, string, string, Accessibility>("EvalBinaryComparison", _EvalBinaryComparison);
+            EvalCountCheck = Cache.Memoize<string, string, Accessibility>("EvalCountCheck", _EvalCountCheck);
+            HasItemMemoized = Cache.Memoize<string, int, Accessibility>("HasItem", _HasItem);
+            HasMedallions = Cache.Memoize<string, Accessibility>("HasMedallions", _HasMedallions);
+            HasStones = Cache.Memoize<string, Accessibility>("HasStones", _HasStones);
+            HasDungeonRewards = Cache.Memoize<string, Accessibility>("HasDungeonRewards", _HasDungeonRewards);
+            HasHearts = Cache.Memoize<string, Accessibility>("HasHearts", _HasHearts);
+            HasProjectile = Cache.Memoize<string, Accessibility>("HasProjectile", _HasProjectile);
+            RegionHasShortcuts = Cache.Memoize<string, Accessibility>("RegionHasShortcuts", _RegionHasShortcuts);
+            HasAllNotesForSong = Cache.Memoize<string, Accessibility>("HasAllNotesForSong", _HasAllNotesForSong);
+            //HasAvailableDungeonKeysMemoized = Cache.Memoize<string, int, Accessibility>("HasAvailableDungeonKeys", _HasAvailableDungeonKeys, onReentrance: () => false);
 
         }
         private Stack<string> VisitingHere = new Stack<string>();
@@ -59,13 +65,13 @@ namespace ChecklistTracker.LogicProvider
         internal IDisposable PushHere(string here) { return new StackScope(VisitingHere, here); }
 
 
-        Func<IParseTree, string, string, bool, bool> _EvalNodeMemoized;
-        public bool EvalNode(IParseTree tree, string here, string age, bool allowReentrance = false)
+        Func<IParseTree, string, string, bool, Accessibility> _EvalNodeMemoized;
+        public Accessibility EvalNode(IParseTree tree, string here, string age, bool allowReentrance = false)
         {
             return _EvalNodeMemoized(tree, here, age, allowReentrance);
         }
 
-        public bool _EvalNode(IParseTree tree, string here, string age)
+        public Accessibility _EvalNode(IParseTree tree, string here, string age)
         {
             using (PushAge(age))
             {
@@ -77,34 +83,34 @@ namespace ChecklistTracker.LogicProvider
             }
         }
 
-        private bool EvalAdultTradeItem(string name, string item, string checkName)
+        private Accessibility EvalAdultTradeItem(string name, string item, string checkName)
         {
-            if (HasItem(name))
+            var conditions = new List<Func<Accessibility>>
             {
-                return true;
+                () => HasItem(name)
+            };
+
+            if (!SeedSettings.FullAdultTradeShuffle || !SeedSettings.AdultTradeItemStartLogic.Contains(item))
+            {
+                conditions.Add(() => IsLocationAvailable(checkName));
             }
 
-            if (!SeedSettings.FullAdultTradeShuffle || !SeedSettings.AdultTradeItemStart.Contains(item))
-            {
-                return IsLocationAvailable(checkName);
-            }
-
-            return false;
+            return conditions.Or();
         }
 
-        Func<string, string, bool> EvalIdentifier;
-        bool _EvalIdentifier(string name, string age)
+        Func<string, string, Accessibility> EvalIdentifier;
+        Accessibility _EvalIdentifier(string name, string age)
         {
             using var indent = Logging.Indented();
             Logging.WriteLine($"EvalIdentifier({name}, {age})");
             switch (name)
             {
                 case "True":
-                    return true;
+                    return true.ToAccessibility();
                 case "False":
-                    return false;
+                    return false.ToAccessibility();
                 case "had_night_start":
-                    return this.SeedSettings.StartingTimeOfDay.IsNight();
+                    return this.SeedSettings.StartingTimeOfDay.IsNight().ToAccessibility();
                 case "has_bottle":
                     return HasBottle(age);
                 case "Big_Poe":
@@ -116,23 +122,40 @@ namespace ChecklistTracker.LogicProvider
                 case "Time_Travel":
                     return IsLocationAvailable("Master Sword Pedestal", age);
                 case "is_child":
-                    return age == "child";
+                    return (age == "child").ToAccessibility();
                 case "is_adult":
-                    return age == "adult";
+                    return (age == "adult").ToAccessibility();
                 case "Zeldas_Letter":
-                    return HasItem(name) ||
-                            SeedSettings.SkipChildZelda() ||
-                            IsLocationAvailable("HC Zeldas Letter");
+                    return Access.Or(
+                        () => SeedSettings.SkipChildZelda().ToAccessibility(),
+                        () => HasItem(name),
+                        () => IsLocationAvailable("HC Zeldas Letter")
+                    );
                 case "Keaton_Mask":
-                    return HasItem(name) || IsLocationAvailable("Market Mask Shop Item 6");
+                    return Access.Or(
+                        () => HasItem(name),
+                        () => IsLocationAvailable("Market Mask Shop Item 6")
+                    );
                 case "Skull_Mask":
-                    return HasItem(name) || IsLocationAvailable("Market Mask Shop Item 5");
+                    return Access.Or(
+                        () => HasItem(name),
+                        () => IsLocationAvailable("Market Mask Shop Item 5")
+                    );
                 case "Spooky_Mask":
-                    return HasItem(name) || IsLocationAvailable("Market Mask Shop Item 8");
+                    return Access.Or(
+                        () => HasItem(name),
+                        () => IsLocationAvailable("Market Mask Shop Item 8")
+                    );
                 case "Bunny_Mask":
-                    return HasItem(name) || IsLocationAvailable("Market Mask Shop Item 7");
+                    return Access.Or(
+                        () => HasItem(name),
+                        () => IsLocationAvailable("Market Mask Shop Item 7")
+                    );
                 case "Mask_of_Truth":
-                    return HasItem(name) || IsLocationAvailable("Market Mask Shop Item 3");
+                    return Access.Or(
+                        () => HasItem(name),
+                        () => IsLocationAvailable("Market Mask Shop Item 3")
+                    );
                 case "Odd_Mushroom":
                     return EvalAdultTradeItem(name, "Odd Mushroom", "LW Trade Cojiro");
                 case "Odd_Potion":
@@ -163,13 +186,13 @@ namespace ChecklistTracker.LogicProvider
 
             if (RenamedAttributes.ContainsKey(name))
             {
-                return (bool)RenamedAttributes[name];
+                return ((bool)RenamedAttributes[name]).ToAccessibility();
             }
 
             if (SeedSettings.ContainsKey(name))
             {
                 Logging.WriteLine($"({name}, {age}) -> Setting enabed [{SeedSettings.IsEnabled(name)}]");
-                return SeedSettings.IsEnabled(name);
+                return SeedSettings.IsEnabled(name).ToAccessibility();
             }
 
             if (RuleAliases.ContainsKey(name))
@@ -185,13 +208,13 @@ namespace ChecklistTracker.LogicProvider
 
             if (name.StartsWith("logic_"))
             {
-                return SeedSettings.EnabledTricks.Contains(name);
+                return SeedSettings.EnabledTricks.Contains(name) ? Accessibility.All : Accessibility.SequenceBreak;
             }
 
             // Assume access to time passage is always available.
             if (name.StartsWith("at_"))
             {
-                return true;
+                return true.ToAccessibility();
             }
 
             if (name.StartsWith("Buy_"))
@@ -200,27 +223,27 @@ namespace ChecklistTracker.LogicProvider
             }
 
             var dropId = unquotedName.Replace(" ", "_");
-            if (Locations.ActiveDropLocations.ContainsKey(dropId))
+            if (Locations.ActiveDropLocationsByItem.ContainsKey(dropId))
             {
                 return CanAccessDrop(dropId, age);
             }
 
             throw new NotImplementedException($"Unknown identifier: {name}");
         }
-        Func<string, Python3Parser.Subscript_Context[], bool> EvalLookup;
-        bool _EvalLookup(string name, Python3Parser.Subscript_Context[] args)
+        Func<string, Python3Parser.Subscript_Context[], Accessibility> EvalLookup;
+        Accessibility _EvalLookup(string name, Python3Parser.Subscript_Context[] args)
         {
             switch (name)
             {
                 case "skipped_trials":
-                    return SeedSettings.TrialsCount == 0 || SeedSettings.TrialsRandomCount;
+                    return (SeedSettings.TrialsCount == 0 || SeedSettings.TrialsRandomCount).ToAccessibility();
             }
 
             throw new NotImplementedException($"Unknown function: {name}");
         }
 
-        Func<string, Python3Parser.ArgumentContext[], bool> EvalCall;
-        bool _EvalCall(string name, Python3Parser.ArgumentContext[] args)
+        Func<string, Python3Parser.ArgumentContext[], Accessibility> EvalCall;
+        Accessibility _EvalCall(string name, Python3Parser.ArgumentContext[] args)
         {
             var age = VisitingAge.Peek();
             switch (name)
@@ -253,8 +276,8 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException($"Unknown function: {name}");
         }
 
-        Func<string, string, bool> EvalRuleAlias;
-        bool _EvalRuleAlias(string name, string age)
+        Func<string, string, Accessibility> EvalRuleAlias;
+        Accessibility _EvalRuleAlias(string name, string age)
         {
             using var indent = Logging.Indented();
 
@@ -262,8 +285,8 @@ namespace ChecklistTracker.LogicProvider
             return RuleAliases[name].Accept(this);
         }
 
-        public Func<string, bool> EvalEvent;
-        bool _EvalEvent(string name)
+        public Func<string, Accessibility> EvalEvent;
+        Accessibility _EvalEvent(string name)
         {
             using var indent = Logging.Indented();
             var escaped = name.Replace("_", " ").Replace("'", "");
@@ -273,85 +296,79 @@ namespace ChecklistTracker.LogicProvider
             }
             if (!Locations.ActiveEvents.ContainsKey(name))
             {
-                return false;
+                return false.ToAccessibility();
             }
             if (name == "Eyeball Frog Access")
             {
-                if (!EvalEvent("King Zora Thawed"))
+                if (SeedSettings.FullAdultTradeShuffle)
                 {
-                    return false;
+                    return HasItem("Eyeball_Frog");
                 }
-                if (!(bool)RenamedAttributes["disable_trade_revert"] && (HasItem("Eyedrops") || HasItem("Eyebal_Frog")) || // Can revert to prescription
-                    HasItem("Prescription") || // Has prescription
-                    (!SeedSettings.FullAdultTradeShuffle || SeedSettings.AdultTradeItemStart.Contains("Broken Sword")) && EvalEvent("Prescription Access")) // Can get prescription
+
+                var potentialItems = new List<Func<Accessibility>>()
                 {
-                    return true;
+                    () => HasItem("Prescription")
+                };
+
+                if ((bool) RenamedAttributes["disable_trade_revert"])
+                {
+                    potentialItems.Add(() => HasItem("Eyedrops"));
+                    potentialItems.Add(() => HasItem("Eyeball_Frog"));
                 }
-                return false;
+
+                if (SeedSettings.AdultTradeItemStart.Contains(AdultTradeItem.BrokenSword))
+                {
+                    potentialItems.Add(() => EvalEvent("Prescription Access"));
+                }
+
+                return Access.And(
+                    () => EvalEvent("King Zora Thawed"),
+                    () => potentialItems.Or()
+                );
             }
 
-            return Locations.ActiveEvents[name].Any(evt =>
+            return Locations.ActiveEvents[name].Or(evt =>
             {
                 var parentRegion = evt.ParentRegion;
                 var rule = evt.Rule;
 
-                return IsRegionAccessible(parentRegion, "child") && EvalNode(rule, parentRegion, "child") ||
-                       IsRegionAccessible(parentRegion, "adult") && EvalNode(rule, parentRegion, "adult");
+                return Access.Or(
+                    () => Access.And(() => IsRegionAccessible(parentRegion, "child"), () => EvalNode(rule, parentRegion, "child")),
+                    () => Access.And(() => IsRegionAccessible(parentRegion, "adult"), () => EvalNode(rule, parentRegion, "adult"))
+                );
             });
         }
 
-        bool AtNight(string age)
+        Accessibility AtNight(string age)
         {
             // Hardcoded for now.
-            return true;
+            return Accessibility.All;
         }
 
-        bool At(string spotToCheck, ParserRuleContext arg1, string age)
+        Accessibility At(string spotToCheck, ParserRuleContext arg1, string age)
         {
-            return IsRegionAccessible(spotToCheck, "child") && EvalNode(arg1, spotToCheck, "child") ||
-                   IsRegionAccessible(spotToCheck, "adult") && EvalNode(arg1, spotToCheck, "adult");
+            return Access.Or(
+                () => Access.And(() => IsRegionAccessible(spotToCheck, "child"), () => EvalNode(arg1, spotToCheck, "child")),
+                () => Access.And(() => IsRegionAccessible(spotToCheck, "adult"), () => EvalNode(arg1, spotToCheck, "adult"))
+            );
         }
 
-        bool Here(Python3Parser.ArgumentContext[] args)
+        Accessibility Here(Python3Parser.ArgumentContext[] args)
         {
-            return At(VisitingHere.Peek(), args[0], "child") || At(VisitingHere.Peek(), args[0], "adult");
+            return Access.Or(
+                () => At(VisitingHere.Peek(), args[0], "child"),
+                () => At(VisitingHere.Peek(), args[0], "adult")
+            );
         }
 
-        Func<string, string, bool> CanBuy;
-        bool _CanBuy(string itemName, string age)
+        Func<string, string, Accessibility> CanBuy;
+        Accessibility _CanBuy(string itemName, string age)
         {
-            var rules = new HashSet<string>(); 
+
+            var conditions = new List<Func<Accessibility>>();
             if (new HashSet<string> { "Buy_Arrows_50", "Buy_Fish", "Buy_Goron_Tunic", "Buy_Bombchu_20", "Buy_Bombs_30" }.Contains(itemName))
             {
-                if (!HasItem("Progressive_Wallet"))
-                {
-                    return false;
-                }
-            }
-            if (itemName == "Buy_Zora_Tunic" || itemName == "Buy_Blue_Fire")
-            {
-                if (age != "adult" || !HasItem("Progressive_Wallet", 2))
-                {
-                    return false;
-                }
-            }
-
-            if (new HashSet<string> {
-                "Buy_Blue_Fire",
-                "Buy_Blue_Potion",
-                "Buy_Bottle_Bug",
-                "Buy_Fish",
-                "Buy_Green_Potion",
-                "Buy_Poe",
-                "Buy_Red_Potion_for_30_Rupees",
-                "Buy_Red_Potion_for_40_Rupees",
-                "Buy_Red_Potion_for_50_Rupees",
-                "Buy_Fairy's_Spirit", }.Contains(itemName))
-            {
-                if (!HasBottle(age))
-                {
-                    return false;
-                }
+                conditions.Add(() => HasItem("Progressive_Wallet"));
             }
 
             if (itemName == "Buy_Bombchu_5" ||
@@ -367,78 +384,88 @@ namespace ChecklistTracker.LogicProvider
                 // "(free_bombchu_drops and (Bombchus or Bombchus_5 or Bombchus_10 or Bombchus_20)) or (not free_bombchu_drops and Bomb_Bag)"
                 if (SeedSettings.BombchuBags)
                 {
-                    if (!HasItem("Bombchus") &&
-                        !HasItem("Bombchus_5") &&
-                        !HasItem("Bombchus_10") &&
-                        !HasItem("Bombchus_20"))
-                    {
-                        return false;
-                    }
+                    conditions.Add(() => Access.Or(
+                        () => HasItem("Bombchus"),
+                        () => HasItem("Bombchus_5"),
+                        () => HasItem("Bombchus_10"),
+                        () => HasItem("Bombchus_20")
+                    ));
                 }
                 else
                 {
-                    if (!HasItem("Bomb_Bag"))
-                    {
-                        return false;
-                    }
+                    conditions.Add(() => HasItem("Bomb_Bag"));
                 }
             }
+            if (itemName == "Buy_Zora_Tunic" || itemName == "Buy_Blue_Fire")
+            {
+                if (age != "adult")
+                {
+                    return Accessibility.None;
+                }
 
-            return true;
+                conditions.Add(() => HasItem("Progressive_Wallet", 2));
+            }
+
+            if (new HashSet<string> {
+                "Buy_Blue_Fire",
+                "Buy_Blue_Potion",
+                "Buy_Bottle_Bug",
+                "Buy_Fish",
+                "Buy_Green_Potion",
+                "Buy_Poe",
+                "Buy_Red_Potion_for_30_Rupees",
+                "Buy_Red_Potion_for_40_Rupees",
+                "Buy_Red_Potion_for_50_Rupees",
+                "Buy_Fairy's_Spirit", }.Contains(itemName))
+            {
+                conditions.Add(() => HasBottle(age));
+            }
+
+            return conditions.And();
         }
 
-        Func<string, string, bool> CanAccessDrop;
-        bool _CanAccessDrop(string dropName, string age)
+        Func<string, string, Accessibility> CanAccessDrop;
+        Accessibility _CanAccessDrop(string dropName, string age)
         {
             using var indent = Logging.Indented();
             Logging.WriteLine($"CanAccessDrop({dropName}, {age})");
 
-            return Locations.ActiveDropLocations[dropName].Any(drop =>
+            return Locations.ActiveDropLocationsByItem[dropName].Or(drop =>
             {
                 var parentRegion = drop.ParentRegion;
                 var rule = drop.Rule;
 
-                return IsRegionAccessible(parentRegion, "child") && EvalNode(rule, parentRegion, "child", allowReentrance: true) ||
-                        IsRegionAccessible(parentRegion, "adult") && EvalNode(rule, parentRegion, "adult", allowReentrance: true);
+                return Access.Or(
+                    () => Access.And(() => IsRegionAccessible(parentRegion, "child"), () => EvalNode(rule, parentRegion, "child", allowReentrance: true)),
+                    () => Access.And(() => IsRegionAccessible(parentRegion, "adult"), () => EvalNode(rule, parentRegion, "adult", allowReentrance: true))
+                );
             });
         }
 
-        Func<string, bool> HasBottle;
-        bool _HasBottle(string age)
+        Func<string, Accessibility> HasBottle;
+        Accessibility _HasBottle(string age)
         {
-            if (HasItem("Bottle"))
-            {
-                return true;
-            }
-
-            if (HasItem("Rutos_Letter") && IsLocationAvailable("Deliver Rutos Letter"))
-            {
-                return true;
-            }
-
-            return false;
+            return HasItem("Bottle") |
+                   HasItem("Rutos_Letter") & IsLocationAvailable("Deliver Rutos Letter");
         }
 
-        Func<string, string, bool> CanPlay;
-        bool _CanPlay(string songName, string age)
+        Func<string, string, Accessibility> CanPlay;
+        Accessibility _CanPlay(string songName, string age)
         {
-            if (!HasItem("Ocarina"))
-            {
-                return false;
-            }
+            var hasOcarina = HasItem("Ocarina");
             if (songName == "Scarecrow_Song")
             {
                 if (age != "adult")
                 {
-                    return false;
+                    return Accessibility.None;
                 }
                 if (SeedSettings.FreeScarecrow)
                 {
-                    return true;
+                    return hasOcarina;
                 }
-                return HasAllNotesForSong(songName) && IsLocationAvailable("Pierre", "adult");
+                return hasOcarina & HasAllNotesForSong(songName) & IsLocationAvailable("Pierre", "adult");
             }
-            return HasItem(songName) && HasAllNotesForSong(songName);
+            return hasOcarina & HasItem(songName) & HasAllNotesForSong(songName);
         }
 
         private static ISet<string> CHILD_ITEMS = new HashSet<string>()
@@ -468,34 +495,36 @@ namespace ChecklistTracker.LogicProvider
             "Fire_Arrows", "Light_Arrows", "Ice_Arrows"
         };
 
-        Func<string, string?, bool> CanUse;
-        bool _CanUse(string itemName, string? age)
+        Func<string, string?, Accessibility> CanUse;
+        Accessibility _CanUse(string itemName, string? age)
         {
             if (itemName == "Scarecrow")
             {
-                return HasItem("Progressive_Hookshot") &&
-                       CanPlay("Scarecrow_Song", age);
+                return Access.And(
+                    () => HasItem("Progressive_Hookshot"),
+                    () => CanPlay("Scarecrow_Song", age)
+                );
             }
             if (itemName == "Distant_Scarecrow")
             {
-                return HasItem("Progressive_Hookshot", 2) &&
-                       CanPlay("Scarecrow_Song", age);
+                return Access.And(
+                    () => HasItem("Progressive_Hookshot", 2),
+                    () => CanPlay("Scarecrow_Song", age)
+                );
             }
             if (SeedSettings.BlueFireArrows && itemName == "Blue_Fire_Arrows")
             {
                 itemName = "Ice_Arrows";
             }
 
-            if (RuleAliases.ContainsKey(itemName) && !EvalRuleAlias(itemName, age))
+            var conditions = new List<Func<Accessibility>>();
+            if (RuleAliases.ContainsKey(itemName))
             {
-                return false;
+                conditions.Add(() => EvalRuleAlias(itemName, age));
             }
-
-            if (!HasItem(itemName) &&
-                (!RuleAliases.ContainsKey(itemName) || !EvalRuleAlias(itemName, age)))
+            else
             {
-
-                return false;
+                conditions.Add(() => HasItem(itemName));
             }
 
             var isChildItem = CHILD_ITEMS.Contains(itemName);
@@ -505,35 +534,46 @@ namespace ChecklistTracker.LogicProvider
 
             if (isChildItem)
             {
-                return age == null || EvalIdentifier("is_child", age);
+                conditions.Add(() => Access.Or(
+                    () => (age == null).ToAccessibility(),
+                    () => EvalIdentifier("is_child", age))
+                );
             }
-            if (isAdultItem)
+            else if (isAdultItem)
             {
-                return age == null || EvalIdentifier("is_adult", age);
+                conditions.Add(() => Access.Or(
+                    () => (age == null).ToAccessibility(),
+                    () => EvalIdentifier("is_adult", age))
+                );
             }
-            if (isMagicItem)
+            else if (isMagicItem)
             {
-                return HasItem("Magic_Meter");
+                conditions.Add(() => HasItem("Magic_Meter"));
             }
-            if (isMagicArrows)
+            else if (isMagicArrows)
             {
-                return HasItem("Magic_Meter") && CanUse("Bow", age);
+                conditions.Add(() => HasItem("Magic_Meter"));
+                conditions.Add(() => CanUse("Bow", age));
             }
-            
-            throw new NotImplementedException();
+            else
+            {
+                throw new NotImplementedException();
+            }
+            return conditions.And();
         }
 
-        Func<string, string, string, string, bool> EvalBinaryComparison;
-        bool _EvalBinaryComparison(string left, string right, string op, string age)
+        Func<string, string, string, string, Accessibility> EvalBinaryComparison;
+        Accessibility _EvalBinaryComparison(string left, string right, string op, string age)
         {
             left = left.Replace("'", "");
             right = right.Replace("'", "");
+
             switch (op)
             {
                 case "==":
                     if (SeedSettings.ContainsKey(left))
                     {
-                        return SeedSettings.IsSettingEqual(left, right);
+                        return SeedSettings.IsSettingEqual(left, right).ToAccessibility();
                     }
                     else if (left == "selected_adult_trade_item")
                     {
@@ -541,29 +581,37 @@ namespace ChecklistTracker.LogicProvider
                     }
                     else if (left == "age" && right == "starting_age")
                     {
-                        return true;
+                        return true.ToAccessibility();
                     }
                     break;
                 case "!=":
-                    return !EvalBinaryComparison(left, right, "==", age);
+                    var result = EvalBinaryComparison(left, right, "==", age);
+                    if (result.HasFlag(Accessibility.InLogic))
+                    {
+                        return Accessibility.None;
+                    }
+                    else
+                    {
+                        return Accessibility.All;
+                    }
                 case "<":
                     if (SeedSettings.ContainsKey(left))
                     {
-                        return SeedSettings.GetSetting<int>(left) < int.Parse(right);
+                        return (SeedSettings.GetSetting<int>(left) < int.Parse(right)).ToAccessibility();
                     }
                     break;
                 case "in":
                     if (SeedSettings.ContainsKey(right))
                     {
-                        return SeedSettings.SettingHas(right, left);
+                        return SeedSettings.SettingHas(right, left).ToAccessibility();
                     }
                     break;
             }
             throw new NotImplementedException($"Unable to eval BinaryExpression: {left} {op} {right}");
         }
 
-        Func<string, string, bool> EvalCountCheck;
-        bool _EvalCountCheck(string left, string right)
+        Func<string, string, Accessibility> EvalCountCheck;
+        Accessibility _EvalCountCheck(string left, string right)
         {
             if (SeedSettings.ContainsKey(right))
             {
@@ -576,21 +624,21 @@ namespace ChecklistTracker.LogicProvider
             return HasItem(itemName, itemCount);
         }
 
-        Func<string, int, bool> HasItemMemoized;
-        bool HasItem(string itemName, int count = 1)
+        Func<string, int, Accessibility> HasItemMemoized;
+        Accessibility HasItem(string itemName, int count = 1)
         {
             return HasItemMemoized(itemName, count);
         }
-        bool _HasItem(string itemName, int count)
+        Accessibility _HasItem(string itemName, int count)
         {
             if (!SeedSettings.ShuffleOcarinaNotes && itemName.StartsWith("Ocarina_"))
             {
-                return true;
+                return Accessibility.All;
             }
 
             if (!SeedSettings.ShuffleGerudoCard && itemName == "Gerudo_Membership_Card")
             {
-                return HasItemCountRaw(itemName, 1) || IsLocationAvailable("Hideout Gerudo Membership Card");
+                return Access.Or(() => HasItemCountRaw(itemName, 1), () => IsLocationAvailable("Hideout Gerudo Membership Card"));
             }
 
             if (!SeedSettings.ShuffleBeans && itemName == "Magic_Bean")
@@ -598,72 +646,63 @@ namespace ChecklistTracker.LogicProvider
                 return IsLocationAvailable("ZR Magic Bean Salesman");
             }
 
+            var conditions = new List<Func<Accessibility>>
+            {
+                () => HasItemCountRaw(itemName, count)
+            };
+
             if (itemName.StartsWith("Small_Key_"))
             {
                 // account for removed locked door in Fire Temple when keysanity is off
-                if (!SeedSettings.ShuffleSmallKeys.DungeonItemShuffleEnabled() && itemName == "Small_Key_Fire_Temple")
+                if (!SeedSettings.ShuffleSmallKeys.IsShuffled() && itemName == "Small_Key_Fire_Temple")
                 {
                     count--;
                 }
 
-                if (HasItemCountRaw(itemName, count))
-                {
-                    return true;
-                }
                 if (itemName.StartsWith("Small_Key_Treasure_Chest_Game"))
                 {
-                    if (SeedSettings.ShuffleTreasureChestGameKeys == "vanilla")
+                    if (!SeedSettings.ShuffleTreasureChestGameKeys.IsShuffled())
                     {
-                        return CanUse("Lens_of_Truth", null);
+                        conditions.Add(() => CanUse("Lens_of_Truth", null));
                     }
                 }
-                else
+                // if Small Keys mode is Keysy, ignore small key requirements
+                else if (SeedSettings.ShuffleSmallKeys == ShuffleDungeonItemType.Remove)
                 {
-
-                    // if Small Keys mode is Keysy, ignore small key requirements
-                    if (SeedSettings.ShuffleSmallKeys == "remove")
-                    {
-                        return true;
-                    }
+                    return Accessibility.All;
                 }
             }
 
             if (itemName.StartsWith("Boss_Key_"))
             {
-                if (HasItemCountRaw(itemName, count))
-                {
-                    return true;
-                }
                 if (SeedSettings.KeyRingsGiveBK)
                 {
-                    return HasItem(itemName.Replace("Boss_", "Small_"), 1);
+                    conditions.Add(() => HasItem(itemName.Replace("Boss_", "Small_"), 1));
                 }
                 if (itemName == "Boss_Key_Ganons_Castle")
                 {
-                    if (SeedSettings.ShuffleGanonsBK == "vanilla")
+                    if (SeedSettings.ShuffleGanonsBK == ShuffleGanonsBKType.Vanilla)
                     {
-                        return IsLocationAvailable("Ganons Tower Boss Key Chest");
+                        conditions.Add(() => IsLocationAvailable("Ganons Tower Boss Key Chest"));
                     }
-                    return SeedSettings.ShuffleGanonsBK == "remove" || SeedSettings.ShuffleGanonsBK == "dungeon";
+                    else if (SeedSettings.ShuffleGanonsBK == ShuffleGanonsBKType.Remove ||
+                             SeedSettings.ShuffleGanonsBK == ShuffleGanonsBKType.OwnDungeon)
+                    {
+                        return Accessibility.All;
+                    }
                 }
                 else
                 {
-                    if (SeedSettings.ShuffleBossKeys == "vanilla")
+                    if (SeedSettings.ShuffleBossKeys == ShuffleDungeonItemType.Vanilla)
                     {
                         var dungeon = itemName.Replace("Boss_Key_", "").Replace("_", " ");
-
-                        return IsLocationAvailable($"{dungeon} Boss Key Chest");
+                        conditions.Add(() => IsLocationAvailable($"{dungeon} Boss Key Chest"));
                     }
-                    return SeedSettings.ShuffleBossKeys == "remove" || SeedSettings.ShuffleBossKeys == "dungeon";
-                }
-            }
-
-            // if Silver Rupee shuffle is off, ignore small key requirements
-            if (SeedSettings.ShuffleSilverRupees == "vanilla" && itemName.StartsWith("Silver_Rupee_"))
-            {
-                if (HasItemCountRaw(itemName, count))
-                {
-                    return true;
+                    else if (SeedSettings.ShuffleBossKeys == ShuffleDungeonItemType.Remove ||
+                             SeedSettings.ShuffleBossKeys == ShuffleDungeonItemType.OwnDungeon)
+                    {
+                        return Accessibility.All;
+                    }
                 }
             }
 
@@ -672,52 +711,54 @@ namespace ChecklistTracker.LogicProvider
                 count = SeedSettings.BigPoeRandomCount ? 10 : SeedSettings.BigPoeCount;
             }
 
-            return HasItemCountRaw(itemName, count);
+            conditions.Add(() => HasItemCountRaw(itemName, count));
+
+            return conditions.Or();
         }
 
-        private bool HasItemCountRaw(string itemName, int count)
+        private Accessibility HasItemCountRaw(string itemName, int count)
         {
             if (Items.ContainsKey(itemName) && Items[itemName] >= count)
             {
-                return true;
+                return Accessibility.All;
             }
             if (!itemName.StartsWith(SyntheticTag))
             {
-                return HasItemCountRaw(Synthetic(itemName), count);
+                return HasItemCountRaw(Synthetic(itemName), count) & Accessibility.SyntheticAssumed;
             }
-            return false;
+            return Accessibility.None;
         }
 
-        Func<string, int, bool, bool> HasAvailableDungeonKeysMemoized;
-        bool HasAvailableDungeonKeys(string dungeon, int count)
-        {
-            return HasAvailableDungeonKeysMemoized(dungeon, count, true);
-        }
-        private bool _HasAvailableDungeonKeys(string dungeon, int count)
-        {
-            var accessibleDungeonRegions = Regions.Values
-                .SelectMany(regionLocs => regionLocs.ToList())
-                .Where(region => Locations.RegionMap[region] == dungeon)
-                .ToHashSet();
+        //Func<string, int, bool, Accessibility> HasAvailableDungeonKeysMemoized;
+        //Accessibility HasAvailableDungeonKeys(string dungeon, int count)
+        //{
+        //    return HasAvailableDungeonKeysMemoized(dungeon, count, true);
+        //}
+        //private Accessibility _HasAvailableDungeonKeys(string dungeon, int count)
+        //{
+        //    var accessibleDungeonRegions = Regions.Values
+        //        .SelectMany(regionLocs => regionLocs.ToList())
+        //        .Where(region => Locations.RegionMap[region] == dungeon)
+        //        .ToHashSet();
 
-            var dungeonLocations = Locations.ActiveLocations.Values.Where(loc => accessibleDungeonRegions.Contains(loc.ParentRegion)).ToList();
+        //    var dungeonLocations = Locations.ActiveLocations.Values.Where(loc => accessibleDungeonRegions.Contains(loc.ParentRegion)).ToList();
 
-            var availableLocations = dungeonLocations
-                .Where(loc =>
-                {
-                    try
-                    {
-                        return Locations.IsProgessLocation(loc) && IsLocationAvailable(loc.LocationName);
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                        return false;
-                    }
-                })
-                .Take(count)
-                .Count();
-            return availableLocations >= count;
-        }
+        //    var availableLocations = dungeonLocations
+        //        .Where(loc =>
+        //        {
+        //            try
+        //            {
+        //                return Locations.IsProgessLocation(loc) && IsLocationAvailable(loc.LocationName);
+        //            }
+        //            catch (InvalidOperationException e)
+        //            {
+        //                return false;
+        //            }
+        //        })
+        //        .Take(count)
+        //        .Count();
+        //    return availableLocations >= count;
+        //}
 
         private static ISet<string> MEDALLIONS = new HashSet<string>
         {
@@ -728,8 +769,8 @@ namespace ChecklistTracker.LogicProvider
             "Shadow_Medallion",
             "Spirit_Medallion",
         };
-        Func<string, bool> HasMedallions;
-        bool _HasMedallions(string conditionSetting)
+        Func<string, Accessibility> HasMedallions;
+        Accessibility _HasMedallions(string conditionSetting)
         {
             if (!SeedSettings.ContainsKey(conditionSetting))
             {
@@ -738,9 +779,7 @@ namespace ChecklistTracker.LogicProvider
 
             int requiredCount = SeedSettings.GetSetting<int>(conditionSetting);
 
-            int actualCount = MEDALLIONS.Where(med => HasItem(med)).Count();
-
-            return actualCount >= requiredCount;
+            return MEDALLIONS.MostAccessible(r => HasItem(r), requiredCount);
         }
 
         private static ISet<string> STONES = new HashSet<string>
@@ -749,8 +788,8 @@ namespace ChecklistTracker.LogicProvider
             "Goron_Ruby",
             "Zora_Sapphire",
         };
-        Func<string, bool> HasStones;
-        bool _HasStones(string conditionSetting)
+        Func<string, Accessibility> HasStones;
+        Accessibility _HasStones(string conditionSetting)
         {
             if (!SeedSettings.ContainsKey(conditionSetting))
             {
@@ -759,13 +798,11 @@ namespace ChecklistTracker.LogicProvider
 
             int requiredCount = SeedSettings.GetSetting<int>(conditionSetting);
 
-            int actualCount = STONES.Where(stone => HasItem(stone)).Count();
-
-            return actualCount >= requiredCount;
+            return STONES.MostAccessible(r => HasItem(r), requiredCount);
         }
 
-        Func<string, bool> HasDungeonRewards;
-        bool _HasDungeonRewards(string conditionSetting)
+        Func<string, Accessibility> HasDungeonRewards;
+        Accessibility _HasDungeonRewards(string conditionSetting)
         {
             if (!SeedSettings.ContainsKey(conditionSetting))
             {
@@ -774,13 +811,11 @@ namespace ChecklistTracker.LogicProvider
 
             int requiredCount = SeedSettings.GetSetting<int>(conditionSetting);
 
-            int actualCount = MEDALLIONS.Union(STONES).Where(stone => HasItem(stone)).Count();
-
-            return actualCount >= requiredCount;
+            return MEDALLIONS.Union(STONES).MostAccessible(r => HasItem(r), requiredCount);
         }
 
-        Func<string, bool> HasHearts;
-        bool _HasHearts(string conditionSetting)
+        Func<string, Accessibility> HasHearts;
+        Accessibility _HasHearts(string conditionSetting)
         {
             //if (!SeedSettings.ContainsKey(conditionSetting))
             //{
@@ -791,16 +826,16 @@ namespace ChecklistTracker.LogicProvider
 
             //return HasItem("Hearts", requiredCount);
             // TODO: figure out health tracking.
-            return true;
+            return Accessibility.All;
         }
 
-        Func<string, bool> HasProjectile;
-        bool _HasProjectile(string forAge)
+        Func<string, Accessibility> HasProjectile;
+        Accessibility _HasProjectile(string forAge)
         {
-            var canChildProjectile = HasItem("Slingshot") || HasItem("Boomerang");
-            var canAdultProjectile = HasItem("Bow") || HasItem("Progressive_Hookshot");
+            var canChildProjectile = HasItem("Slingshot") | HasItem("Boomerang");
+            var canAdultProjectile = HasItem("Bow") | HasItem("Progressive_Hookshot");
 
-            bool hasProjectile = false;
+            Accessibility hasProjectile;
             switch (forAge)
             {
                 case "child":
@@ -810,128 +845,128 @@ namespace ChecklistTracker.LogicProvider
                     hasProjectile = canAdultProjectile;
                     break;
                 case "both":
-                    hasProjectile = canChildProjectile && canAdultProjectile;
+                    hasProjectile = canChildProjectile & canAdultProjectile;
                     break;
                 case "either":
-                    hasProjectile = canChildProjectile || canAdultProjectile;
+                    hasProjectile = canChildProjectile | canAdultProjectile;
                     break;
                 default:
                     throw new NotImplementedException($"has_projectile({forAge})");
             }
 
-            if (hasProjectile)
-            {
-                return true;
-            }
-
-            return EvalRuleAlias("has_explosives", "child") || EvalRuleAlias("has_explosives", "adult");
+            return hasProjectile |
+                    EvalRuleAlias("has_explosives", "child") |
+                    EvalRuleAlias("has_explosives", "adult");
         }
 
-        Func<string, bool> RegionHasShortcuts;
-        bool _RegionHasShortcuts(string regionName)
+        Func<string, Accessibility> RegionHasShortcuts;
+        Accessibility _RegionHasShortcuts(string regionName)
         {
             if (!Locations.RegionMap.ContainsKey(regionName))
             {
                 throw new NotImplementedException($"region_has_shortcuts({regionName})");
             }
 
-            return SeedSettings.DungeonShortcuts.Contains(regionName);
+            return SeedSettings.DungeonShortcuts.Contains(regionName).ToAccessibility();
         }
 
-        Func<string, bool> HasAllNotesForSong;
-        bool _HasAllNotesForSong(string name)
+        Func<string, Accessibility> HasAllNotesForSong;
+        Accessibility _HasAllNotesForSong(string name)
         {
             if (!SeedSettings.ShuffleOcarinaNotes)
             {
-                return true;
+                return Accessibility.All;
             }
             // TODO: Figure out how to track custom song notes
             switch (name)
             {
                 case "Minuet_of_Forest":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_up_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Bolero_of_Fire":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_down_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Serenade_of_Water":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_down_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Requiem_of_Spirit":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_down_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Nocturne_of_Shadow":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_down_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Prelude_of_Light":
                     return (
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_C_up_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Zeldas_Lullaby":
                     return (
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_C_up_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Eponas_Song":
                     return (
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_C_up_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Sarias_Song":
                     return (
-                        HasItem("Ocarina_C_down_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_C_down_Button") &
+                        HasItem("Ocarina_C_left_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Suns_Song":
                     return (
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
+                        HasItem("Ocarina_C_up_Button") &
+                        HasItem("Ocarina_C_down_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Song_of_Time":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_down_Button") &
                         HasItem("Ocarina_C_right_Button")
                     );
                 case "Song_of_Storms":
                     return (
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_up_Button") &&
+                        HasItem("Ocarina_A_Button") &
+                        HasItem("Ocarina_C_up_Button") &
                         HasItem("Ocarina_C_down_Button")
                     );
                 case "Scarecrow_Song":
-                    return new bool[]
+                    var buttons = new Accessibility[]
                     {
-                        HasItem("Ocarina_A_Button") &&
-                        HasItem("Ocarina_C_up_Button") &&
-                        HasItem("Ocarina_C_down_Button") &&
-                        HasItem("Ocarina_C_left_Button") &&
+                        HasItem("Ocarina_A_Button"),
+                        HasItem("Ocarina_C_up_Button"),
+                        HasItem("Ocarina_C_down_Button"),
+                        HasItem("Ocarina_C_left_Button"),
                         HasItem("Ocarina_C_right_Button")
-                    }.Where(v => v).Count() >= 2;
+                    };
+
+                    return buttons.MostAccessible(a => a, 2);
+
                 default:
                     throw new NotImplementedException($"has_all_notes_for_song({name})");
             }
