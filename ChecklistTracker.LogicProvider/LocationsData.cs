@@ -20,28 +20,29 @@ namespace ChecklistTracker.LogicProvider
 {
     internal partial class LocationsData : INotifyPropertyChanged
     {
-        internal struct RuleData
+        internal struct AccessRule
         {
+            internal bool IsMq;
             internal string ParentRegion;
             internal IParseTree Rule;
+            internal Accessibility Accessibility;
+        }
+
+        internal struct RuleData
+        {
+            internal IList<AccessRule> AccessRules;
+            internal string HintRegion;
             internal bool IsDungeon;
-            internal bool IsMq;
             internal string LocationName;
             internal string Type;
             internal string VanillaItem;
         }
 
-        //internal DoubleConcurrentDictionary<string, string, RuleData> Locations { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData>();
-        //TripleConcurrentDictionary<string, string, string, RuleData> DropLocations { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
-        //TripleConcurrentDictionary<string, string, string, RuleData> SkullsLocations { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
-        //TripleConcurrentDictionary<string, string, string, RuleData> Events { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
-        //TripleConcurrentDictionary<string, string, string, RuleData> Exits { get; set; } = new TripleConcurrentDictionary<string, string, string, RuleData>();
-
         internal ConcurrentDictionary<string, RuleData> ActiveLocations { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal DoubleConcurrentDictionary<string, string, RuleData> ActiveLocationsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData>();
-        internal ConcurrentDictionary<string, ISet<RuleData>> ActiveDropLocationsByItem { get; set; } = new ConcurrentDictionary<string, ISet<RuleData>>();
+        internal ConcurrentDictionary<string, RuleData> ActiveDropLocationsByItem { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal ConcurrentDictionary<string, RuleData> ActiveSkullsLocations { get; set; } = new ConcurrentDictionary<string, RuleData>();
-        internal ConcurrentDictionary<string, ISet<RuleData>> ActiveEvents { get; set; } = new ConcurrentDictionary<string, ISet<RuleData>>();
+        internal ConcurrentDictionary<string, RuleData> ActiveEvents { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal DoubleConcurrentDictionary<string, string, RuleData> ActiveExitsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData> ();
 
         internal IDictionary<string, string> RegionMap { get; set; }
@@ -70,11 +71,18 @@ namespace ChecklistTracker.LogicProvider
                 location.ParseLogicFile(dungeon.Value, isDungeon: true, isMQ: dungeon.Key.EndsWith("MQ"));
             }
 
+            foreach (var dungeon in logicFiles.DungeonFilesAdditional.Where(df => !df.Key.EndsWith("MQ")))
+            {
+                location.ParseLogicFile(dungeon.Value, isDungeon: true, isMQ: dungeon.Key.EndsWith("MQ"));
+            }
+
             // Run through the boss file twice, since MQ and non-MQ share the same boss file
             //location.ParseLogicFile(logicFiles.BossesFile, true, true);
             location.ParseLogicFile(logicFiles.BossesFile, true, false);
+            location.ParseLogicFile(logicFiles.BossesFileAdditional, true, false);
 
             location.ParseLogicFile(logicFiles.OverworldFile, false, false);
+            location.ParseLogicFile(logicFiles.OverworldFileAdditional, false, false);
 
             location.TrackerConfig.PropertyChanged += location.TrackerConfig_PropertyChanged;
             location.TrackerConfig.RandomizerSettings.PropertyChanged += location.RandomizerSettings_PropertyChanged;
@@ -105,6 +113,10 @@ namespace ChecklistTracker.LogicProvider
             foreach (var region in logicFile)
             {
                 var parentRegion = region.RegionName;
+                if (!RegionMap.ContainsKey(parentRegion) && isDungeon)
+                {
+                    RegionMap[parentRegion] = region.Dungeon;
+                }
                 var hintRegion = RegionMap[parentRegion];
 
                 var missingLocations = new HashSet<string>();
@@ -138,39 +150,46 @@ namespace ChecklistTracker.LogicProvider
 
                         if (data.Type == "Drop")
                         {
-                            var dropData = new RuleData
+                            var dropData = ActiveDropLocationsByItem.GetOrAdd(data.VanillaItem, (s) => new RuleData
                             {
-                                IsDungeon = isDungeon,
+                                LocationName = locationName,
+                                VanillaItem = data.VanillaItem,
+                                AccessRules = new List<AccessRule>()
+                            });
+
+                            dropData.AccessRules.Add(new AccessRule
+                            {
                                 IsMq = isMQ,
                                 ParentRegion = parentRegion,
                                 Rule = LogicHelpers.ParseRule(rule),
-                                VanillaItem = data.VanillaItem,
-                            };
-
-                            //DropLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(data.VanillaItem, dropData);
-                            ActiveDropLocationsByItem.GetOrAdd(data.VanillaItem, (s) => new HashSet<RuleData>()).Add(dropData);
+                                Accessibility = Accessibility.All
+                            });
                         }
                         else
                         {
-                            // Record the location, along with pertinent information to that location
-                            var locationData = new RuleData
+                            var locationData = ActiveLocations.GetOrAdd(locationName, new RuleData
                             {
-                                IsDungeon = isDungeon,
-                                IsMq = isMQ,
                                 LocationName = locationName,
-                                ParentRegion = parentRegion,
-                                Rule = LogicHelpers.ParseRule(rule),
+                                HintRegion = RegionMap[parentRegion],
+                                IsDungeon = isDungeon,
                                 Type = data.Type,
                                 VanillaItem = data.VanillaItem,
-                            };
-                            //Locations.GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
-                            ActiveLocations[locationName] = locationData;
+                                AccessRules = new List<AccessRule>()
+                            });
+
+                            locationData.AccessRules.Add(new AccessRule
+                            {
+                                IsMq = isMQ,
+                                ParentRegion = parentRegion,
+                                Rule = LogicHelpers.ParseRule(rule),
+                                Accessibility = Accessibility.All
+                            });
+
                             ActiveLocationsByRegion.GetOrNew(parentRegion)[locationName] = locationData;
 
                             // Additionally, if the location contains a skulltula token, record that seperately
                             if (data.Type == "GS Token")
                             {
-                                //SkullsLocations.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(locationName, locationData);
                                 ActiveSkullsLocations[locationName] = locationData;
                             }
                         }
@@ -191,34 +210,34 @@ namespace ChecklistTracker.LogicProvider
 
                 foreach (var evt in region.Events)
                 {
-                    var eventData = new RuleData
+                    var eventData = ActiveEvents.GetOrAdd(evt.Key, new RuleData
+                    {
+                        LocationName = evt.Key,
+                        AccessRules = new List<AccessRule>()
+                    });
+
+                    eventData.AccessRules.Add(new AccessRule
                     {
                         ParentRegion = parentRegion,
                         Rule = LogicHelpers.ParseRule(evt.Value),
-                    };
-
-                    //Events.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(evt.Key, eventData);
-                    ActiveEvents.GetOrAdd(evt.Key, (s) => new HashSet<RuleData>()).Add(eventData);
+                        Accessibility = Accessibility.All
+                    });
                 }
 
                 foreach (var exit in region.Exits)
                 {
-                    var exitData = new RuleData
+                    var exitData = ActiveExitsByRegion.GetOrNew(parentRegion).GetOrAdd(exit.Key, new RuleData
+                    {
+                        LocationName = exit.Key,
+                        AccessRules = new List<AccessRule>()
+                    });
+
+                    exitData.AccessRules.Add(new AccessRule
                     {
                         ParentRegion = parentRegion,
                         Rule = LogicHelpers.ParseRule(exit.Value),
-                        LocationName = exit.Key
-                    };
-
-                    //Exits.GetOrNew(locationKey).GetOrNew(parentRegion).PutOrAdd(exit.Key, exitData);
-                    if(ActiveExitsByRegion.GetOrNew(parentRegion).ContainsKey(exit.Key))
-                    {
-                        throw new Exception($"{parentRegion} -> {exit.Key}");
-                    }
-                    else
-                    {
-                        ActiveExitsByRegion.GetOrNew(parentRegion).PutOrAdd(exit.Key, exitData);
-                    }
+                        Accessibility = Accessibility.All
+                    });
                 }
 
             }
@@ -604,8 +623,7 @@ namespace ChecklistTracker.LogicProvider
             var map = new ConcurrentDictionary<string, IDictionary<string, RuleData>>();
             foreach (var location in ActiveLocations)
             {
-                var hintRegion = RegionMap[location.Value.ParentRegion];
-                map.GetOrAdd(hintRegion, h => new ConcurrentDictionary<string, RuleData>())[location.Value.LocationName] = location.Value;
+                map.GetOrAdd(location.Value.HintRegion, h => new ConcurrentDictionary<string, RuleData>())[location.Value.LocationName] = location.Value;
             }
             return map;
         }

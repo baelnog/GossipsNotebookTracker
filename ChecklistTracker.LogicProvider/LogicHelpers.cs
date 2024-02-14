@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -47,9 +48,20 @@ namespace ChecklistTracker.LogicProvider
             LogicFiles logicFiles,
             LocationsData locations)
         {
-            var logicHelpersFile = logicFiles.LogicHelpers;
+            var helpers = new Dictionary<string, string>(logicFiles.LogicHelpers);
+            foreach (KeyValuePair<string, string> helper in logicFiles.LogicHelpersAdditional)
+            {
+                if (helpers.ContainsKey(helper.Key))
+                {
+                    helpers[helper.Key] += " or " + helper.Value;
+                }
+                else
+                {
+                    helpers[helper.Key] = helper.Value;
+                }
+            }
 
-            var ruleAliases = logicHelpersFile
+            var ruleAliases = helpers
                 .ToDictionary(
                 kv => kv.Key,
                 kv => Parse(kv.Key, kv.Value));
@@ -174,8 +186,10 @@ namespace ChecklistTracker.LogicProvider
                         }
                         foreach (var keyLocation in Locations.ActiveLocationsByRegion[region.Key])
                         {
+                            var data = keyLocation.Value;
+                            var rulesForRegion = data.AccessRules.Where(rule => rule.ParentRegion == region.Key);
                             if (!guaranteedKeys.Contains(keyLocation.Value.LocationName) &&
-                                EvalNode(keyLocation.Value.Rule, region.Key, age).HasFlag(Accessibility.InLogic))
+                                rulesForRegion.Or(rule => (EvalNode(rule.Rule, region.Key, age) & rule.Accessibility)).HasFlag(Accessibility.InLogic))
                             {
                                 guaranteedKeys.Add(keyLocation.Value.LocationName);
                                 // Location is Accessible. Count it towards same-dungeon key-items.
@@ -199,7 +213,7 @@ namespace ChecklistTracker.LogicProvider
                                     if (SeedSettings.ShuffleSmallKeys == ShuffleDungeonItemType.Vanilla && keyLocation.Value.VanillaItem.StartsWith("Small_Key_") ||
                                         SeedSettings.ShuffleSmallKeys == ShuffleDungeonItemType.OwnDungeon && Locations.IsProgessLocation(keyLocation.Value))
                                     {
-                                        var dungeon = Locations.RegionMap[keyLocation.Value.ParentRegion];
+                                        var dungeon = keyLocation.Value.HintRegion;
 
                                         var smallKeyItem = Synthetic($"Small_Key_{dungeon.Replace(" ", "_")}");
                                         if (!Items.ContainsKey(smallKeyItem))
@@ -220,7 +234,7 @@ namespace ChecklistTracker.LogicProvider
                                         updatedKeys = true;
                                     }
                                 }
-                                else if (Locations.RegionMap[keyLocation.Value.ParentRegion] == "Thieves Hideout")
+                                else if (keyLocation.Value.HintRegion == "Thieves Hideout")
                                 {
                                     if (!SeedSettings.ShuffleHideoutKeys.IsShuffled() && keyLocation.Value.VanillaItem.StartsWith("Small_Key_"))
                                     {
@@ -276,7 +290,8 @@ namespace ChecklistTracker.LogicProvider
                 if (!Regions[age].TryGetValue(exit.Value.LocationName, out var regionAccessibility) || regionAccessibility < Accessibility.InLogic)
                 {
                     //Logging.LogMessage($"Testing Exit {exit.Value.LocationName} is accessible as {age}");
-                    var exitAccessibility = EvalNode(exit.Value.Rule, rootRegion, age);
+                    var exitsFromRegion = exit.Value.AccessRules.Where(rule => rule.ParentRegion == rootRegion);
+                    var exitAccessibility = exitsFromRegion.Or(rule => rule.Accessibility & EvalNode(rule.Rule, rootRegion, age));
                     var accessibility = ((rootRegionAccessibility & exitAccessibility) | regionAccessibility);
                     Regions[age][exit.Value.LocationName] = accessibility;
                     if (accessibility > regionAccessibility)
@@ -309,21 +324,6 @@ namespace ChecklistTracker.LogicProvider
         {
             using var indent = Logging.Indented();
             Logging.WriteLine("{0} as {1}", locationName, age);
-
-            var locationData = Locations.ActiveLocations[locationName];
-
-            if (locationData.IsDungeon)
-            {
-                if (locationData.IsMq)
-                {
-                    // TODO: MQ Support
-                    return Accessibility.None;
-                }
-            }
-
-            var parentRegion = locationData.ParentRegion;
-            var locationRule = locationData.Rule;
-
             if (age == null)
             {
                 return Access.Or(
@@ -331,13 +331,28 @@ namespace ChecklistTracker.LogicProvider
                     () => IsLocationAvailable(locationName, "adult")
                 );
             }
-            else
-            {
-                return Access.And(
-                    () => IsRegionAccessible(parentRegion, age),
-                    () => EvalNode(locationRule, parentRegion, age, allowReentrance: true)
+
+            var locationData = Locations.ActiveLocations[locationName];
+
+            return locationData.AccessRules.Or(rule => EvalAccessRuleAge(rule, age));
+        }
+
+        internal Accessibility EvalAccessRuleAnyAge(LocationsData.AccessRule rule)
+        {
+            return Access.Or(
+                    () => EvalAccessRuleAge(rule, "child"),
+                    () => EvalAccessRuleAge(rule, "adult")
                 );
-            }
+        }
+
+        private Func<LocationsData.AccessRule, string, Accessibility> EvalAccessRuleAge;
+        internal Accessibility _EvalAccessRuleAge(LocationsData.AccessRule rule, string age)
+        {
+            return Access.And(
+                    () => rule.Accessibility,
+                    () => IsRegionAccessible(rule.ParentRegion, age),
+                    () => EvalNode(rule.Rule, rule.ParentRegion, age, allowReentrance: true)
+                );
         }
 
         internal ISet<string> GetAccessilbeSkulls()

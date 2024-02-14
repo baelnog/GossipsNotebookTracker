@@ -18,7 +18,7 @@ namespace ChecklistTracker.Config
 {
     public partial class TrackerConfig : INotifyPropertyChanged
     {
-        internal static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
+        public static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -103,7 +103,7 @@ namespace ChecklistTracker.Config
 
         private static async Task<ItemTable> LoadItemTable()
         {
-            return await ParseJson<ItemTable>($"{ProgramDir}/config/image-table.json").ConfigureAwait(false);
+            return await ParseJson<ItemTable>($"{ProgramDir}/config/ootr/image-table.json").ConfigureAwait(false);
         }
 
         private static async Task<UserConfig> LoadUserConfig()
@@ -201,27 +201,27 @@ namespace ChecklistTracker.Config
 
         private static async Task<IDictionary<string, ISet<string>>> LoadHintRegions()
         {
-            return await ParseJson<IDictionary<string, ISet<string>>>($"{ProgramDir}/config/hint-regions.json").ConfigureAwait(false);
+            return await ParseJson<IDictionary<string, ISet<string>>>($"{ProgramDir}/config/ootr/hint-regions.json").ConfigureAwait(false);
         }
 
         private static async Task<IDictionary<string, string>> LoadHintRegionShortNames()
         {
-            return await ParseJson<IDictionary<string, string>>($"{ProgramDir}/config/hint-regions-short-names.json").ConfigureAwait(false);
+            return await ParseJson<IDictionary<string, string>>($"{ProgramDir}/config/ootr/hint-regions-short-names.json").ConfigureAwait(false);
         }
 
         private static async Task<IList<string>> LoadDungeons()
         {
-            return await ParseJson<IList<string>>($"{ProgramDir}/config/dungeons.json").ConfigureAwait(false);
+            return await ParseJson<IList<string>>($"{ProgramDir}/config/ootr/dungeons.json").ConfigureAwait(false);
         }
 
         private static async Task<IDictionary<string, int>> LoadDefaultInventory()
         {
-            return await ParseJson<IDictionary<string, int>>($"{ProgramDir}/config/default-items.json").ConfigureAwait(false);
+            return await ParseJson<IDictionary<string, int>>($"{ProgramDir}/config/ootr/default-items.json").ConfigureAwait(false);
         }
 
         private static async Task<IDictionary<string, LocationData>> LoadLocationTable()
         {
-            var locationTable = await ParseJson<IDictionary<string, IList<string>>>($"{ProgramDir}/config/location-table.json").ConfigureAwait(false);
+            var locationTable = await ParseJson<IDictionary<string, IList<string>>>($"{ProgramDir}/config/ootr/location-table.json").ConfigureAwait(false);
             return locationTable.ToDictionary(
                 entry => entry.Key,
                 entry => new LocationData

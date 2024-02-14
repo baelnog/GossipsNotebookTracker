@@ -28,6 +28,7 @@ namespace ChecklistTracker.LogicProvider
         {
             _IsLocationAvailableMemoized = Cache.Memoize<string, string, Accessibility>("IsLocationAvailable", _IsLocationAvailable);
             _EvalNodeMemoized = Cache.Memoize<IParseTree, string, string, Accessibility>("EvalNode", _EvalNode, onReentrance: () => Accessibility.None);
+            EvalAccessRuleAge = Cache.Memoize<LocationsData.AccessRule, string, Accessibility>("EvalAccessRuleAge", _EvalAccessRuleAge);
             EvalIdentifier = Cache.Memoize<string, string, Accessibility>("EvalIdentifier", _EvalIdentifier);
             EvalEvent = Cache.Memoize<string, Accessibility>("EvalEvent", _EvalEvent);
             EvalCall = Cache.Memoize<string, Python3Parser.ArgumentContext[], Accessibility>("EvalCall", _EvalCall);
@@ -109,6 +110,14 @@ namespace ChecklistTracker.LogicProvider
                     return true.ToAccessibility();
                 case "False":
                     return false.ToAccessibility();
+                case "peek":
+                    return Accessibility.Peekable;
+                case "accessible":
+                    return Accessibility.SequenceBreak;
+                case "chest_appearance":
+                    return (SeedSettings.CAMC != "off").ToAccessibility();
+                case "chest_size":
+                    return (SeedSettings.CAMC == "both" || SeedSettings.CAMC == "classic").ToAccessibility();
                 case "had_night_start":
                     return this.SeedSettings.StartingTimeOfDay.IsNight().ToAccessibility();
                 case "has_bottle":
@@ -327,16 +336,7 @@ namespace ChecklistTracker.LogicProvider
                 );
             }
 
-            return Locations.ActiveEvents[name].Or(evt =>
-            {
-                var parentRegion = evt.ParentRegion;
-                var rule = evt.Rule;
-
-                return Access.Or(
-                    () => Access.And(() => IsRegionAccessible(parentRegion, "child"), () => EvalNode(rule, parentRegion, "child")),
-                    () => Access.And(() => IsRegionAccessible(parentRegion, "adult"), () => EvalNode(rule, parentRegion, "adult"))
-                );
-            });
+            return Locations.ActiveEvents[name].AccessRules.Or(EvalAccessRuleAnyAge);
         }
 
         Accessibility AtNight(string age)
@@ -430,16 +430,7 @@ namespace ChecklistTracker.LogicProvider
             using var indent = Logging.Indented();
             Logging.WriteLine($"CanAccessDrop({dropName}, {age})");
 
-            return Locations.ActiveDropLocationsByItem[dropName].Or(drop =>
-            {
-                var parentRegion = drop.ParentRegion;
-                var rule = drop.Rule;
-
-                return Access.Or(
-                    () => Access.And(() => IsRegionAccessible(parentRegion, "child"), () => EvalNode(rule, parentRegion, "child", allowReentrance: true)),
-                    () => Access.And(() => IsRegionAccessible(parentRegion, "adult"), () => EvalNode(rule, parentRegion, "adult", allowReentrance: true))
-                );
-            });
+            return Locations.ActiveDropLocationsByItem[dropName].AccessRules.Or(EvalAccessRuleAnyAge);
         }
 
         Func<string, Accessibility> HasBottle;

@@ -88,7 +88,7 @@ namespace ChecklistTracker.LogicProvider
 
             foreach (var location in Locations.ActiveLocations.Values)
             {
-                var hintRegionName = Locations.RegionMap.TryGetValue(location.ParentRegion, out var mappedRegion) ? mappedRegion : location.ParentRegion;
+                var hintRegionName = location.HintRegion;
                 Config.HintRegionShortNames.TryGetValue(hintRegionName, out var regionShortName);
                 var hintRegion = HintRegions.GetOrAdd(hintRegionName, (region) => new HintRegion(region, regionShortName));
 
@@ -105,7 +105,7 @@ namespace ChecklistTracker.LogicProvider
                 foreach (var location in hintRegion.Locations)
                 {
                     var locationData = Locations.ActiveLocations[location.Name];
-                    location.IsActive = locationData.IsDungeon ? !locationData.IsMq : true;
+                    location.IsActive = true; // TODO MQ: locationData.IsDungeon ? !locationData.IsMq : true;
                     if (location.IsActive)
                     {
                         location.Accessiblity = Helpers.IsLocationAvailable(location.Name);

@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <None Remove="Resources\config\child-trade-items.json" />
-    <None Remove="Resources\config\child-trade-items.json" />
-    <None Remove="Resources\config\trade-items.json" />
     <None Remove="Resources\config\trade-items.json" />
   </ItemGroup>
 
@@ -34,11 +32,5 @@
   <ItemGroup>
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
   </ItemGroup>
-  <!--<None Include="Assets\dist\**\*" LogicalName="%(RecursiveDir)%(Filename)%(Extension)">
-    <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </None>
-  <None Remove="Assets\dist\**\*.pdn" />-->
 
 </Project>
