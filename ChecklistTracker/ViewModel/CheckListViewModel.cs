@@ -37,6 +37,10 @@ namespace ChecklistTracker.ViewModel
         internal bool SkullsToggle { get; private set; } = false;
         internal bool InLogicToggle { get; private set; } = false;
 
+        public bool OpenRegionPane { get; set; } = true;
+        public bool OpenSettingsPane { get; set; } = true;
+
+
         internal CheckListViewModel(TrackerConfig config, Inventory inventory, LogicEngine? engine)
         {
             Config = config;
@@ -209,6 +213,16 @@ namespace ChecklistTracker.ViewModel
                 InLogicToggle = isChecked;
                 OnFiltersChanged();
             }
+        }
+
+        public void ToggleRegionPane(bool isChecked)
+        {
+            OpenRegionPane = isChecked;
+        }
+
+        public void ToggleSettingsPane(bool isChecked)
+        {
+            OpenSettingsPane = isChecked;
         }
 
         private void OnFiltersChanged()

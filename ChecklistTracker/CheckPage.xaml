@@ -27,20 +27,21 @@
     <SplitView DisplayMode="CompactInline"
                OpenPaneLength="220"
                CompactPaneLength="40"
-               IsPaneOpen="{x:Bind OpenRegionPage, Mode=OneWay}">
+               IsPaneOpen="{x:Bind ViewModel.OpenRegionPane, Mode=OneWay}">
         <SplitView.Pane>
             <ListView ItemsSource="{x:Bind ViewModel.PaneRegions, Mode=OneWay}"
-                      x:Name="RegionSelectionView"
-                      Margin="0"
-                      Padding="0"
-                      SelectionMode="Multiple"
-                      SelectionChanged="OnRegionSelectionChanged"
-                      IsMultiSelectCheckBoxEnabled="False">
+                        x:Name="RegionSelectionView"
+                        Margin="0"
+                        Padding="0,2"
+                        SelectionMode="Multiple"
+                        SelectionChanged="OnRegionSelectionChanged"
+                        IsMultiSelectCheckBoxEnabled="False">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:HintRegionViewModel">
                         <TextBlock Text="{x:Bind Region.Name}"
-                                   FontSize="14"
-                                   VerticalAlignment="Center" />
+                                    FontSize="14"
+                                    VerticalAlignment="Center"
+                                    Padding="0,4"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>
@@ -54,9 +55,9 @@
 
         <SplitView
             DisplayMode="CompactInline"
-               OpenPaneLength="280"
-               CompactPaneLength="40"
-            IsPaneOpen="True"
+            OpenPaneLength="280"
+            CompactPaneLength="0"
+            IsPaneOpen="{x:Bind ViewModel.OpenSettingsPane, Mode=OneWay}"
             PanePlacement="Right">
             <RelativePanel>
                 <ScrollViewer 
@@ -73,6 +74,15 @@
                         Margin="4"/>
                 </ScrollViewer>
                 <CommandBar x:Name="CommandBar" AccessKey="M" RelativePanel.AlignBottomWithPanel="True" OverflowButtonVisibility="Auto">
+                    <AppBarToggleButton
+                            Label="Show Region Pane"
+                            IsChecked="{x:Bind ViewModel.OpenRegionPane, Mode=TwoWay}"
+                            AccessKey="R" >
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE81E;" />
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                    <AppBarSeparator/>
                     <AppBarButton 
                             Icon="Undo" 
                             Label="Undo" 
@@ -93,13 +103,17 @@
                         </AppBarToggleButton.Icon>
                     </AppBarToggleButton>
                     <AppBarToggleButton
+                        Icon="Filter"
                             Label="In Logic"
                             Click="OnToggleInLogic"
                             AccessKey="L" >
-                        <AppBarToggleButton.Icon>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA86;" Margin="-2" />
-                        </AppBarToggleButton.Icon>
-                    </AppBarToggleButton>
+                    </AppBarToggleButton
+                    <AppBarSeparator/>
+                    <AppBarToggleButton
+                        Icon="Setting"
+                        Label="Expand"
+                        IsChecked="{x:Bind ViewModel.OpenSettingsPane, Mode=TwoWay}" />
+                    <AppBarSeparator/>
                 </CommandBar>
             </RelativePanel>
             <SplitView.Pane>

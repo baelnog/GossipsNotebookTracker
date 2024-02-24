@@ -29,8 +29,6 @@ namespace ChecklistTracker
     {
         private CheckListViewModel? ViewModel { get => CheckListViewModel.GlobalInstance; }
 
-        public bool OpenRegionPage { get; set; } = true;
-
         public CheckPage()
         {
             this.InitializeComponent();
@@ -59,6 +57,22 @@ namespace ChecklistTracker
             if (sender is AppBarToggleButton toggle)
             {
                 ViewModel?.ToggleInLogic(toggle.IsChecked == true);
+            }
+        }
+
+        private void OnToggleRegionPane(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarToggleButton toggle)
+            {
+                ViewModel?.ToggleRegionPane(toggle.IsChecked == true);
+            }
+        }
+
+        private void OnToggleSettingsPane(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarToggleButton toggle)
+            {
+                ViewModel?.ToggleSettingsPane(toggle.IsChecked == true);
             }
         }
 
