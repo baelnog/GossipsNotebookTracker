@@ -117,7 +117,7 @@ namespace ChecklistTracker.View
 
             // adjust for column spacing on all columns expect the first
             double totalWidth = _columnWidth + ((numColumns - 1) * (_columnWidth + ColumnSpacing));
-            if (totalWidth > availableWidth)
+            if (totalWidth > availableWidth && numColumns > 1)
             {
                 numColumns--;
             }

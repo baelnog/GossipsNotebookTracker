@@ -853,7 +853,7 @@ namespace ChecklistTracker.LogicProvider
         Func<string, Accessibility> RegionHasShortcuts;
         Accessibility _RegionHasShortcuts(string regionName)
         {
-            if (!Locations.RegionMap.ContainsKey(regionName))
+            if (!Locations.RegionMap.ContainsKey(regionName.Replace("'", "")))
             {
                 throw new NotImplementedException($"region_has_shortcuts({regionName})");
             }

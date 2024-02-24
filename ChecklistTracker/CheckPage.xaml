@@ -16,7 +16,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ItemsPanelTemplate x:Key="ItemsWrapGridHorizontalTemplate">
-            <controls:StaggeredPanel DesiredColumnWidth="250" RowSpacing="4" MinWidth="280"/>
+            <forks:StaggeredPanel RowSpacing="4" ColumnSpacing="4"/>
         </ItemsPanelTemplate>
         <DataTemplate x:Name="HintRegionDataTemplate"
             x:DataType="model:HintRegionViewModel">
@@ -40,11 +40,15 @@
                     <DataTemplate x:DataType="model:HintRegionViewModel">
                         <TextBlock Text="{x:Bind Region.Name}"
                                    FontSize="14"
-                                  Margin="0"
-                                  Padding="0"
                                    VerticalAlignment="Center" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="MinHeight" Value="0"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </SplitView.Pane>
 
@@ -56,17 +60,17 @@
             PanePlacement="Right">
             <RelativePanel>
                 <ScrollViewer 
-                VerticalScrollMode="Auto"    
-                HorizontalScrollMode="Auto"    
-                RelativePanel.Above="CommandBar"
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True">
+                    VerticalScrollMode="Auto"    
+                    HorizontalScrollMode="Auto"    
+                    RelativePanel.Above="CommandBar"
+                    RelativePanel.AlignTopWithPanel="True"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
                     <ItemsControl
                         ItemsSource="{x:Bind ViewModel.ViewRegions, Mode=OneWay}"
                         ItemTemplate="{StaticResource HintRegionDataTemplate}"
                         ItemsPanel="{StaticResource ItemsWrapGridHorizontalTemplate}"
-                        Margin="8"/>
+                        Margin="4"/>
                 </ScrollViewer>
                 <CommandBar x:Name="CommandBar" AccessKey="M" RelativePanel.AlignBottomWithPanel="True" OverflowButtonVisibility="Auto">
                     <AppBarButton 

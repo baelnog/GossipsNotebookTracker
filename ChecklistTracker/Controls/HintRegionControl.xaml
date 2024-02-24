@@ -9,19 +9,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <TextBlock Text="{x:Bind Region.Region.Name, Mode=OneWay}" />
-        <ListView x:Name="LocationListView"
-            ItemsSource="{x:Bind Region.Locations, Mode=OneWay}"
-                  SelectionChanged="OnSelectLocation"
-                  SelectionMode="Single">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:LocationViewModel">
-                    <TextBlock
-                        Text="{x:Bind Location.ShortName, Mode=OneWay}"
-                        Foreground="{x:Bind TextColor, Mode=OneWay}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+    <StackPanel
+        Padding="0,0">
+        <Border
+            BorderThickness="1"
+            BorderBrush="Gray">
+            <ListView x:Name="LocationListView"
+                ItemsSource="{x:Bind Region.Locations, Mode=OneWay}"
+                      SelectionChanged="OnSelectLocation"
+                      SelectionMode="Single"
+                      Header="{x:Bind Region.Region.Name, Mode=OneWay}"
+                      Margin="0,0"
+                      Padding="4,2">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:LocationViewModel">
+                        <TextBlock
+                            Text="{x:Bind Location.ShortName, Mode=OneWay}"
+                            Foreground="{x:Bind TextColor, Mode=OneWay}"
+                            Margin="2" Padding="2"
+                            RelativePanel.AlignBottomWithPanel="True"
+                            RelativePanel.AlignTopWithPanel="True"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="MinHeight" Value="0"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Border>
     </StackPanel>
 </UserControl>

@@ -21,8 +21,6 @@ namespace ChecklistTracker.CoreUtils
         ConcurrentQueue<LogMessage> queue = new ConcurrentQueue<LogMessage>();
         AutoResetEvent hasNewItems = new AutoResetEvent(false);
 
-        internal int Indent = 0;
-
         public ThreadedLogger() : base()
         {
             Task.Run(() =>
@@ -73,21 +71,21 @@ namespace ChecklistTracker.CoreUtils
         [Conditional("DEBUG")]
         public void LogMessage(string log)
         {
-            queue.Enqueue(new LogMessage(log, Indent));
+            queue.Enqueue(new LogMessage(log, Logging.Indent));
             hasNewItems.Set();
         }
 
         [Conditional("DEBUG")]
         public void LogMessage(string log, Exception e)
         {
-            queue.Enqueue(new LogMessage(log, Indent, e: e));
+            queue.Enqueue(new LogMessage(log, Logging.Indent, e: e));
             hasNewItems.Set();
         }
 
         [Conditional("DEBUG")]
         public void LogMessage([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string log, params object[]? args)
         {
-            queue.Enqueue(new LogMessage(log, Indent, args: args));
+            queue.Enqueue(new LogMessage(log, Logging.Indent, args: args));
             hasNewItems.Set();
         }
     }
