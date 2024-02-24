@@ -1,5 +1,6 @@
 {
     "ground_jump": "Bombs and here(has_shield)",
     "has_bombchus": "accessible and Bombchus",
+    "has_explosives": "accessible and Bombchus",
     "mud_wall": "accessible and (Blue_Fire or can_blast_or_smash)"
 }

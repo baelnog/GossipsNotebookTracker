@@ -1060,6 +1060,7 @@
             // "Wasteland Bombchu Salesman": "
             //     Progressive_Wallet and can_jumpslash and
             //     (shuffle_expensive_merchants or not free_bombchu_drops or has_bombchus)",
+            "Wasteland Bombchu Salesman": "peek and (unique_merchants in misc_hints)",
             // "Wasteland Near GS Pot 1": "True",
             // "Wasteland Near GS Pot 2": "True",
             // "Wasteland Near GS Pot 3": "True",
@@ -1706,10 +1707,15 @@
         "scene": "Kak House of Skulltula",
         "locations": {
             // "Kak 10 Gold Skulltula Reward": "(Gold_Skulltula_Token, 10)",
+            "Kak 10 Gold Skulltula Reward": "peek and (10_skulltulas in misc_hints)",
             // "Kak 20 Gold Skulltula Reward": "(Gold_Skulltula_Token, 20)",
+            "Kak 20 Gold Skulltula Reward": "peek and (20_skulltulas in misc_hints)",
             // "Kak 30 Gold Skulltula Reward": "(Gold_Skulltula_Token, 30)",
+            "Kak 30 Gold Skulltula Reward": "peek and (30_skulltulas in misc_hints)",
             // "Kak 40 Gold Skulltula Reward": "(Gold_Skulltula_Token, 40)",
+            "Kak 40 Gold Skulltula Reward": "peek and (40_skulltulas in misc_hints)",
             // "Kak 50 Gold Skulltula Reward": "(Gold_Skulltula_Token, 50)",
+            "Kak 50 Gold Skulltula Reward": "peek and (50_skulltulas in misc_hints)",
             // "10 Skulltulas Reward Hint": "True",
             // "20 Skulltulas Reward Hint": "True",
             // "30 Skulltulas Reward Hint": "True",
@@ -2066,6 +2072,7 @@
             // "GC Medigoron": "
             //     is_adult and Progressive_Wallet and
             //     (can_blast_or_smash or Progressive_Strength_Upgrade)",
+            "GC Medigoron": "is_adult and peek and (unique_merchants in misc_hints)"
             // "GC Rolling Goron as Adult": "'Stop GC Rolling Goron as Adult'",
             // "GC Lower Staircase Pot 1": "True",
             // "GC Lower Staircase Pot 2": "True",
