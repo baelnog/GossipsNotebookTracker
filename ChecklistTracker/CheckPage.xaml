@@ -107,7 +107,7 @@
                             Label="In Logic"
                             Click="OnToggleInLogic"
                             AccessKey="L" >
-                    </AppBarToggleButton
+                    </AppBarToggleButton>
                     <AppBarSeparator/>
                     <AppBarToggleButton
                         Icon="Setting"

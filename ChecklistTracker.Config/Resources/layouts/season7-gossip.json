@@ -25,44 +25,11 @@
         {
           "id": "110b12cf2b6547faa1c8a93f351d0e73",
           "type": "table",
-          "position": [
-            3,
-            3
-          ],
+          "position": [ 3, 3 ],
           "columns": 10,
           "padding": "2.5px",
-          "elements": [
-            "bombs",
-            "hammer",
-            "hookshot",
-            "bow",
-            "fire_arrows",
-            "dins",
-            "scale",
-            "lens",
-            "tunic_goron",
-            "trade_4",
-            "bombchus",
-            "strength",
-            "boomerang",
-            "slingshot",
-            "light_arrows",
-            "farores",
-            "rutos_letter",
-            "gerudo_card",
-            "tunic_zora",
-            "wallet",
-            "boots_iron",
-            "boots_hover",
-            "kokiri_sword",
-            "mirror_shield",
-            "ice_arrows",
-            "magic"
-          ],
-          "elementsSize": [
-            30,
-            30
-          ],
+          "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "gerudo_card", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
+          "elementsSize": [ 30, 30 ],
           "displayName": "Items",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -70,30 +37,11 @@
         {
           "id": "38a65136c038405e8b429bea97af49a1",
           "type": "table",
-          "position": [
-            110,
-            6
-          ],
+          "position": [ 110, 6 ],
           "columns": 6,
           "padding": "8px 5px",
-          "elements": [
-            "song_lullaby",
-            "song_epona",
-            "song_saria",
-            "song_suns",
-            "song_time",
-            "song_storms",
-            "song_minuet",
-            "song_bolero",
-            "song_serenade",
-            "song_requiem",
-            "song_nocturne",
-            "song_prelude"
-          ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elements": [ "song_lullaby", "song_epona", "song_saria", "song_suns", "song_time", "song_storms", "song_minuet", "song_bolero", "song_serenade", "song_requiem", "song_nocturne", "song_prelude" ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Songs",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -101,26 +49,11 @@
         {
           "id": "a9eeb524e75446f5a07f1b8b93032dda",
           "type": "table",
-          "position": [
-            198,
-            6
-          ],
+          "position": [ 198, 6 ],
           "columns": 8,
           "padding": "4px, 5px",
-          "elements": [
-            "keys_forest",
-            "keys_fire",
-            "keys_water",
-            "keys_spirit",
-            "keys_shadow",
-            "keys_ganons",
-            "keys_botw",
-            "keys_gtg"
-          ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elements": [ "keys_forest", "keys_fire", "keys_water", "keys_spirit", "keys_shadow", "keys_ganons", "keys_botw", "keys_gtg" ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Keys",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -128,24 +61,11 @@
         {
           "id": "c7d1ce7675f9417bb04872f1fd240c80",
           "type": "table",
-          "position": [
-            78,
-            216
-          ],
+          "position": [ 78, 216 ],
           "columns": 3,
           "padding": "4px 4px",
-          "elements": [
-            "medallion_green",
-            "medallion_red",
-            "medallion_blue",
-            "medallion_orange",
-            "medallion_purple",
-            "medallion_yellow"
-          ],
-          "elementsSize": [
-            32,
-            32
-          ],
+          "elements": [ "medallion_green", "medallion_red", "medallion_blue", "medallion_orange", "medallion_purple", "medallion_yellow" ],
+          "elementsSize": [ 32, 32 ],
           "displayName": "Rewards",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -153,21 +73,11 @@
         {
           "id": "c7d1ce7675f9417bb04872f1fd240c80",
           "type": "table",
-          "position": [
-            161,
-            216
-          ],
+          "position": [ 161, 216 ],
           "columns": 3,
           "padding": "2px 8px",
-          "elements": [
-            "stone_kokiri",
-            "stone_goron",
-            "stone_zora"
-          ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elements": [ "stone_kokiri", "stone_goron", "stone_zora" ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Rewards",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -175,21 +85,11 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [
-            76,
-            334
-          ],
+          "position": [ 76, 334 ],
           "columns": 1,
           "padding": "8px",
-          "elements": [
-            "medallions",
-            "medallions",
-            "medallions"
-          ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elements": [ "medallions", "medallions", "medallions" ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Trials",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -197,10 +97,7 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [
-            236,
-            258
-          ],
+          "position": [ 236, 258 ],
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -213,10 +110,7 @@
             "cow",
             "sometimes"
           ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Always",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -224,10 +118,7 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [
-            236,
-            320
-          ],
+          "position": [ 236, 320 ],
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -240,10 +131,7 @@
             "scrub",
             "sometimes"
           ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Always",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -252,10 +140,7 @@
           "id": "d972ffb08e304fcd9f38486accd8f345",
           "type": "hinttable",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [
-            339,
-            246
-          ],
+          "position": [ 339, 246 ],
           "hintType": "sometimes",
           "hintNumber": 2,
           "columns": 1,
@@ -276,20 +161,14 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [
-            340,
-            348
-          ],
+          "position": [ 340, 348 ],
           "columns": 1,
           "padding": ".8px",
           "elements": [
             "child_spawn",
             "adult_spawn"
           ],
-          "elementsSize": [
-            24,
-            24
-          ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "Spawn Icons",
           "hidden": false,
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
@@ -298,10 +177,7 @@
           "id": "d972ffb08e304fcd9f38486accd8f345",
           "type": "hinttable",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [
-            236,
-            10
-          ],
+          "position": [ 236, 10 ],
           "hintType": "sometimes",
           "hintNumber": 6,
           "columns": 1,
@@ -323,10 +199,7 @@
           "type": "hinttable",
           "displayName": "Path Hints",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [
-            392,
-            10
-          ],
+          "position": [ 392, 10 ],
           "hintType": "location",
           "hintNumber": 5,
           "columns": 1,
@@ -354,10 +227,7 @@
           "type": "hinttable",
           "displayName": "Foolish Hints",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [
-            523,
-            10
-          ],
+          "position": [ 523, 10 ],
           "hintType": "location",
           "hintNumber": 3,
           "columns": 1,
@@ -380,10 +250,7 @@
           "type": "hinttable",
           "displayName": "Other Locations",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [
-            602,
-            10
-          ],
+          "position": [ 602, 10 ],
           "hintType": "location",
           "hintNumber": 9,
           "columns": 1,

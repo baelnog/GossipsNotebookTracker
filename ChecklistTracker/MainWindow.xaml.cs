@@ -1,44 +1,18 @@
-using ChecklistTracker.Controls.Click;
+using ChecklistTracker.Config;
+using ChecklistTracker.Controls;
+using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Layout.GossipNotebook;
+using ChecklistTracker.Layout.HashFrog.Elements;
+using ChecklistTracker.ViewModel;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using ChecklistTracker.Controls.Click;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Markup;
-using Windows.UI;
-using ChecklistTracker.Layout.HashFrog;
-using ChecklistTracker.Layout.HashFrog.Elements;
-using ChecklistTracker.Controls;
-using ChecklistTracker.Config;
 using Windows.Graphics;
-using CommunityToolkit.WinUI.Helpers;
-using System.Runtime.InteropServices;
-using WinRT;
-using Windows.ApplicationModel;
-using System;
-using Microsoft.Graphics.Display;
-using Windows.UI.Core;
-using ChecklistTracker.ANTLR;
-using ChecklistTracker.LogicProvider;
-using Windows.ApplicationModel.Core;
-using Windows.UI.ViewManagement;
-using ChecklistTracker.ViewModel;
-using ChecklistTracker.CoreUtils;
 using Windows.Storage.Pickers;
-using AppUIBasics.Helper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -50,16 +24,12 @@ namespace ChecklistTracker
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private TrackerConfig Config;
+        private Config.TrackerConfig Config;
 
-        public MainWindow(TrackerConfig config)
+        public MainWindow(Config.TrackerConfig config)
         {
             Config = config;
             this.InitializeComponent();
-            LayoutDesign();
-            Config.UserConfig.OnPropertyChanged(
-                nameof(UserConfig.LayoutPath),
-                (o, args) => DispatcherQueue.TryEnqueue(LayoutDesign));
         }
 
         private bool SetupWindowSizeHanders = false;
@@ -67,6 +37,9 @@ namespace ChecklistTracker
 
         private void SetWindowSize(int width, int height)
         {
+            this.Layout.Width = width;
+            this.Layout.Height = height;
+
             ConstrainedSize = (width, height);
             var setSize = () =>
             {
@@ -138,42 +111,31 @@ namespace ChecklistTracker
             }
         }
 
-        private void LayoutDesign()
+        public void LayoutDesign(TrackerWindow layout, StyleConfig style)
         {
             this.Layout.Children.Clear();
+
+            this.Layout.CanDrag = false;
             this.AppWindow.SetIcon(@"Assets/notebook.ico");
+
+            var windowStyle = new CoalescedStyle(layout.Style, style);
 
             SetupMenus();
 
             this.VisibilityChanged += MainWindow_VisibilityChanged;
 
-            this.Layout.CanDrag = false;
-            var layoutDoc = ResourceFinder.ReadResourceFile(Config.UserConfig.LayoutPath).Result;
-            var layout = JsonSerializer.Deserialize<HashFrogLayout>(
-                layoutDoc,
-                new JsonSerializerOptions
-                {
-                    AllowTrailingCommas = true,
-                    ReadCommentHandling = JsonCommentHandling.Skip,
-                    PropertyNameCaseInsensitive = true,
-                    Converters = {
-                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-                        new ElementConverter(),
-                    }
+            this.Content.SetValue(FrameworkElement.WidthProperty, windowStyle.Width);
+            this.Content.SetValue(FrameworkElement.HeightProperty, windowStyle.Height);
 
-                });
-            this.Content.SetValue(FrameworkElement.WidthProperty, layout.layoutConfig.width);
-            this.Content.SetValue(FrameworkElement.HeightProperty, layout.layoutConfig.height);
+            var width = windowStyle.Width ?? throw new ArgumentNullException("Window width is not set.");
+            var height = windowStyle.Height ?? throw new ArgumentNullException("Window height is not set.");
 
-            SetWindowSize(layout.layoutConfig.width, layout.layoutConfig.height);
-            //this.AppWindow.Resize(new SizeInt32 { Width = layout.layoutConfig.width, Height = layout.layoutConfig.height });
+            SetWindowSize(width, height);
 
-            this.Layout.Width = layout.layoutConfig.width;
-            this.Layout.Height = layout.layoutConfig.height;
-            this.Layout.Background = new SolidColorBrush(layout.layoutConfig.backgroundColor.ToColor());
-            this.Title = layout.layoutConfig.name;
+            this.Layout.Background = new SolidColorBrush(windowStyle.BackgroundColor?.ToColor() ?? throw new ArgumentNullException("BackgroundColor is not set."));
+            this.Title = style.Title;
 
-            foreach (var component in layout.components)
+            foreach (var component in layout.Components)
             {
                 if (component is Layout.HashFrog.Elements.Label compLabel)
                 {

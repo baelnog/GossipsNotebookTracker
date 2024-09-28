@@ -1,31 +1,12 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.LogicProvider;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using ChecklistTracker.ViewModel;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -69,21 +50,37 @@ namespace ChecklistTracker
             m_window = new MainWindow(config);
             m_window.Activate();
 
-            if (config.UserConfig.ShowLocationTracker)
+            LayoutTracker();
+
+            CheckListViewModel.GlobalInstance.Config.UserConfig.OnPropertyChanged(
+                nameof(UserConfig.LayoutPath),
+                (o, args) => m_window.DispatcherQueue.TryEnqueue(DispatchLayoutChange));
+        }
+
+        private MainWindow m_window;
+        private Window m_checkWindow;
+
+        private void LayoutTracker()
+        {
+
+            var layoutDoc = ResourceFinder.ReadResourceFile(CheckListViewModel.GlobalInstance.Config.UserConfig.LayoutPath).Result;
+            var layout = GossipNotebookLayout.ParseLayout(layoutDoc);
+
+            // TODO: Enumerate all windows.
+            var window = layout.Windows[0];
+
+            m_window.LayoutDesign(window, layout.Style);
+
+            if (layout.TrackerConfig.EnableLogic)
             {
                 CheckPage.Launch();
             }
-
-            //var window = AppWindow.Create();
-            //Frame appWindowContentFrame = new Frame();
-            //appWindowContentFrame.Navigate(typeof(CheckPage));
-
-
-            //m_checkWindow.Activate();
         }
 
-        private Window m_window;
-        private Window m_checkWindow;
+        private void DispatchLayoutChange()
+        {
+            LayoutTracker();
+        }
 
 
         private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
