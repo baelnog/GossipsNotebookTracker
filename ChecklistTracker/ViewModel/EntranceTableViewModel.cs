@@ -1,14 +1,8 @@
 ﻿using ChecklistTracker.CoreUtils;
-using ChecklistTracker.View;
-using CommunityToolkit.WinUI;
 //using CommunityToolkit.WinUI.UI;
 using CommunityToolkit.WinUI.Collections;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;
 
 using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
@@ -30,7 +24,7 @@ namespace ChecklistTracker.ViewModel
             LayoutParams iconLayoutParams,
             TextParams textParams)
         {
-            
+
             for (int i = 0; i < icons.Count; i++)
             {
                 HintStones.Add(new EntranceViewModel(viewModel, icons[i], i, labels, layoutParams, iconLayoutParams, textParams));

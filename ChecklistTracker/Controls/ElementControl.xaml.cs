@@ -1,17 +1,15 @@
-using ChecklistTracker.Config;
 using ChecklistTracker.Controls.Click;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using System.ComponentModel;
 
 namespace ChecklistTracker.Controls
 {
     public sealed partial class ElementControl : UserControl, INotifyPropertyChanged
     {
-        public Visibility CountVisibility { get { return ViewModel.HasCount ? Visibility.Visible: Visibility.Collapsed; } }
+        public Visibility CountVisibility { get { return ViewModel.HasCount ? Visibility.Visible : Visibility.Collapsed; } }
 
         internal ItemViewModel ViewModel;
         internal LayoutParams Layout { get; private set; }

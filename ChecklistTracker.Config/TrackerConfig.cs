@@ -1,18 +1,15 @@
-﻿using System;
+﻿using ChecklistTracker.Config.SettingsTypes;
+using ChecklistTracker.CoreUtils;
+using Microsoft.UI.Dispatching;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.IO;
-using ChecklistTracker.CoreUtils;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
-using System.ComponentModel;
-using ChecklistTracker.Config.SettingsTypes;
-using Microsoft.UI.Dispatching;
 
 namespace ChecklistTracker.Config
 {

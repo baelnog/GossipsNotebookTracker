@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace ChecklistTracker.Layout.HashFrog.Elements
+﻿namespace ChecklistTracker.Layout.HashFrog.Elements
 {
     [JsonDiscriminatorValue("hinttable")]
     public record HintTable : Element, ISometimesHintTable, ILocationHintTable, IEntranceTable
@@ -16,7 +9,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public int columns { get; set; }
         public string padding { get; set; } = "0px";
         public string labels { get; set; } = "sometimes";
-        public string color { get; set; }  = "FFFFFF";
+        public string color { get; set; } = "FFFFFF";
         public string backgroundColor { get; set; } = "333333";
         public string itemIconSet { get; set; } = "sometimes";
         public string bossIconSet { get; set; } = "bosses";

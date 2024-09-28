@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
-using System.Collections.Generic;
 using Windows.UI;
 
 namespace ChecklistTracker.Controls
@@ -49,7 +48,7 @@ namespace ChecklistTracker.Controls
             HintHeight = itemHeight + (padding.Top + padding.Bottom) * .5;
 
             TableWidth = MaxColumns * (totalWidth + padding.Left + padding.Right);
-            TableHeight = Math.Ceiling((double) hintCount / MaxColumns) * (HintHeight);
+            TableHeight = Math.Ceiling((double)hintCount / MaxColumns) * (HintHeight);
 
             ScrollLayout.Height = TableHeight;
 
@@ -94,7 +93,7 @@ namespace ChecklistTracker.Controls
             if (button == MouseButton.Left)
             {
                 RemoveHintControl(control);
-            }    
+            }
             return control;
         }
 

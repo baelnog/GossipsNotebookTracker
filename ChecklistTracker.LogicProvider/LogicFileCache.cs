@@ -1,15 +1,11 @@
 ﻿using ChecklistTracker.CoreUtils;
 using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -142,7 +138,8 @@ namespace ChecklistTracker.LogicProvider
                 var fileContent = await wc.GetStringAsync(uri).ConfigureAwait(false);
                 Directory.CreateDirectory(new FileInfo(Path.Combine(destination.FullName, file)).Directory.FullName);
                 await File.WriteAllTextAsync(Path.Combine(destination.FullName, file), fileContent).ConfigureAwait(false);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.Assert(false, ex.ToString());
             }

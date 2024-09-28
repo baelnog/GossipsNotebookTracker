@@ -1,13 +1,7 @@
 using ChecklistTracker.Config;
-using ChecklistTracker.CoreUtils;
-using ChecklistTracker.LogicProvider.DataFiles;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
-using Microsoft.UI.Dispatching;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using static ChecklistTracker.LogicProvider.LocationsData;
 
@@ -40,7 +34,7 @@ namespace ChecklistTracker.LogicProvider
             Helpers = LogicHelpers.InitHelpers(Config, logicFiles, Locations).Result;
 
             Inventory = new Dictionary<string, int>(Config.DefaultInventory);
-            
+
             foreach (var equip in Config.RandomizerSettings.StartingEquipment)
             {
                 Inventory[equip.Replace(" ", "_")] = 1;
@@ -74,7 +68,7 @@ namespace ChecklistTracker.LogicProvider
 
         public void UpdateItems(IDictionary<string, int> items)
         {
-            lock(this)
+            lock (this)
             {
                 Inventory = items;
                 Helpers.UpdateItems(Inventory);

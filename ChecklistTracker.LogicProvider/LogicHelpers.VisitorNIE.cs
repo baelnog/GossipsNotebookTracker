@@ -1,12 +1,7 @@
 ﻿using Antlr4.Runtime.Tree;
 using ChecklistTracker.ANTLR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ChecklistTracker.ANTLR.Python3Parser;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ChecklistTracker.LogicProvider
 {

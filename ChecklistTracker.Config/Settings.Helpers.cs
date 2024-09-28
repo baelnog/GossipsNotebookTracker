@@ -1,12 +1,9 @@
 ﻿using ChecklistTracker.CoreUtils;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -70,7 +67,7 @@ namespace ChecklistTracker.Config
 
         public T GetSetting<T>(string key)
         {
-            return (T) SettingsByJsonName.Value[key].Invoke(this);
+            return (T)SettingsByJsonName.Value[key].Invoke(this);
         }
 
         public bool SettingHas(string key, string value)

@@ -1,15 +1,12 @@
 ﻿using Antlr4.Runtime;
-using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using ChecklistTracker.ANTLR;
 using ChecklistTracker.Config;
 using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Devices;
 
 using Access = ChecklistTracker.LogicProvider.AccessibilityExtensions;
 
@@ -319,7 +316,7 @@ namespace ChecklistTracker.LogicProvider
                     () => HasItem("Prescription")
                 };
 
-                if ((bool) RenamedAttributes["disable_trade_revert"])
+                if ((bool)RenamedAttributes["disable_trade_revert"])
                 {
                     potentialItems.Add(() => HasItem("Eyedrops"));
                     potentialItems.Add(() => HasItem("Eyeball_Frog"));

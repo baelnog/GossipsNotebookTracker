@@ -1,7 +1,6 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
-using CommunityToolkit.WinUI;
 //using CommunityToolkit.WinUI.UI;
 using CommunityToolkit.WinUI.Collections;
 
@@ -11,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 //using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
 using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;

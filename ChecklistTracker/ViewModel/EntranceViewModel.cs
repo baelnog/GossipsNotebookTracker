@@ -1,15 +1,6 @@
-﻿using ChecklistTracker.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
-using System.Collections.Generic;
+﻿using ChecklistTracker.CoreUtils;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ChecklistTracker.CoreUtils;
 using System.Runtime.CompilerServices;
-using Microsoft.UI.Xaml;
 
 namespace ChecklistTracker.ViewModel
 {
@@ -28,7 +19,7 @@ namespace ChecklistTracker.ViewModel
             string? labels,
             LayoutParams layoutParams,
             LayoutParams iconLayoutParams,
-            TextParams textParams) 
+            TextParams textParams)
             : base(viewModel, leftItems: 1, leftIconSet: elementId, labelSet: labels, isEntry: true)
         {
             Index = initialIndex;

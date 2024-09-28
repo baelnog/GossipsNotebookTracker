@@ -1,16 +1,10 @@
 ﻿using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Input;
-using Microsoft.UI.Input.DragDrop;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
 
 namespace ChecklistTracker.Controls.Click
 {
@@ -30,12 +24,12 @@ namespace ChecklistTracker.Controls.Click
 
             source.CanDrag = callbacks.OnDragImageCompleted != null || callbacks.OnDragHintControlCompleted != null;
             source.AllowDrop = callbacks.OnDropImageCompleted != null || callbacks.OnDropHintControlCompleted != null;
-            source.DropCompleted += (s,e) => OnDropCompleted(source, s, e);
+            source.DropCompleted += (s, e) => OnDropCompleted(source, s, e);
             source.PointerReleased += OnPointerReleased;
             source.PointerPressed += OnPointerPressed;
             source.PointerExited += OnPointerMoved;
             source.DragOver += OnDragOver;
-            
+
             if (callbacks.OnScroll != null)
             {
                 source.PointerWheelChanged += (object sender, PointerRoutedEventArgs args) => OnPointerWheelChanged(source, args);
@@ -151,7 +145,7 @@ namespace ChecklistTracker.Controls.Click
                 // Just don't let it ever garbage collect...
                 // Hopefully usual usage would trigger enough drag and drops to cause a meaningful memory leak.
                 //operations.Enqueue(op);
-            }    
+            }
             Logging.WriteLine($"StartDrag Current Drag set");
         }
 

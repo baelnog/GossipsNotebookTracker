@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Windows.Gaming.Input;
 
 namespace ChecklistTracker.LogicProvider
 {

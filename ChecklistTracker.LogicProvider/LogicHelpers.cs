@@ -4,14 +4,11 @@ using ChecklistTracker.Config;
 using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -176,7 +173,7 @@ namespace ChecklistTracker.LogicProvider
                 updatedKeys = false;
                 Cache.Clear();
 
-                foreach (var age in new string[]{ "child", "adult" })
+                foreach (var age in new string[] { "child", "adult" })
                 {
                     foreach (var region in Regions[age])
                     {
@@ -285,7 +282,7 @@ namespace ChecklistTracker.LogicProvider
                 return new HashSet<string>(regionsToCheck);
             }
 
-            foreach(var exit in Locations.ActiveExitsByRegion[rootRegion])
+            foreach (var exit in Locations.ActiveExitsByRegion[rootRegion])
             {
                 if (!Regions[age].TryGetValue(exit.Value.LocationName, out var regionAccessibility) || regionAccessibility < Accessibility.InLogic)
                 {
@@ -371,7 +368,7 @@ namespace ChecklistTracker.LogicProvider
 
         internal Accessibility IsRegionAccessible(string regionName, string age)
         {
-            return Regions[age].TryGetValue(regionName, out var accessibility) ? accessibility: Accessibility.None;
+            return Regions[age].TryGetValue(regionName, out var accessibility) ? accessibility : Accessibility.None;
         }
     }
 }

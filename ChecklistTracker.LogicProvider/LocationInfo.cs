@@ -1,13 +1,5 @@
-﻿using ChecklistTracker.CoreUtils;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChecklistTracker.LogicProvider
 {
@@ -22,7 +14,7 @@ namespace ChecklistTracker.LogicProvider
         public bool IsActive { get; internal set; }
 
         //public bool IsAccessible { get => Accessiblity.HasFlag(Accessibility.SyntheticAssumed); }
-        
+
         public Accessibility Accessiblity { get; internal set; }
 
         public bool IsProgress { get; internal set; }

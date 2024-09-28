@@ -5,7 +5,6 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using Windows.UI;
 
 namespace ChecklistTracker.Controls
@@ -23,7 +22,7 @@ namespace ChecklistTracker.Controls
 
         private List<Config.Label> BaseLabelSet { get; set; }
 
-        private bool IsEntry {  get; set; }
+        private bool IsEntry { get; set; }
 
         //public string Text { get { return IsEntry ? EntryBox.Text: LabelBox.Text; } }
         public UIElement TextBox { get { return IsEntry ? EntryBox : LabelBox; } }
@@ -103,7 +102,8 @@ namespace ChecklistTracker.Controls
 
         internal static double[] MatchScore(string text, Config.Label label)
         {
-            var aliasScores = label.alias.Select(alias => {
+            var aliasScores = label.alias.Select(alias =>
+            {
                 if (!alias.StartsWith(text, StringComparison.InvariantCultureIgnoreCase)) { return 0; }
                 return 1.0 * text.Length / alias.Length;
             });
@@ -122,7 +122,7 @@ namespace ChecklistTracker.Controls
                 return null;
             }
 
-            return new double[] { aliasScore, (double) 0 - nameScore };
+            return new double[] { aliasScore, (double)0 - nameScore };
         }
 
         void OnTextChanged(UIElement sender, AutoSuggestBoxTextChangedEventArgs e)

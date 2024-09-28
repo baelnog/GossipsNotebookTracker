@@ -13,7 +13,7 @@ public partial class Settings : INotifyPropertyChanged
     public ReachableLocationsType ReachableLocations { get; set; } = ReachableLocationsType.AllLocations;
 
     [JsonPropertyName("triforce_hunt")]
-    public bool TriforceHunt{ get; set; }
+    public bool TriforceHunt { get; set; }
     [JsonPropertyName("triforce_count_per_world")]
     public int TriforceHuntCountPerWorld { get; set; }
     [JsonPropertyName("triforce_goal_per_world")]

@@ -1,17 +1,5 @@
 using ChecklistTracker.Config;
-using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Reflection;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
-using static Antlr4.Runtime.Atn.SemanticContext;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Claims;
-using System.Text.RegularExpressions;
-using System;
 
 namespace ChecklistTracker.LogicProvider.Test
 {
@@ -494,7 +482,7 @@ namespace ChecklistTracker.LogicProvider.Test
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
-            var expected= new HashSet<string>()
+            var expected = new HashSet<string>()
             {
                 "Dodongos Cavern Map Chest",
                 "Dodongos Cavern Compass Chest",

@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Antlr4.Runtime;
+using System.IO;
 
 namespace ChecklistTracker.ANTLR;
 

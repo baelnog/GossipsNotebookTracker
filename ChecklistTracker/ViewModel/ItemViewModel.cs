@@ -1,14 +1,9 @@
 ﻿using ChecklistTracker.Config;
-using Microsoft.UI.Xaml.Media;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ChecklistTracker.ViewModel
@@ -21,15 +16,15 @@ namespace ChecklistTracker.ViewModel
 
         private int _Count;
         public int Count
-        { 
+        {
             get => _Count;
-            set 
-            { 
-                if (value != _Count) 
-                { 
+            set
+            {
+                if (value != _Count)
+                {
                     _Count = value;
                     this.RaisePropertyChanged(PropertyChanged);
-                } 
+                }
             }
         }
 

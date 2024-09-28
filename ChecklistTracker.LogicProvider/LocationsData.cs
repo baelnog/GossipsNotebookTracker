@@ -2,10 +2,7 @@
 using ChecklistTracker.Config;
 using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
-using ChecklistTracker.LogicProvider.DataFiles;
-using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,7 +40,7 @@ namespace ChecklistTracker.LogicProvider
         internal ConcurrentDictionary<string, RuleData> ActiveDropLocationsByItem { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal ConcurrentDictionary<string, RuleData> ActiveSkullsLocations { get; set; } = new ConcurrentDictionary<string, RuleData>();
         internal ConcurrentDictionary<string, RuleData> ActiveEvents { get; set; } = new ConcurrentDictionary<string, RuleData>();
-        internal DoubleConcurrentDictionary<string, string, RuleData> ActiveExitsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData> ();
+        internal DoubleConcurrentDictionary<string, string, RuleData> ActiveExitsByRegion { get; set; } = new DoubleConcurrentDictionary<string, string, RuleData>();
 
         internal IDictionary<string, string> RegionMap { get; set; }
         IDictionary<string, LocationData> LocationTable { get; set; }
@@ -136,7 +133,7 @@ namespace ChecklistTracker.LogicProvider
                         {
                             locationName = $"MQ {locationName}";
                         }
-                    }    
+                    }
                     var rule = location.Value;
                     try
                     {
@@ -290,7 +287,7 @@ namespace ChecklistTracker.LogicProvider
                         maxItems = 4;
                         break;
                     default:
-                        maxItems = (int) Settings.Shopsanity;
+                        maxItems = (int)Settings.Shopsanity;
                         break;
                 }
                 int itemLocation = int.Parse(location.LocationName.Substring(location.LocationName.Length - 1));

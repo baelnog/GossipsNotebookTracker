@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ChecklistTracker.Config.SettingsTypes;
 
@@ -57,7 +55,7 @@ public static class AdultTradeItemExtensions
 
     public static string ToLogicString(this AdultTradeItem item)
     {
-        switch(item)
+        switch (item)
         {
             case AdultTradeItem.PocketEgg:
                 return "Pocket_Egg";

@@ -1,17 +1,13 @@
-using ChecklistTracker.Config;
 using ChecklistTracker.Controls.Click;
 using ChecklistTracker.ViewModel;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
 
 namespace ChecklistTracker.Controls
 {
     internal partial class HintStoneControl : UserControl
     {
         internal LayoutParams _LayoutParams;
-        internal LayoutParams LayoutParams 
+        internal LayoutParams LayoutParams
         {
             get => _LayoutParams;
             set
@@ -25,7 +21,7 @@ namespace ChecklistTracker.Controls
         }
 
         private HintStoneViewModel _ViewModel;
-        internal HintStoneViewModel ViewModel 
+        internal HintStoneViewModel ViewModel
         {
             get => _ViewModel;
             set

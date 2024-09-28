@@ -1,13 +1,13 @@
 using Antlr4.Runtime;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ChecklistTracker.ANTLR;
 
-public abstract class Python3LexerBase : Lexer {
+public abstract class Python3LexerBase : Lexer
+{
     // A queue where extra tokens are pushed on (see the NEWLINE lexer rule).
     private LinkedList<IToken> Tokens = new LinkedList<IToken>();
     // The stack that keeps track of the indentation level.
@@ -52,7 +52,7 @@ public abstract class Python3LexerBase : Lexer {
         if (((ICharStream)InputStream).LA(1) == Eof && Indents.Count != 0)
         {
             // Remove any trailing EOF tokens from our buffer.
-            for (var node  = Tokens.First; node != null; )
+            for (var node = Tokens.First; node != null;)
             {
                 var temp = node.Next;
                 if (node.Value.Type == Eof)
@@ -61,7 +61,7 @@ public abstract class Python3LexerBase : Lexer {
                 }
                 node = temp;
             }
-            
+
             // First emit an extra line break that serves as the end of the statement.
             this.Emit(CommonToken(Python3Parser.NEWLINE, "\n"));
 
@@ -118,15 +118,18 @@ public abstract class Python3LexerBase : Lexer {
         return Column == 0 && Line == 1;
     }
 
-    public void openBrace(){
+    public void openBrace()
+    {
         Opened++;
     }
 
-    public void closeBrace(){
+    public void closeBrace()
+    {
         Opened--;
     }
 
-    public void onNewLine(){
+    public void onNewLine()
+    {
         var newLine = (new Regex("[^\r\n\f]+")).Replace(Text, "");
         var spaces = (new Regex("[\r\n\f]+")).Replace(Text, "");
 
@@ -150,13 +153,15 @@ public abstract class Python3LexerBase : Lexer {
                 // skip indents of the same size as the present indent-size
                 Skip();
             }
-            else if (indent > previous) {
+            else if (indent > previous)
+            {
                 Indents.Push(indent);
                 Emit(CommonToken(Python3Parser.INDENT, spaces));
             }
-            else {
+            else
+            {
                 // Possibly emit more than 1 DEDENT token.
-                while(Indents.Count != 0 && Indents.Peek() > indent)
+                while (Indents.Count != 0 && Indents.Peek() > indent)
                 {
                     this.Emit(CreateDedent());
                     Indents.Pop();

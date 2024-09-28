@@ -1,8 +1,5 @@
-﻿using Antlr4.Runtime.Tree;
-using ChecklistTracker.ANTLR;
+﻿using ChecklistTracker.ANTLR;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using static ChecklistTracker.ANTLR.Python3Parser;
 
@@ -67,7 +64,7 @@ namespace ChecklistTracker.LogicProvider
             return result;
         }
 
-        public Accessibility VisitAnd_test([Antlr4.Runtime.Misc.NotNull] And_testContext context) 
+        public Accessibility VisitAnd_test([Antlr4.Runtime.Misc.NotNull] And_testContext context)
         {
             // not_test ('and' not_test)*
             var result = Accessibility.All;
@@ -135,7 +132,7 @@ namespace ChecklistTracker.LogicProvider
             {
                 return atom_expr.Accept(this);
             }
-            
+
             // Logic *could* use &, ^, and |, but they don't currently, so don't guess at impl.
 
             throw new NotImplementedException($"Unsupported expr {context.GetText()}");

@@ -1,11 +1,4 @@
-﻿using ChecklistTracker.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ChecklistTracker.ViewModel
