@@ -144,7 +144,7 @@ namespace ChecklistTracker.LogicProvider
             });
         }
 
-        static internal ParserRuleContext ParseRule(string ruleString)
+        internal static ParserRuleContext ParseRule(string ruleString)
         {
             return RuleParser.Parse(ruleString);
         }
