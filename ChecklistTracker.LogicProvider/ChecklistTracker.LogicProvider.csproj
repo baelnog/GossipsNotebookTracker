@@ -1,18 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>ChecklistTracker.LogicProvider</RootNamespace>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <UseWinUI>true</UseWinUI>
-    <UseRidGraph>true</UseRidGraph>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
-      <PackageReference Include="Antlr4BuildTasks" Version="12.7.0" />
-      <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
+    <PackageReference Include="Antlr4.Runtime.Standard" />
+    <PackageReference Include="Antlr4BuildTasks" />
+    <PackageReference Include="Macross.Json.Extensions" />
   </ItemGroup>
 
   <ItemGroup>

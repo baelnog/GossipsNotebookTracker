@@ -1,0 +1,29 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <CommunityToolsetVersion>8.0.240109</CommunityToolsetVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageVersion Include="Antlr4BuildTasks" Version="12.7" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Collections" Version="$(CommunityToolsetVersion)" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Primitives" Version="$(CommunityToolsetVersion)" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Segmented" Version="$(CommunityToolsetVersion)" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="$(CommunityToolsetVersion)" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="$(CommunityToolsetVersion)" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Fody" Version="6.8.0" />
+    <PackageVersion Include="Macross.Json.Extensions" Version="3.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.4.231219000" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.0.4" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.0.4" />
+    <PackageVersion Include="NReco.Logging.File" Version="1.2.0" />
+    <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
+  </ItemGroup>
+</Project>

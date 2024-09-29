@@ -1,18 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>ChecklistTracker</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
-    <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>false</EnableMsixTooling>
     <WindowsPackageType>None</WindowsPackageType>
-    <UseRidGraph>true</UseRidGraph>
-    <Nullable>enable</Nullable>
 
     <!--https://github.com/microsoft/microsoft-ui-xaml/issues/8810-->
     <!--<XamlCodeGenerationControlFlags>DoNotGenerateOtherProviders</XamlCodeGenerationControlFlags>-->
@@ -25,8 +19,6 @@
     <ApplicationIcon>Assets\notebook.ico</ApplicationIcon>
 
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-
-    <CommunityToolsetVersion>8.0.240109</CommunityToolsetVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="CheckListView.xaml" />
@@ -54,14 +46,17 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="$(CommunityToolsetVersion)" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="$(CommunityToolsetVersion)" />
-    <!-- Unused, but solves https://github.com/microsoft/microsoft-ui-xaml/issues/8810 -->
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="$(CommunityToolsetVersion)" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="$(CommunityToolsetVersion)" />
-    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="$(CommunityToolsetVersion)" />
+ <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
+ </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" />
+    <!-- Unused, but solves https://github.com/microsoft/microsoft-ui-xaml/issues/8810 -->
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
+    <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
   </ItemGroup>
 
   <!-- 

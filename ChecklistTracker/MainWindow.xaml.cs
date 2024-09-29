@@ -48,9 +48,11 @@ namespace ChecklistTracker
                 {
                     titleBarHeight = this.AppWindow.TitleBar.Height;
                 }
+                var menuHeight = Double.IsNaN(this.Menu.ActualHeight) ? 0 : this.Menu.ActualHeight;
+
                 var size = new SizeInt32
                 {
-                    Height = (int)(this.Menu.Height) + (int)((ConstrainedSize.Value.height + titleBarHeight) * this.Layout.XamlRoot.RasterizationScale),
+                    Height = (int)(menuHeight) + (int)((ConstrainedSize.Value.height + titleBarHeight) * this.Layout.XamlRoot.RasterizationScale),
                     Width = (int)((ConstrainedSize.Value.width + 12) * this.Layout.XamlRoot.RasterizationScale)
                 };
 
