@@ -4,12 +4,9 @@
     <RootNamespace>ChecklistTracker</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
-    <EnableMsixTooling>false</EnableMsixTooling>
+    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <WindowsPackageType>None</WindowsPackageType>
-
-    <!--https://github.com/microsoft/microsoft-ui-xaml/issues/8810-->
-    <!--<XamlCodeGenerationControlFlags>DoNotGenerateOtherProviders</XamlCodeGenerationControlFlags>-->
+    <EnableMsixTooling>false</EnableMsixTooling>
 
     <WindowsAppSDKBootstrapAutoInitialize>true</WindowsAppSDKBootstrapAutoInitialize>
     <WindowsAppSDKBootstrapAutoInitializeOptions_Default>true</WindowsAppSDKBootstrapAutoInitializeOptions_Default>
@@ -56,13 +53,13 @@
     <!-- Unused, but solves https://github.com/microsoft/microsoft-ui-xaml/issues/8810 -->
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
+    <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
   </ItemGroup>
 
   <!-- 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
-    package has not yet been restored.
     package has not yet been restored.
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

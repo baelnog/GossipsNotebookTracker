@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChecklistTracker.LogicProvi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChecklistTracker.LogicProvider.Test", "ChecklistTracker.LogicProvider.Test\ChecklistTracker.LogicProvider.Test.csproj", "{BE513461-2AC3-4C4F-9289-DDA6C8AC2EA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChecklistTracker.CoreUtils", "ChecklistTracker.CoreUtils\ChecklistTracker.CoreUtils.csproj", "{0FD028D2-3DAA-4ED8-AFA1-D18A6121E128}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChecklistTracker.CoreUtils", "ChecklistTracker.CoreUtils\ChecklistTracker.CoreUtils.csproj", "{0FD028D2-3DAA-4ED8-AFA1-D18A6121E128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
