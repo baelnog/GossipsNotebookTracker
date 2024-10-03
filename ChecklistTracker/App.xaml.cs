@@ -38,14 +38,14 @@ namespace ChecklistTracker
 
             var config = TrackerConfig.Init().Result;
 
-            var logicEngine = new LogicEngine(config, "v8.0");
+            var logicEngine = config.UserConfig.ShowLocationTracker ? new LogicEngine(config, "v8.0") : null;
 
             var inventory = new Inventory(logicEngine);
 
             CheckListViewModel.GlobalInstance = new CheckListViewModel(
                 config,
                 inventory,
-                config.UserConfig.ShowLocationTracker ? logicEngine : null);
+                logicEngine);
 
             m_window = new MainWindow(config);
             m_window.Activate();

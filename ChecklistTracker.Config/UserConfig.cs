@@ -22,7 +22,7 @@ namespace ChecklistTracker.Config
         public List<string> SettingsPresets { get; set; } = new List<string>();
 
         [JsonInclude]
-        public bool ShowLocationTracker { get; set; } = true;
+        public bool ShowLocationTracker { get; set; } = false;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
