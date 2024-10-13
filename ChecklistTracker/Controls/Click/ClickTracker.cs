@@ -38,9 +38,20 @@ namespace ChecklistTracker.Controls.Click
 
         static void OnPointerPressed(object s, PointerRoutedEventArgs e)
         {
+            var now = DateTime.Now;
+            var sincelastRelease = now - LastRelease;
+            if (sincelastRelease.TotalMilliseconds <= 50)
+            {
+                Logging.WriteLine($"Ignoring pointer press too close to release. Ignoring event. LastRelease {LastRelease}. Now {now}");
+                return;
+            }
+            else
+            {
+                Logging.WriteLine($"Since last press {sincelastRelease.TotalMilliseconds}. LastRelease {LastRelease}. Now {now}");
+            }
             if (s is UIElement sender)
             {
-                Logging.WriteLine($"OnPointerPressed");
+                Logging.WriteLine($"OnPointerPressed {sender}");
                 var pointer = e.GetCurrentPoint((UIElement)e.OriginalSource);
                 var props = pointer.Properties;
                 MouseButton clickedButton;
@@ -65,7 +76,7 @@ namespace ChecklistTracker.Controls.Click
 
         static void OnPointerMoved(object s, PointerRoutedEventArgs e)
         {
-            Logging.WriteLine($"OnPointerMoved");
+            Logging.WriteLine($"OnPointerMoved {s}");
             if (s is UIElement sender && e.OriginalSource is UIElement originalSource)
             {
                 var pointer = e.GetCurrentPoint(originalSource);
@@ -160,22 +171,6 @@ namespace ChecklistTracker.Controls.Click
 
             var drag = CurrentDrag;
             CurrentDrag = null;
-            //if (drag?.Operation?.Status == AsyncStatus.Started)
-            //{
-            //    try
-            //    {
-            //        drag.Operation.Cancel();
-            //        drag.Operation.Close();
-            //    } catch (Exception ex)
-            //    {
-
-            //    }
-            //    finally
-            //    {
-            //        drag.Operation = null;
-            //    }
-            //}
-            //CurrentDrag = null;
         }
 
         static void OnPointerWheelChanged(UIElement uiElement, PointerRoutedEventArgs winArgs)
@@ -192,9 +187,13 @@ namespace ChecklistTracker.Controls.Click
             Logging.WriteLine($"OnPointerWheelChanged Done");
         }
 
+        private static DateTime LastRelease = DateTime.MinValue;
+
         static void OnPointerReleased(object s, PointerRoutedEventArgs winArgs)
         {
-            Logging.WriteLine($"OnPointerReleased");
+            var last = LastRelease;
+            LastRelease = DateTime.Now;
+            Logging.WriteLine($"OnPointerReleased {s}. Last Release {last}. Now {LastRelease}.");
             if (s is UIElement sender)
             {
                 var pointer = winArgs.GetCurrentPoint((UIElement)winArgs.OriginalSource);
