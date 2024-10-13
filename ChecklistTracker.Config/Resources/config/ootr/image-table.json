@@ -458,6 +458,19 @@
 			"twinrova",
 			"bongo_bongo"
 		],
+		"season8": [
+			"unkown",
+			"queen_gohma",
+			"king_dodongo",
+			"barinade",
+			"phantom_ganon",
+			"volvagia",
+			"morpha",
+			"twinrova",
+			"bongo_bongo",
+			"light_arrows",
+			"triforce"
+		],
 		"all_paths": [
 			"unkown",
 			"queen_gohma",
@@ -469,7 +482,8 @@
 			"twinrova",
 			"bongo_bongo",
 			"song_time",
-			"light_arrows"
+			"light_arrows",
+			"triforce"
 		],
 		"sometimes": [
 			"sometimes",
@@ -678,6 +692,11 @@
 		"frogs": {
 			"images": [
 				"frogs_32x32.png"
+			]
+		},
+		"frogs_song": {
+			"images": [
+				"frogs-song.png"
 			]
 		},
 		"gerudo_card": {
@@ -1212,6 +1231,11 @@
 				"kz-frog_32x32.png",
 				"eye-drops_32x32.png",
 				"claim-check_32x32.png"
+			]
+		},
+		"triforce": {
+			"images": [
+				"triforce_32x32.png"
 			]
 		},
 		"tunic_goron": {

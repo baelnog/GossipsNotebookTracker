@@ -206,7 +206,7 @@ namespace ChecklistTracker
                         elementControl.SetValue(FrameworkElement.MarginProperty, paddingObj);
                         grid.Children.Add(elementControl);
                     }
-                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[0]) + 10;
+                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[1]) + 10;
                     grid.SetValue(Canvas.LeftProperty, compTable.position[1]);
                     grid.SetValue(Canvas.TopProperty, compTable.position[0]);
                     this.Layout.Children.Add(grid);
@@ -294,11 +294,7 @@ namespace ChecklistTracker
                         var itemCount = 0;
                         if (hintTable.showIcon)
                         {
-                            itemCount++;
-                            if (hintTable.dual)
-                            {
-                                itemCount++;
-                            }
+                            itemCount = hintTable.itemCount;
                         }
                         //elementWidth += itemCount * (hintTable.itemSize[1] + paddingObj.HorizontalThickness);
 
@@ -326,7 +322,7 @@ namespace ChecklistTracker
 
                         //tableControl.Wrap = FlexWrap.Wrap;
                         //tableControl.Padding = paddingObj;
-                        tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns;
+                        tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns + 1;
                         tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
                         tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
                         this.Layout.Children.Add(tableControl);

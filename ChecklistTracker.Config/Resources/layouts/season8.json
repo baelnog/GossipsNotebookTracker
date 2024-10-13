@@ -1,6 +1,6 @@
 ﻿{
   "trackerConfig": {
-    "name": "Season 8",
+    "name": "Season 8"
   },
   "style": {
     "width": 384,
@@ -85,19 +85,7 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [ 76, 334 ],
-          "columns": 1,
-          "padding": "8px",
-          "elements": [ "medallions", "medallions", "medallions" ],
-          "elementsSize": [ 24, 24 ],
-          "displayName": "Trials",
-          "hidden": false,
-          "elementId": "a081121b16f84366bf16e16ca90cd23f"
-        },
-        {
-          "id": "707e3e0fb02a4cc5927649ffd35d44ea",
-          "type": "table",
-          "position": [ 236, 258 ],
+          "position": [ 200, 262 ],
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -106,8 +94,6 @@
             "gs_40",
             "sometimes",
             "gs_50",
-            "sometimes",
-            "cow",
             "sometimes"
           ],
           "elementsSize": [ 24, 24 ],
@@ -118,7 +104,7 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [ 236, 320 ],
+          "position": [ 200, 324 ],
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -127,8 +113,6 @@
             "biggoron",
             "sometimes",
             "frogs",
-            "sometimes",
-            "scrub",
             "sometimes"
           ],
           "elementsSize": [ 24, 24 ],
@@ -140,9 +124,9 @@
           "id": "d972ffb08e304fcd9f38486accd8f345",
           "type": "hinttable",
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
-          "position": [ 339, 246 ],
+          "position": [ 366, 10 ],
           "hintType": "sometimes",
-          "hintNumber": 2,
+          "hintNumber": 1,
           "columns": 1,
           "width": 96,
           "padding": "2px",
@@ -161,12 +145,11 @@
         {
           "id": "707e3e0fb02a4cc5927649ffd35d44ea",
           "type": "table",
-          "position": [ 340, 348 ],
+          "position": [ 366, 112 ],
           "columns": 1,
           "padding": ".8px",
           "elements": [
-            "child_spawn",
-            "adult_spawn"
+            "child_spawn"
           ],
           "elementsSize": [ 24, 24 ],
           "displayName": "Spawn Icons",
@@ -174,12 +157,25 @@
           "elementId": "a081121b16f84366bf16e16ca90cd23f"
         },
         {
-          "id": "d972ffb08e304fcd9f38486accd8f345",
+          "id": "707e3e0fb02a4cc5927649ffd35d44ea",
+          "type": "table",
+          "position": [ 366, 160 ],
+          "columns": 1,
+          "padding": "0px",
+          "elements": [
+            "frogs_song"
+          ],
+          "size": [ 24, 214 ],
+          "elementsSize": [ 24, 214 ],
+          "displayName": "frogs",
+          "hidden": false,
+          "elementId": "a081121b16f84366bf16e16ca90cd23f"
+        },
+        {
           "type": "hinttable",
-          "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
           "position": [ 236, 10 ],
           "hintType": "sometimes",
-          "hintNumber": 6,
+          "hintNumber": 2,
           "columns": 1,
           "width": 234,
           "padding": "2px",
@@ -190,8 +186,27 @@
           "inverted": false,
           "showBoss": true,
           "showItems": true,
+          "itemCount": 2,
           "displayName": "Sometimes Hints",
-          "dual": false,
+          "hidden": false
+        },
+        {
+          "type": "hinttable",
+          "position": [ 288, 10 ],
+          "hintType": "sometimes",
+          "hintNumber": 6,
+          "columns": 2,
+          "width": 177,
+          "padding": "2px",
+          "labels": "sometimes",
+          "color": "#ffffff",
+          "backgroundColor": "#333333",
+          "showIcon": true,
+          "inverted": false,
+          "showBoss": true,
+          "showItems": true,
+          "itemCount": 1,
+          "displayName": "Sometimes Hints",
           "hidden": false
         },
         {
@@ -214,7 +229,7 @@
           "showItems": true,
           "bossCount": 3,
           "itemCount": 7,
-          "bossIconSet": "all_paths",
+          "bossIconSet": "season8",
           "itemIconSet": "logical_items",
           "dual": false,
           "hidden": false,
@@ -263,7 +278,7 @@
           "inverted": false,
           "showBoss": true,
           "showItems": true,
-          "bossCount": 1,
+          "bossCount": 0,
           "itemCount": 8,
           "bossIconSet": "all_paths",
           "itemIconSet": "logical_items",
