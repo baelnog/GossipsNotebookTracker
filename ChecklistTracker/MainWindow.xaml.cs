@@ -391,6 +391,28 @@ namespace ChecklistTracker
             Config.UserConfig.SetLayout(layout);
         }
 
+        private void MenuReloadLayout(object sender, RoutedEventArgs e)
+        {
+            ContentDialog reloadDialog = new ContentDialog
+            {
+                Title = "Reload tracker?",
+                Content = "Any content will be lost. Reload current layout?",
+                PrimaryButtonText = "Reload",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.Layout.XamlRoot
+            };
+
+            var reloadDialogTask = reloadDialog.ShowAsync();
+            reloadDialogTask.AsTask().ContinueWith(task =>
+            {
+                var result = task.Result;
+                if (result == ContentDialogResult.Primary)
+                {
+                    Config.UserConfig.TriggerLayoutReload();
+                }
+            });
+        }
+
         private void MenuLoadSettings(object sender, RoutedEventArgs e)
         {
             // Create a file picker
