@@ -25,6 +25,9 @@ namespace ChecklistTracker.Controls
         private int RightItems;
         private int ItemWidth;
         private int ItemHeight;
+
+        private TextParams TextParams { get; set; }
+
         public Brush HintBackgroundColor { get; set; }
         private Color HintBackgroundColorRaw;
         public Brush TextColor { get; set; }
@@ -35,7 +38,7 @@ namespace ChecklistTracker.Controls
         private string LeftIconSet { get; set; }
         private string RightIconSet { get; set; }
 
-        public HintTableControl(int hintCount, int hintColumns, int totalWidth, int leftItems, int rightItems, int itemWidth, int itemHeight, Thickness padding, Color backgroundColor, Color textColor, string rightIconSet, string leftIconSet, string? labelSet, bool allowOverflow = false, string placeholderText = "")
+        internal HintTableControl(int hintCount, int hintColumns, int totalWidth, int leftItems, int rightItems, int itemWidth, int itemHeight, Thickness padding, TextParams textParams, string rightIconSet, string leftIconSet, string? labelSet, string[]? labelsFilter, bool allowOverflow = false, string placeholderText = "")
         {
             InitializeComponent();
 
@@ -61,20 +64,24 @@ namespace ChecklistTracker.Controls
             RightIconSet = rightIconSet;
             ItemWidth = itemWidth;
             ItemHeight = itemHeight;
-            HintBackgroundColorRaw = backgroundColor;
-            HintBackgroundColor = new SolidColorBrush(backgroundColor);
-            TextColorRaw = textColor;
-            TextColor = new SolidColorBrush(textColor);
+
+            TextParams = textParams;
+            HintBackgroundColorRaw = textParams.BackgroundColor;
+            HintBackgroundColor = textParams.BackgroundColorBrush;
+            TextColorRaw = textParams.FontColor;
+            TextColor = textParams.FontColorBrush;
+            FontSize = textParams.FontSize;
 
             Entry = new HintControl(
                     new HintViewModel(
                         CheckListViewModel.GlobalInstance,
-                        labelSet: labelSet, isEntry: true),
+                        labelSet: labelSet,
+                        labelsFilter: labelsFilter,
+                        isEntry: true),
                     totalWidth: totalWidth,
                     itemLayout: new LayoutParams(itemWidth, itemHeight, new Thickness(0)),
                     padding: Padding,
-                    backgroundColor: backgroundColor,
-                    textColor: textColor,
+                    textParams: textParams,
                     placeholderText: placeholderText);
 
             Entry.Padding = new Thickness(0);
@@ -136,8 +143,7 @@ namespace ChecklistTracker.Controls
                 totalWidth: TotalWidth,
                 itemLayout: new LayoutParams(ItemWidth, ItemHeight, new Thickness(0)),
                 padding: Padding,
-                backgroundColor: HintBackgroundColorRaw,
-                textColor: TextColorRaw);
+                textParams: TextParams);
             AddHintControl(hintControl);
         }
 
@@ -155,8 +161,7 @@ namespace ChecklistTracker.Controls
                 totalWidth: TotalWidth,
                 itemLayout: new LayoutParams(ItemWidth, ItemHeight, new Thickness(0)),
                 padding: Padding,
-                backgroundColor: HintBackgroundColorRaw,
-                textColor: TextColorRaw);
+                textParams: TextParams);
             AddHintControl(hintControl);
         }
 

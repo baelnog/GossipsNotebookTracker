@@ -97,6 +97,10 @@
 				"alias": [ "HBA 1500", "HBA", "1500 HBA" ]
 			},
 			{
+				"name": "Horseback Archery",
+				"alias": [ "HBA" ]
+			},
+			{
 				"name": "Hyrule Castle Fairy",
 				"alias": [ "HC Fairy", "Castle Fairy", "Dins Fairy" ]
 			},
@@ -200,16 +204,65 @@
 				"name": "ZF Bottom",
 				"alias": [ "Icy Waters", "Fountain Bottom" ]
 			},
-			{ "name": "Bombchu Bowling" },
-			{ "name": "Lake Roof and Fishing" },
-			{ "name": "Domain Child Torches and Diving" },
-			{ "name": "Fire Dual Scarecrow and Hammer" },
-			{ "name": "Dual Fairies Castle and OGC" },
+			{
+				"name": "Bombchu Bowling",
+				"alias": [ "bb" ]
+			},
+			{
+				"name": "Lake Roof and Fishing",
+				"alias": [ "alb", "Adult Lake Bean" ]
+			},
+			{
+				"name": "Domain Child Torches and Diving",
+				"alias": [ "zdc", "Child Domain" ]
+			},
+			{
+				"name": "Fire Temple Hammer Loop",
+				"alias": [ "Fire Basement", "Fire Loop", "fhl" ]
+			},
+			{
+				"name": "Castle Great Fairies",
+				"alias": [ "Castle Fairies", "Fairies", "cgf" ]
+			},
+			{
+				"name": "Gerudo Valley Ledges",
+				"alias": [ "gvl", "Valley Ledges" ]
+			},
+			{
+				"name": "BotW Dead Hand (Reward First)",
+				"alias": [ "botwdh", "dhbot", "Dead Hand" ]
+			},
+			{
+				"name": "Spirit Trial (Switch + Invis)",
+				"alias": [ "Spirit Trial", "gcspt" ]
+			},
+			{
+				"name": "Shadow Temple Like Like (Left + Right)",
+				"alias": [ "stll", "Shadow Temple Blades", "Invisible Blades" ]
+			},
+			{
+				"name": "Shadow Temple Dins Checks (Left + Right)",
+				"alias": [ "Shadow Temple Spiked Walls", "Shadow Spike Walls", "Shadow Dins", "stsw" ]
+			},
+			{
+				"name": "Spirit Temple Child Basement (Left + Right)",
+				"alias": [ "Spirit Crawl Space", "Child Spirit", "spcl" ]
+			},
+			{
+				"name": "Spirit Temple Adult Basement (Left + Right)",
+				"alias": [ "Spirit Temple Adult", "Adult Spirit", "spal" ]
+			},
 			{ "name": "Royal Family Tomb" },
 			{ "name": "Composers Grave" },
-			{ "name": "Dark Link + River Chest" },
-			{ "name": "Spirit Temple Hands" },
-			{ "name": "Colossus Hands Silver + Mirror" },
+			{
+				"name": "Water Temple Dark Link + River",
+				"alias": [ "wtdl", "Dark Link Loop", "Water Dark Link" ]
+			},
+			{
+				"name": "Spirit Temple Hands (Child + Adult)",
+				"alias": [ "Spirit Hands", "Colossus Hands", "sph" ]
+			},
+
 			{ "name": "desert rock grotto" },
 			{ "name": "Desert Colossus Grotto" },
 			{ "name": "valley ledge grotto" },

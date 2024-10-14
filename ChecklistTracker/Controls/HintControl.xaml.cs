@@ -39,7 +39,7 @@ namespace ChecklistTracker.Controls
             int totalWidth,
             LayoutParams itemLayout,
             Thickness padding,
-            Color backgroundColor, Color textColor,
+            TextParams textParams,
             string placeholderText = "")
         {
             InitializeComponent();
@@ -65,9 +65,9 @@ namespace ChecklistTracker.Controls
             Height = itemLayout.Height;
             TextHeight = itemLayout.Height;
             FullHeight = itemLayout.Height + padding.Bottom + padding.Top;
-            TextFontSize = 12;
-            TextBackgroundColorRaw = backgroundColor;
-            TextColorRaw = textColor;
+            TextFontSize = textParams.FontSize;
+            TextBackgroundColorRaw = textParams.BackgroundColor;
+            TextColorRaw = textParams.FontColor;
 
             IsEntry = viewModel.IsEntry;
             if (IsEntry)

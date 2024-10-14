@@ -1,4 +1,6 @@
-﻿namespace ChecklistTracker.Layout.HashFrog.Elements
+﻿using ChecklistTracker.Layout.GossipNotebook;
+
+namespace ChecklistTracker.Layout.HashFrog.Elements
 {
     [JsonDiscriminatorValue("hinttable")]
     public record HintTable : Element, ISometimesHintTable, ILocationHintTable, IEntranceTable
@@ -9,8 +11,10 @@
         public int columns { get; set; }
         public string padding { get; set; } = "0px";
         public string labels { get; set; } = "sometimes";
+        public string[]? labelsSet { get; set; } = null;
         public string color { get; set; } = "FFFFFF";
         public string backgroundColor { get; set; } = "333333";
+        public int? fontSize { get; set; } = null;
         public string itemIconSet { get; set; } = "sometimes";
         public string bossIconSet { get; set; } = "bosses";
         public string[] bossIcons { get; set; }
@@ -24,5 +28,6 @@
         public bool dual { get; set; } = false;
         public bool allowScroll { get; set; } = false;
         public string placeholderText { get; set; } = "";
+        public StyleConfig? style { get; set; } = null;
     }
 }

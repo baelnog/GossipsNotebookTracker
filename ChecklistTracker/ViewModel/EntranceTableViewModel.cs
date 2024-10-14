@@ -20,6 +20,7 @@ namespace ChecklistTracker.ViewModel
             CheckListViewModel viewModel,
             IList<string> icons,
             string? labels,
+            string[]? labelsFilter,
             LayoutParams layoutParams,
             LayoutParams iconLayoutParams,
             TextParams textParams)
@@ -27,7 +28,7 @@ namespace ChecklistTracker.ViewModel
 
             for (int i = 0; i < icons.Count; i++)
             {
-                HintStones.Add(new EntranceViewModel(viewModel, icons[i], i, labels, layoutParams, iconLayoutParams, textParams));
+                HintStones.Add(new EntranceViewModel(viewModel, icons[i], i, labels, labelsFilter, layoutParams, iconLayoutParams, textParams));
             }
 
             SortedHintStones = new AdvancedCollectionView(HintStones, isLiveShaping: true);

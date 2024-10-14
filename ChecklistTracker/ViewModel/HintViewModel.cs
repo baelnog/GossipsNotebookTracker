@@ -8,6 +8,7 @@ namespace ChecklistTracker.ViewModel
         internal bool IsEntry { get; set; }
         public string Text { get; set; }
         internal string? LabelSet { get; set; }
+        internal ISet<string>? LabelsFilter { get; set; }
         internal List<Config.Label>? BaseLabelSet { get; set; }
 
         internal ObservableCollection<HintStoneViewModel> LeftStones { get; private set; }
@@ -17,7 +18,7 @@ namespace ChecklistTracker.ViewModel
             CheckListViewModel viewModel,
             int leftItems = 0, int rightItems = 0,
             string? leftIconSet = "bosses", string? rightIconSet = "sometimes",
-            string? labelSet = null, string text = "", bool isEntry = false)
+            string? labelSet = null, string[]? labelsFilter = null, string text = "", bool isEntry = false)
         {
             LeftStones = new ObservableCollection<HintStoneViewModel>();
             for (int i = 0; i < leftItems && leftIconSet != null; i++)
@@ -32,12 +33,20 @@ namespace ChecklistTracker.ViewModel
             Text = text;
             IsEntry = isEntry;
             LabelSet = labelSet;
+            LabelsFilter = labelsFilter != null ? new HashSet<string>(labelsFilter) : null;
 
             if (isEntry)
             {
                 if (labelSet != null)
                 {
-                    BaseLabelSet = ResourceFinder.GetLabels(labelSet);
+                    var baseLabels = ResourceFinder.GetLabels(labelSet);
+                    if (LabelsFilter != null)
+                    {
+                        baseLabels = baseLabels
+                            .Where(label => LabelsFilter.Contains(label.name))
+                            .ToList();
+                    }
+                    BaseLabelSet = baseLabels;
                 }
             }
         }
