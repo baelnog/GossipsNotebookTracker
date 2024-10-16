@@ -2,7 +2,7 @@
 
 namespace ChecklistTracker.ViewModel
 {
-    internal class LayoutParams
+    public class LayoutParams
     {
 
         public int Width { get; set; }
@@ -14,6 +14,10 @@ namespace ChecklistTracker.ViewModel
             Width = width;
             Height = height;
             Padding = padding;
+        }
+
+        internal LayoutParams(int width, int height) : this(width, height, new Thickness(0))
+        {
         }
     }
 }

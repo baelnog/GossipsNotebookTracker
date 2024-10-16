@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChecklistTracker.Controls;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -9,7 +10,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public ElementConverter() : base(
             "type",
             GetTypeDiscriminator,
-            new List<Type> { typeof(Element), typeof(ElementTable), typeof(HintTable), typeof(Label), typeof(LocationHint) }
+            new List<Type> { typeof(Element), typeof(ElementTable), typeof(HintTable), typeof(Label), typeof(LocationHint), typeof(ScreenshotElement) }
         )
         { }
 

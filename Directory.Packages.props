@@ -22,6 +22,8 @@
     <PackageVersion Include="MSTest.TestAdapter" Version="3.6.0" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
     <PackageVersion Include="NReco.Logging.File" Version="1.2.1" />
+    <PackageVersion Include="ScreenCapture.NET" Version="3.0.0" />
+    <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
     <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
   </ItemGroup>
 </Project>

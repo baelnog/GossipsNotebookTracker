@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics;
@@ -331,6 +332,21 @@ namespace ChecklistTracker
                         tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
                         this.Layout.Children.Add(tableControl);
                     }
+                }
+                else if (component is ScreenshotElement screenshotElem)
+                {
+                    var vm = new ScreenCaptureViewModel(
+                        graphicsCardIndex: screenshotElem.graphicsCardIndex,
+                        screenIndex: screenshotElem.screenIndex,
+                        clipRegion: new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
+                        new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]));
+                    var control = new ScreenCaptureControl(
+                        vm,
+                        new LayoutParams(screenshotElem.screenshotSize[1], 1080)); // screenshotElem.Size[1], screenshotElem.Size[0], new Thickness(0)));
+
+                    control.SetValue(Canvas.LeftProperty, screenshotElem.position[1]);
+                    control.SetValue(Canvas.TopProperty, screenshotElem.position[0]);
+                    this.Layout.Children.Add(control);
                 }
                 else if (component is Layout.HashFrog.Elements.Element element)
                 {
