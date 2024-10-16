@@ -61,6 +61,11 @@ namespace ChecklistTracker.ViewModel
 
         private void OnIndexChanged(object? arg1, PropertyChangedEventArgs args)
         {
+            UpdateCurrentImage();
+        }
+
+        private void UpdateCurrentImage()
+        {
             CurrentImage = ResourceFinder.FindImageGroupImage(ImageGroup, Index);
         }
 
@@ -70,6 +75,12 @@ namespace ChecklistTracker.ViewModel
             var maxLength = ResourceFinder.GetImageSet(ImageGroup).Count;
 
             Index = Math.Clamp(Index + n, 0, maxLength);
+            if (Index == 0)
+            {
+                // If the current image was created from a drag/drop, we need to manually trigger an image update.
+                // The image may already have been 0.
+                UpdateCurrentImage();
+            }
         }
 
         internal void OnClick(UIElement sender, MouseButton button)

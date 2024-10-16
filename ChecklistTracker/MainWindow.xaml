@@ -12,35 +12,27 @@
 
         <MenuBar x:Name="Menu">
             <MenuBarItem Title="Layout" x:Name="LayoutsMenu">
-                <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout"/>
+                <MenuFlyoutItem Text="Reload" Click="MenuReloadLayout">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                            Modifiers="Control" 
+                            Key="R" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                                Modifiers="Control" 
+                                Key="O" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
             <MenuBarItem Title="Settings" x:Name="SettingsMenu">
                 <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
-
-            <!--<MenuBarItem Title="Edit">
-                <MenuFlyoutItem Text="Undo"/>
-                <MenuFlyoutItem Text="Cut"/>
-                <MenuFlyoutItem Text="Copy"/>
-                <MenuFlyoutItem Text="Paste"/>
-            </MenuBarItem>
-
-            <MenuBarItem Title="View">
-                <MenuFlyoutItem Text="Output"/>
-                <MenuFlyoutSeparator/>
-                <RadioMenuFlyoutItem Text="Landscape" GroupName="OrientationGroup"/>
-                <RadioMenuFlyoutItem Text="Portrait" GroupName="OrientationGroup" IsChecked="True"/>
-                <MenuFlyoutSeparator/>
-                <RadioMenuFlyoutItem Text="Small icons" GroupName="SizeGroup"/>
-                <RadioMenuFlyoutItem Text="Medium icons" IsChecked="True" GroupName="SizeGroup"/>
-                <RadioMenuFlyoutItem Text="Large icons" GroupName="SizeGroup"/>
-            </MenuBarItem>
-
-            <MenuBarItem Title="Help">
-                <MenuFlyoutItem Text="About"/>
-            </MenuBarItem>-->
         </MenuBar>
         <Canvas
             x:Name="Layout">

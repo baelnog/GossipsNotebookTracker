@@ -207,7 +207,7 @@ namespace ChecklistTracker
                         elementControl.SetValue(FrameworkElement.MarginProperty, paddingObj);
                         grid.Children.Add(elementControl);
                     }
-                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[0]) + 10;
+                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[1]) + 10;
                     grid.SetValue(Canvas.LeftProperty, compTable.position[1]);
                     grid.SetValue(Canvas.TopProperty, compTable.position[0]);
                     this.Layout.Children.Add(grid);
@@ -223,6 +223,13 @@ namespace ChecklistTracker
                     {
                         var locationHintTable = hintTable as ILocationHintTable;
 
+                        var textParams = new TextParams
+                        {
+                            FontColor = locationHintTable.color.ToColor(),
+                            FontSize = locationHintTable.fontSize ?? 10,
+                            BackgroundColor = locationHintTable.backgroundColor.ToColor(),
+                        };
+
                         var tableControl = new HintTableControl(
                                 hintCount: locationHintTable.hintNumber,
                                 hintColumns: locationHintTable.columns,
@@ -232,11 +239,11 @@ namespace ChecklistTracker
                                 itemWidth: locationHintTable.itemSize[1],
                                 itemHeight: locationHintTable.itemSize[0],
                                 padding: paddingObj,
-                                backgroundColor: locationHintTable.backgroundColor.ToColor(),
-                                textColor: locationHintTable.color.ToColor(),
+                                textParams: textParams,
                                 leftIconSet: locationHintTable.bossIconSet,
                                 rightIconSet: locationHintTable.itemIconSet,
                                 labelSet: locationHintTable.labels,
+                                labelsFilter: locationHintTable.labelsSet,
                                 allowOverflow: locationHintTable.allowScroll,
                                 placeholderText: locationHintTable.placeholderText);
 
@@ -263,7 +270,7 @@ namespace ChecklistTracker
                         var textParams = new TextParams
                         {
                             FontColor = entranceHintTable.color.ToColor(),
-                            FontSize = 10,
+                            FontSize = entranceHintTable.fontSize ?? 10,
                             BackgroundColor = entranceHintTable.backgroundColor.ToColor(),
                         };
 
@@ -271,6 +278,7 @@ namespace ChecklistTracker
                             CheckListViewModel.GlobalInstance,
                             entranceHintTable.icons,
                             entranceHintTable.labels,
+                            entranceHintTable.labelsSet,
                             layoutParams,
                             itemLayoutParams,
                             textParams);
@@ -295,21 +303,25 @@ namespace ChecklistTracker
                         var itemCount = 0;
                         if (hintTable.showIcon)
                         {
-                            itemCount++;
-                            if (hintTable.dual)
-                            {
-                                itemCount++;
-                            }
+                            itemCount = hintTable.itemCount;
                         }
                         //elementWidth += itemCount * (hintTable.itemSize[1] + paddingObj.HorizontalThickness);
 
                         for (int i = 0; i < sometimesHintTable.hintNumber; i++)
                         {
+                            var textParams = new TextParams
+                            {
+                                FontColor = sometimesHintTable.color.ToColor(),
+                                FontSize = sometimesHintTable.fontSize ?? 12,
+                                BackgroundColor = sometimesHintTable.backgroundColor.ToColor(),
+                            };
+
                             var model = new HintViewModel(
                                 CheckListViewModel.GlobalInstance,
                                 leftItems: 0,
                                 rightItems: itemCount,
                                 labelSet: sometimesHintTable.labels,
+                                labelsFilter: sometimesHintTable.labelsSet,
                                 isEntry: true
                                 );
                             var hintControl = new HintControl(
@@ -317,8 +329,7 @@ namespace ChecklistTracker
                                 totalWidth: hintTable.width,
                                 itemLayout: new LayoutParams(sometimesHintTable.itemSize[1], sometimesHintTable.itemSize[0], new Thickness(0)),
                                 padding: paddingObj,
-                                backgroundColor: sometimesHintTable.backgroundColor.ToColor(),
-                                textColor: sometimesHintTable.color.ToColor(),
+                                textParams: textParams,
                                 placeholderText: sometimesHintTable.placeholderText);
                             hintControl.Width = elementWidth;
 
@@ -327,7 +338,7 @@ namespace ChecklistTracker
 
                         //tableControl.Wrap = FlexWrap.Wrap;
                         //tableControl.Padding = paddingObj;
-                        tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns;
+                        tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns + 1;
                         tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
                         tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
                         this.Layout.Children.Add(tableControl);
@@ -409,6 +420,28 @@ namespace ChecklistTracker
         private void OpenLayout(string layout)
         {
             Config.UserConfig.SetLayout(layout);
+        }
+
+        private void MenuReloadLayout(object sender, RoutedEventArgs e)
+        {
+            ContentDialog reloadDialog = new ContentDialog
+            {
+                Title = "Reload tracker?",
+                Content = "Any content will be lost. Reload current layout?",
+                PrimaryButtonText = "Reload",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.Layout.XamlRoot
+            };
+
+            var reloadDialogTask = reloadDialog.ShowAsync();
+            reloadDialogTask.AsTask().ContinueWith(task =>
+            {
+                var result = task.Result;
+                if (result == ContentDialogResult.Primary)
+                {
+                    Config.UserConfig.TriggerLayoutReload();
+                }
+            });
         }
 
         private void MenuLoadSettings(object sender, RoutedEventArgs e)

@@ -16,11 +16,11 @@ namespace ChecklistTracker.ViewModel
 
         internal EntranceViewModel(CheckListViewModel viewModel,
             string elementId, int initialIndex,
-            string? labels,
+            string? labels, string[]? labelsFilter,
             LayoutParams layoutParams,
             LayoutParams iconLayoutParams,
             TextParams textParams)
-            : base(viewModel, leftItems: 1, leftIconSet: elementId, labelSet: labels, isEntry: true)
+            : base(viewModel, leftItems: 1, leftIconSet: elementId, labelSet: labels, labelsFilter: labelsFilter, isEntry: true)
         {
             Index = initialIndex;
             StoneViewModel = new HintStoneViewModel(viewModel, elementId);
