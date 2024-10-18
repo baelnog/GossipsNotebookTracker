@@ -29,6 +29,7 @@
     <None Remove="Controls\HintTableControl.xaml" />
     <None Remove="Controls\ManyValueToggleButton.xaml" />
     <None Remove="Controls\RewardControl.xaml" />
+    <None Remove="Controls\ScreenCaptureControl.xaml" />
     <None Remove="Controls\SettingsPanel.xaml" />
     <None Remove="Controls\SongControl.xaml" />
   </ItemGroup>
@@ -55,6 +56,8 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
     <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
+    <PackageReference Include="ScreenCapture.NET" />
+    <PackageReference Include="ScreenCapture.NET.DX11" />
   </ItemGroup>
 
   <!-- 
@@ -118,6 +121,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\RewardControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\ScreenCaptureControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

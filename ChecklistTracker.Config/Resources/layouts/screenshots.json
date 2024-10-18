@@ -1,0 +1,38 @@
+{
+	"trackerConfig": {
+		"name": "Season 8"
+	},
+	"style": {
+		"width": 580,
+		"height": 1080,
+		"backgroundColor": "#000000",
+		"fontFamily": null,
+		"fontSize": null,
+		"fontColor": null
+	},
+	"windows": [
+		{
+			"style": {
+				"title": "Season 8",
+				"backgroundColor": "#000000",
+				"width": 580,
+				"height": 1080,
+				"fontFamily": null,
+				"fontSize": null,
+				"fontColor": null
+			},
+			"components": [
+				{
+					"type": "screenshot",
+					"position": [ 0, 0 ],
+					"size": [ 1080, 580 ],
+					"screenshotSize": [ 325, 575],
+					"clipRegion": [
+						[20, 12],
+						[60, 60]
+					]
+				}
+			]
+		}
+	]
+}
