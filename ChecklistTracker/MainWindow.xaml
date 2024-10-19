@@ -9,17 +9,8 @@
     mc:Ignorable="d">
     <StackPanel
         VerticalAlignment="Top">
-
         <MenuBar x:Name="Menu">
-            <MenuBarItem Title="Layout" x:Name="LayoutsMenu">
-                <MenuFlyoutItem Text="Reload" Click="MenuReloadLayout">
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                            Modifiers="Control" 
-                            Key="R" />
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
-                <MenuFlyoutSeparator />
+            <MenuBarItem Title="File" x:Name="LayoutsMenu">
                 <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator 
@@ -28,6 +19,21 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Hide Toolbar" Click="ToggleMenuBar">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                            Key="F11" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Reload" Click="MenuReloadLayout">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                            Modifiers="Control" 
+                            Key="R" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </MenuBarItem>
             <MenuBarItem Title="Settings" x:Name="SettingsMenu">
                 <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>

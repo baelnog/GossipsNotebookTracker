@@ -9,6 +9,9 @@ namespace ChecklistTracker.Config
     {
         internal static readonly string UserConfigFile = $"{TrackerConfig.ProgramDir}/user-config.json";
 
+        [JsonPropertyName("showMenuBar")]
+        public bool ShowMenuBar { get; set; } = true;
+
         [JsonPropertyName("layout")]
         public string LayoutPath { get; set; } = "layouts/season7.json";
 
@@ -45,6 +48,12 @@ namespace ChecklistTracker.Config
             }
 
             LayoutPath = layoutPath;
+        }
+
+        public void TriggerLayoutReload()
+        {
+            // Signal that the layout was changed to trigger a reload.
+            this.RaisePropertyChanged(PropertyChanged, nameof(LayoutPath));
         }
 
         public void SetSettings(string settingsPath)

@@ -5,6 +5,7 @@ using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.Layout.HashFrog.Elements;
 using ChecklistTracker.ViewModel;
 using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -78,8 +79,15 @@ namespace ChecklistTracker
             }
         }
 
+        private void ShowOrHideMenuBar()
+        {
+            Menu.Visibility = Config.UserConfig.ShowMenuBar ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void SetupMenus()
         {
+            Config.UserConfig.PropertyChanged += (s, e) => ShowOrHideMenuBar();
+
             foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag?.ToString() == "LayoutPath").ToList())
             {
                 LayoutsMenu.Items.Remove(oldItem);
@@ -95,7 +103,7 @@ namespace ChecklistTracker
                         Tag = "LayoutPath"
                     };
                     item.Click += (s, e) => { OpenLayout(layoutPath); };
-                    this.LayoutsMenu.Items.Add(item);
+                    this.LayoutsMenu.Items.Insert(this.LayoutsMenu.Items.Count - 4, item);
                 }
             }
 
@@ -112,6 +120,7 @@ namespace ChecklistTracker
                     this.SettingsMenu.Items.Add(item);
                 }
             }
+            this.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, ShowOrHideMenuBar);
         }
 
         public void LayoutDesign(TrackerWindow layout, StyleConfig style)
@@ -474,6 +483,11 @@ namespace ChecklistTracker
         {
             Logging.WriteLine($"Loading settings preset {settingsFile}");
             Config.SetRandomizerSettings(settingsFile);
+        }
+
+        private void ToggleMenuBar(object sender, RoutedEventArgs e)
+        {
+            this.Config.UserConfig.ShowMenuBar = !this.Config.UserConfig.ShowMenuBar;
         }
     }
 }
