@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChecklistTracker.CoreUtils;
 using System.ComponentModel;
-using System.IO;
 using System.Text.Json.Serialization;
 
 namespace ChecklistTracker.Config
@@ -13,10 +12,15 @@ namespace ChecklistTracker.Config
         public bool ShowMenuBar { get; set; } = true;
 
         [JsonPropertyName("layout")]
-        public string LayoutPath { get; set; } = "layouts/season7.json";
+        public string LayoutPath { get; set; } = "layouts/season8.json";
 
         [JsonPropertyName("layouts")]
-        public List<string> LayoutHistory { get; set; } = new List<string>();
+        public List<string> LayoutHistory { get; set; } = new List<string>
+        {
+            "layouts/season8.json",
+            "layouts/season7.json",
+            "layouts/season7-interiors.json",
+        };
 
         [JsonPropertyName("settings")]
         public string SettingsPath { get; set; } = "settings/season7-base.json";
