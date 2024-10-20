@@ -56,11 +56,11 @@ namespace ChecklistTracker.Controls
 
         void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs e)
         {
-            if (e.ChosenSuggestion != null)
+            if (e.ChosenSuggestion is Config.Label chosenLabel)
             {
-                this.EntryBox.Text = (e.ChosenSuggestion as Config.Label).name;
+                this.EntryBox.Text = chosenLabel.name;
             }
-            else if (sender.IsSuggestionListOpen && sender.ItemsSource != null && sender.ItemsSource is List<Config.Label> labels && labels.Any())
+            else if (sender.IsSuggestionListOpen && sender.ItemsSource is List<Config.Label> labels && labels.Any())
             {
                 this.EntryBox.Text = labels.First().name;
             }

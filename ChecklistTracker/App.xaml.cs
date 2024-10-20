@@ -4,8 +4,7 @@ using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.LogicProvider;
 using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
-using System;
-using System.IO;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -47,20 +46,22 @@ namespace ChecklistTracker
                 inventory,
                 logicEngine);
 
-            m_window = new MainWindow(config);
-            m_window.Activate();
+            MainWindow = new MainWindow(config);
+            MainWindow.Activate();
 
             LayoutTracker();
 
             CheckListViewModel.GlobalInstance.Config.UserConfig.OnPropertyChanged(
                 nameof(UserConfig.LayoutPath),
-                (o, args) => m_window.DispatcherQueue.TryEnqueue(DispatchLayoutChange));
+                (o, args) => MainWindow.DispatcherQueue.TryEnqueue(DispatchLayoutChange));
         }
 
-        private MainWindow m_window;
+        private MainWindow? MainWindow;
 
         private void LayoutTracker()
         {
+            Contract.Assert(MainWindow != null);
+            Contract.Assert(CheckListViewModel.GlobalInstance != null);
 
             var layoutDoc = ResourceFinder.ReadResourceFile(CheckListViewModel.GlobalInstance.Config.UserConfig.LayoutPath).Result;
             var layout = GossipNotebookLayout.ParseLayout(layoutDoc);
@@ -68,7 +69,7 @@ namespace ChecklistTracker
             // TODO: Enumerate all windows.
             var window = layout.Windows[0];
 
-            m_window.LayoutDesign(window, layout.Style);
+            MainWindow.LayoutDesign(window, layout.Style);
 
             if (layout.TrackerConfig.EnableLogic)
             {

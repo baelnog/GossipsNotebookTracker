@@ -4,6 +4,7 @@ using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace ChecklistTracker.ViewModel
@@ -14,35 +15,11 @@ namespace ChecklistTracker.ViewModel
 
         public Item Item { get; private set; }
 
-        private int _Count;
-        public int Count
-        {
-            get => _Count;
-            set
-            {
-                if (value != _Count)
-                {
-                    _Count = value;
-                    this.RaisePropertyChanged(PropertyChanged);
-                }
-            }
-        }
+        public int Count { get; private set; }
 
         public bool HasCount { get => Item.collection == CollectionType.Count; }
 
-        private ImageSource _CurrentImage;
-        public ImageSource CurrentImage
-        {
-            get => _CurrentImage;
-            set
-            {
-                if (value != _CurrentImage)
-                {
-                    _CurrentImage = value;
-                    this.RaisePropertyChanged(PropertyChanged);
-                }
-            }
-        }
+        public ImageSource CurrentImage { get; private set; }
 
         public int? IndexOverride { get; set; }
 
@@ -54,6 +31,7 @@ namespace ChecklistTracker.ViewModel
             ViewModel = viewModel;
             ViewModel.Inventory.OnPropertyChanged(Item.logic_name, OnItemChanged);
             UpdateImageAndCount();
+            Contract.Assert(CurrentImage != null);
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string? name = null)
@@ -73,6 +51,7 @@ namespace ChecklistTracker.ViewModel
             }
 
             Count = ViewModel.Inventory.GetCurrentItemCount(Item);
+            Contract.Assert(CurrentImage != null);
         }
 
         private void OnItemChanged(object? sender, PropertyChangedEventArgs e)

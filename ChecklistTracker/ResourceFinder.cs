@@ -18,7 +18,7 @@ namespace ChecklistTracker
     class ResourceFinder
     {
 
-        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName);
+        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName);
 
         private static Lazy<ItemTable> Config = new Lazy<ItemTable>(() =>
         {
@@ -39,7 +39,7 @@ namespace ChecklistTracker
                         new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                 }
             });
-            return elements.ToDictionary((element) => element.id, (element) => element.name);
+            return elements!.ToDictionary((element) => element.id, (element) => element.name);
         });
 
         public static IEnumerable<Item> GetItems()

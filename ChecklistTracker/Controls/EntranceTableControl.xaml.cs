@@ -9,8 +9,8 @@ namespace ChecklistTracker.Controls
     public sealed partial class EntranceTableControl : UserControl
     {
 
-        internal EntranceTableViewModel ViewModel { get; set; }
-        internal LayoutParams Layout { get; set; }
+        internal EntranceTableViewModel? ViewModel { get; set; }
+        internal LayoutParams? Layout { get; set; }
 
         public EntranceTableControl()
         {

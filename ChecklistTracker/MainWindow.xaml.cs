@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -125,6 +126,8 @@ namespace ChecklistTracker
 
         public void LayoutDesign(TrackerWindow layout, StyleConfig style)
         {
+            Contract.Assert(CheckListViewModel.GlobalInstance != null);
+
             this.Layout.Children.Clear();
 
             this.Layout.CanDrag = false;
