@@ -16,7 +16,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
 
         private static string GetTypeDiscriminator(Type type)
         {
-            return type.GetCustomAttribute<JsonDiscriminatorValueAttribute>().DiscriminatorValue;
+            return type.GetCustomAttribute<JsonDiscriminatorValueAttribute>()!.DiscriminatorValue;
         }
     }
 }

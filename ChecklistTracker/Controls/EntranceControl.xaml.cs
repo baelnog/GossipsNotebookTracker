@@ -36,20 +36,20 @@ namespace ChecklistTracker.Controls
                 if (entry.Text.Length > 0)
                 {
                     var items = ViewModel.BaseLabelSet
-                        .Select(label => (label, HintControl.MatchScore(entry.Text, label)))
-                        .Where(label => label.Item2 != null)
+                        .Select(label => (Label: label, Score: HintControl.MatchScore(entry.Text, label)))
+                        .Where(label => label.Score != null)
                         .ToList();
 
                     items.Sort((label1, label2) =>
                     {
-                        if (label1.Item2[0] != label2.Item2[0])
+                        if (label1.Score![0] != label2.Score![0])
                         {
-                            return label2.Item2[0].CompareTo(label1.Item2[0]);
+                            return label2.Score[0].CompareTo(label1.Score[0]);
                         }
-                        return label2.Item2[1].CompareTo(label1.Item2[1]);
+                        return label2.Score[1].CompareTo(label1.Score[1]);
                     });
 
-                    EntryBox.ItemsSource = items.Select(label => label.Item1).ToList();
+                    EntryBox.ItemsSource = items.Select(label => label.Label).ToList();
                 }
             }
         }

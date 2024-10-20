@@ -20,7 +20,7 @@ namespace ChecklistTracker.Controls
         public Color TextBackgroundColorRaw { get; set; }
         public Brush TextBackgroundColor { get { return new SolidColorBrush(TextBackgroundColorRaw); } }
 
-        private List<Config.Label> BaseLabelSet { get; set; }
+        private List<Config.Label>? BaseLabelSet { get; set; }
 
         private bool IsEntry { get; set; }
 
@@ -100,7 +100,7 @@ namespace ChecklistTracker.Controls
             return EntryBox;
         }
 
-        internal static double[] MatchScore(string text, Config.Label label)
+        internal static double[]? MatchScore(string text, Config.Label label)
         {
             var aliasScores = label.alias.Select(alias =>
             {
@@ -122,7 +122,7 @@ namespace ChecklistTracker.Controls
                 return null;
             }
 
-            return new double[] { aliasScore, (double)0 - nameScore };
+            return [aliasScore, (double)0 - nameScore];
         }
 
         void OnTextChanged(UIElement sender, AutoSuggestBoxTextChangedEventArgs e)
@@ -140,29 +140,29 @@ namespace ChecklistTracker.Controls
                 if (entry.Text.Length > 0)
                 {
                     var items = BaseLabelSet
-                        .Select(label => (label, MatchScore(entry.Text, label)))
-                        .Where(label => label.Item2 != null)
+                        .Select(label => (Label: label, Score: MatchScore(entry.Text, label)))
+                        .Where(label => label.Score != null)
                         .ToList();
 
                     items.Sort((label1, label2) =>
                     {
-                        if (label1.Item2[0] != label2.Item2[0])
+                        if (label1.Score![0] != label2.Score![0])
                         {
-                            return label2.Item2[0].CompareTo(label1.Item2[0]);
+                            return label2.Score[0].CompareTo(label1.Score[0]);
                         }
-                        return label2.Item2[1].CompareTo(label1.Item2[1]);
+                        return label2.Score[1].CompareTo(label1.Score[1]);
                     });
 
-                    EntryBox.ItemsSource = items.Select(label => label.Item1).ToList();
+                    EntryBox.ItemsSource = items.Select(label => label.Label).ToList();
                 }
             }
         }
 
         void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs e)
         {
-            if (e.ChosenSuggestion != null)
+            if (e.ChosenSuggestion is Config.Label chosenLabel)
             {
-                this.EntryBox.Text = (e.ChosenSuggestion as Config.Label).name;
+                this.EntryBox.Text = chosenLabel.name;
             }
             else if (sender.IsSuggestionListOpen && sender.ItemsSource != null && sender.ItemsSource is List<Config.Label> labels && labels.Any())
             {

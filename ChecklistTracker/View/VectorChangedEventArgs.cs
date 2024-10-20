@@ -15,7 +15,7 @@ namespace ChecklistTracker.View
         /// <param name="cc">collection change type</param>
         /// <param name="index">index of item changed</param>
         /// <param name="item">item changed</param>
-        public VectorChangedEventArgs(CollectionChange cc, int index = -1, object item = null)
+        public VectorChangedEventArgs(CollectionChange cc, int index = -1, object? item = null)
         {
             CollectionChange = cc;
             Index = (uint)index;

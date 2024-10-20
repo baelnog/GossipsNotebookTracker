@@ -12,35 +12,11 @@ namespace ChecklistTracker.ViewModel
     {
         public virtual event PropertyChangedEventHandler? PropertyChanged;
 
-        private ImageSource _CurrentImage;
-        public ImageSource CurrentImage
-        {
-            get => _CurrentImage;
-            internal set
-            {
-                if (value != _CurrentImage)
-                {
-                    _CurrentImage = value;
-                    this.RaisePropertyChanged(PropertyChanged);
-                }
-            }
-        }
+        public ImageSource CurrentImage { get; set; }
 
         private string ImageGroup;
 
-        private int _Index;
-        private int Index
-        {
-            get => _Index;
-            set
-            {
-                if (value != _Index)
-                {
-                    _Index = value;
-                    this.RaisePropertyChanged(PropertyChanged);
-                }
-            }
-        }
+        private int Index { get; set; }
 
         internal CheckListViewModel ViewModel { get; private set; }
 
@@ -48,8 +24,8 @@ namespace ChecklistTracker.ViewModel
         {
             ViewModel = viewModel;
             ImageGroup = ResourceFinder.FindItemById(elementId) ?? elementId;
-            _Index = 0;
-            _CurrentImage = startingImage ?? ResourceFinder.FindImageGroupImage(ImageGroup, Index);
+            Index = 0;
+            CurrentImage = startingImage ?? ResourceFinder.FindImageGroupImage(ImageGroup, Index);
 
             this.OnPropertyChanged(nameof(Index), NotifyIndexChanged);
         }
@@ -72,7 +48,7 @@ namespace ChecklistTracker.ViewModel
         public void Collect(int n = 1)
         {
 
-            var maxLength = ResourceFinder.GetImageSet(ImageGroup).Count;
+            var maxLength = ResourceFinder.GetImageSet(ImageGroup)!.Count;
 
             Index = Math.Clamp(Index + n, 0, maxLength);
             if (Index == 0)

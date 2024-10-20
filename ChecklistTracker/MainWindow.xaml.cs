@@ -367,9 +367,9 @@ namespace ChecklistTracker
                 }
                 else if (component is Layout.HashFrog.Elements.Element element)
                 {
-                    var itemName = ResourceFinder.FindItemById(element.elementId);
-                    var item = ResourceFinder.FindItem(itemName);
-                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)));
+                    var itemName = ResourceFinder.FindItemById(element.elementId)!;
+                    var item = ResourceFinder.FindItem(itemName)!;
+                    var control = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);

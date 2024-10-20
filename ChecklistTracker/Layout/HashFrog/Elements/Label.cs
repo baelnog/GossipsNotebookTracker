@@ -7,7 +7,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
     public record Label : Element
     {
         [JsonInclude]
-        public string text;
+        public string text = "";
         [JsonInclude]
         public int fontSize;
         [JsonInclude]

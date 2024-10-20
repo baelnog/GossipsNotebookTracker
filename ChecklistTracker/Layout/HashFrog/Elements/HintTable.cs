@@ -17,7 +17,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public int? fontSize { get; set; } = null;
         public string itemIconSet { get; set; } = "sometimes";
         public string bossIconSet { get; set; } = "bosses";
-        public string[] bossIcons { get; set; }
+        public string[]? bossIcons { get; set; }
         public bool showIcon { get; set; } = true;
         public bool inverted { get; set; } = false;
         public bool showBoss { get; set; } = true;

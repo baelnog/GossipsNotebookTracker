@@ -106,7 +106,7 @@ namespace ChecklistTracker
                 item = setName;
             }
 
-            return FindItem(item, 1);
+            return FindItem(item, 1)!;
         }
 
         internal static int BoundLabelIndex(string labelSet, int startingIndex)

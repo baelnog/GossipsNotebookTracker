@@ -27,7 +27,7 @@ namespace ChecklistTracker.Controls
                 {
                     if (item is LocationViewModel location)
                     {
-                        Region.Model.CheckLocation(location.Location);
+                        Region!.Model.CheckLocation(location.Location);
                     }
                 }
                 if (args.AddedItems.Any())

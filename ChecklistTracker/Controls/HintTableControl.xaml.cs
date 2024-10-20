@@ -74,7 +74,7 @@ namespace ChecklistTracker.Controls
 
             Entry = new HintControl(
                     new HintViewModel(
-                        CheckListViewModel.GlobalInstance,
+                        CheckListViewModel.GlobalInstance!,
                         labelSet: labelSet,
                         labelsFilter: labelsFilter,
                         isEntry: true),
@@ -130,7 +130,7 @@ namespace ChecklistTracker.Controls
         void CopyHintControl(HintControl source)
         {
             var viewModel = new HintViewModel(
-                CheckListViewModel.GlobalInstance,
+                CheckListViewModel.GlobalInstance!,
                 leftItems: LeftItems,
                 rightItems: RightItems,
                 leftIconSet: LeftIconSet,
@@ -151,7 +151,7 @@ namespace ChecklistTracker.Controls
         {
             var hintControl = new HintControl(
                 new HintViewModel(
-                    CheckListViewModel.GlobalInstance,
+                    CheckListViewModel.GlobalInstance!,
                     leftItems: LeftItems,
                     rightItems: RightItems,
                     leftIconSet: LeftIconSet,

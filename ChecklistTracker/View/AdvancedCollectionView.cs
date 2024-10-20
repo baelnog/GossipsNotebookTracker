@@ -373,16 +373,16 @@ namespace ChecklistTracker.View
         /// <param name="x">Object A</param>
         /// <param name="y">Object B</param>
         /// <returns>Comparison value</returns>
-        int IComparer<object>.Compare(object x, object y)
+        int IComparer<object>.Compare(object? x, object? y)
         {
             if (!_sortProperties.Any())
             {
-                var type = x.GetType();
+                var type = x!.GetType();
                 foreach (var sd in _sortDescriptions)
                 {
                     if (!string.IsNullOrEmpty(sd.PropertyName))
                     {
-                        _sortProperties[sd.PropertyName] = type.GetProperty(sd.PropertyName);
+                        _sortProperties[sd.PropertyName] = type.GetProperty(sd.PropertyName)!;
                     }
                 }
             }
@@ -393,15 +393,15 @@ namespace ChecklistTracker.View
 
                 if (string.IsNullOrEmpty(sd.PropertyName))
                 {
-                    cx = x;
-                    cy = y;
+                    cx = x!;
+                    cy = y!;
                 }
                 else
                 {
                     var pi = _sortProperties[sd.PropertyName];
 
-                    cx = pi.GetValue(x);
-                    cy = pi.GetValue(y);
+                    cx = pi.GetValue(x)!;
+                    cy = pi.GetValue(y)!;
                 }
 
                 var cmp = sd.Comparer.Compare(cx, cy);
@@ -418,7 +418,7 @@ namespace ChecklistTracker.View
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Property changed event invoker

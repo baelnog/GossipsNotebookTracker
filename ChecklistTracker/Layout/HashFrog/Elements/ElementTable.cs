@@ -6,8 +6,8 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
     public record ElementTable : Element
     {
         public int columns { get; set; }
-        public IEnumerable<string> elements { get; set; }
-        public int[] elementsSize { get; set; }
-        public string padding { get; set; }
+        public IEnumerable<string> elements { get; set; } = Enumerable.Empty<string>();
+        public int[] elementsSize { get; set; } = [];
+        public string padding { get; set; } = "0px";
     }
 }

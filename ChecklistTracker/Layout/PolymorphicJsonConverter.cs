@@ -36,8 +36,8 @@ namespace ChecklistTracker.Layout
         // you can't use the options to get the JsonTypeInfo for any types the
         // converter can convert, so unfortunately we have to create a copy with
         // the converters removed.
-        JsonSerializerOptions originalOptions = null;
-        JsonSerializerOptions optionsWithoutConverters = null;
+        JsonSerializerOptions? originalOptions = null;
+        JsonSerializerOptions? optionsWithoutConverters = null;
         JsonTypeInfo getTypeInfo(Type t, JsonSerializerOptions givenOpts)
         {
             if (optionsWithoutConverters is null)
@@ -72,7 +72,7 @@ namespace ChecklistTracker.Layout
                     $"when trying to deserialize {typeof(T).Name}");
             }
 
-            if (!discriminatorToSubtype.TryGetValue(typeName.ToLower(), out Type type))
+            if (!discriminatorToSubtype.TryGetValue(typeName.ToLower(), out Type? type))
             {
                 throw new JsonException($"Unknown type: {typeName}");
             }
@@ -125,7 +125,7 @@ namespace ChecklistTracker.Layout
                 if (p.Get is null) continue;
 
                 writer.WritePropertyName(p.Name);
-                object pVal = p.Get(value);
+                object? pVal = p.Get(value);
                 JsonSerializer.Serialize(writer, pVal, options);
             }
 

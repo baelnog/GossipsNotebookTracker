@@ -7,10 +7,8 @@ namespace ChecklistTracker.Layout.HashFrog
     internal class HashFrogLayout
     {
         [JsonInclude]
-        public string id;
+        public TrackerConfig layoutConfig = new TrackerConfig();
         [JsonInclude]
-        public TrackerConfig layoutConfig;
-        [JsonInclude]
-        public IEnumerable<Element> components;
+        public IEnumerable<Element> components = new List<Element>();
     }
 }

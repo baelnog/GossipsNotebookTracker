@@ -6,7 +6,7 @@ namespace ChecklistTracker.Layout
     internal class JsonDiscriminatorValueAttribute : Attribute
     {
         internal string DiscriminatorValue { get; }
-        public JsonDiscriminatorValueAttribute(string discriminatorValue = null)
+        public JsonDiscriminatorValueAttribute(string discriminatorValue)
         {
             DiscriminatorValue = discriminatorValue;
         }

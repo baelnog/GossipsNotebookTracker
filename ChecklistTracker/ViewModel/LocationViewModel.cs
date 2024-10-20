@@ -49,7 +49,7 @@ namespace ChecklistTracker.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (o is not LocationViewModel vm)
             {
