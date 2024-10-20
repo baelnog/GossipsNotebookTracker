@@ -16,7 +16,6 @@ namespace ChecklistTracker.CoreUtils
         {
             ILoggerFactory factory = LoggerFactory.Create(builder =>
             {
-                //builder.AddDebug();
                 builder.AddFile("app-log.txt", options =>
                 {
                     options.Append = false;
@@ -47,24 +46,20 @@ namespace ChecklistTracker.CoreUtils
         }
 
         private static readonly ILogger logger;
-        //private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
         public static void WriteLine(string line)
         {
             logger.LogInformation(line);
-            //Logger.LogMessage(line);
         }
 
         public static void WriteLine(string line, params object[]? args)
         {
             logger.LogInformation(line, args);
-            //Logger.LogMessage(line, args);
         }
 
         public static void WriteLine(string line, Exception e)
         {
             logger.LogInformation(line, e);
-            //Logger.LogMessage(line, e);
         }
 
         public static IDisposable Indented()

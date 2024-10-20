@@ -1,10 +1,8 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
-//using CommunityToolkit.WinUI.UI;
 using CommunityToolkit.WinUI.Collections;
 
-//using CommunityToolkit.WinUI.Collections;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

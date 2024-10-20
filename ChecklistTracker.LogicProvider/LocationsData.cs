@@ -74,7 +74,6 @@ namespace ChecklistTracker.LogicProvider
             }
 
             // Run through the boss file twice, since MQ and non-MQ share the same boss file
-            //location.ParseLogicFile(logicFiles.BossesFile, true, true);
             location.ParseLogicFile(logicFiles.BossesFile, true, false);
             location.ParseLogicFile(logicFiles.BossesFileAdditional, true, false);
 
@@ -482,24 +481,6 @@ namespace ChecklistTracker.LogicProvider
 
         void ResetActiveLocations()
         {
-            //var dungeonsMQ = Settings.MQDungeons;
-
-            //var dungeons = Locations["dungeon"];
-            //var dungeonMQ = Locations["dungeon_mq"];
-
-            //ActiveLocations = ResetActiveLocations(dungeonsMQ, Locations);
-            //ActiveLocationsByRegion.Clear();
-            //foreach (var location in ActiveLocations)
-            //{
-            //    ActiveLocationsByRegion.GetOrNew(location.Value.ParentRegion)[location.Key] = location.Value;
-            //}
-
-            //ActiveSkullsLocations = ResetActiveLocations(dungeonsMQ, SkullsLocations);
-
-            //ActiveDropLocations = ResetActiveLocationsSets(dungeonsMQ, DropLocations, (key, drop) => drop.VanillaItem);
-            //ActiveEvents = ResetActiveLocationsSets(dungeonsMQ, Events, (key, evt) => key);
-            //ActiveExits = ResetActiveLocationsMap(dungeonsMQ, Exits);
-
             this.RaisePropertyChanged(PropertyChanged);
         }
         ConcurrentDictionary<string, T> ResetActiveLocations<T>(ISet<DungeonChoiceType> dungeonsMQ, TripleConcurrentDictionary<string, string, string, T> source)

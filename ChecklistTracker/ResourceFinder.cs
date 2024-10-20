@@ -29,7 +29,6 @@ namespace ChecklistTracker
 
         private static Lazy<Dictionary<string, string>> itemLookupByElementId = new Lazy<Dictionary<string, string>>(() =>
         {
-            //using Stream stream = FileSystem.Current.OpenAppPackageFileAsync("hashfrog-elements.json").Result;
             using Stream stream = File.Open($"{ProgramDir.Value}/config/ootr/hashfrog-elements.json", FileMode.Open, FileAccess.Read);
             var elements = JsonSerializer.Deserialize<IEnumerable<HashFrogElement>>(stream, new JsonSerializerOptions
             {

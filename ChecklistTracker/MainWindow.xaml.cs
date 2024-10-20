@@ -162,7 +162,6 @@ namespace ChecklistTracker
                     label.SetValue(Canvas.TopProperty, compLabel.position[1]);
 
                     this.Layout.Children.Add(label);
-                    //this.Layout.SetLayoutBounds(label, new Rect(0, 0, Microsoft.Maui.Controls.AbsoluteLayout.AutoSize, Microsoft.Maui.Controls.AbsoluteLayout.AutoSize));
                 }
                 else if (component is ElementTable compTable)
                 {
@@ -438,6 +437,8 @@ namespace ChecklistTracker
 
             // Initialize the file picker with the window handle (HWND).
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+
+            openPicker.SettingsIdentifier = "ChecklistTracker";
 
             // Set options for your file picker
             openPicker.ViewMode = PickerViewMode.List;

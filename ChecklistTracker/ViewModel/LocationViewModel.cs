@@ -42,7 +42,6 @@ namespace ChecklistTracker.ViewModel
         {
             Logging.WriteLine($"{Location.Name} {e.PropertyName}");
             OnPropertyChanged(e.PropertyName);
-            //OnPropertyChanged(nameof(Location));
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

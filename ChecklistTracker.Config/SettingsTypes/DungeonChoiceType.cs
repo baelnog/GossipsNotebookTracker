@@ -45,10 +45,6 @@ public static class DungeonChoiceTypeExtensions
 
     private static ConcurrentDictionary<string, DungeonChoiceType> StringToEnum { get; } = new ConcurrentDictionary<string, DungeonChoiceType>();
 
-    //public static bool ToEnum(string value)
-    //{
-    //    StringToEnum.GetOrAdd(value, val => Settings..)
-    //}
 
     public static bool Contains(this ISet<DungeonChoiceType> set, string value)
     {

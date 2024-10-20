@@ -285,16 +285,6 @@ namespace ChecklistTracker.Config
                     {
                         queue.TryEnqueue(() => this.RandomizerSettings = t.Result.Result);
                     }).ConfigureAwait(false);
-                //Task.CompletedTask
-                //.ContinueWith(async t => await )
-                //.ContinueWith(t =>
-                //{
-
-                //})
-                //{
-                //    this.RandomizerSettings = await .ConfigureAwait(true);
-                //    this.RaisePropertyChanged(PropertyChanged, nameof(RandomizerSettings));
-                //});
             }
         }
     }

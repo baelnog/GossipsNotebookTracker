@@ -286,7 +286,6 @@ namespace ChecklistTracker.LogicProvider
             {
                 if (!Regions[age].TryGetValue(exit.Value.LocationName, out var regionAccessibility) || regionAccessibility < Accessibility.InLogic)
                 {
-                    //Logging.LogMessage($"Testing Exit {exit.Value.LocationName} is accessible as {age}");
                     var exitsFromRegion = exit.Value.AccessRules.Where(rule => rule.ParentRegion == rootRegion);
                     var exitAccessibility = exitsFromRegion.Or(rule => rule.Accessibility & EvalNode(rule.Rule, rootRegion, age));
                     var accessibility = ((rootRegionAccessibility & exitAccessibility) | regionAccessibility);
@@ -297,7 +296,6 @@ namespace ChecklistTracker.LogicProvider
                     }
                     if (accessibility < rootRegionAccessibility)
                     {
-                        //Logging.LogMessage($"Exit {exit.Value.LocationName} is not accessible as {age}");
                         regionsToCheck.Add(rootRegion);
                     }
                 }

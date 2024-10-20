@@ -149,8 +149,6 @@ namespace ChecklistTracker.LogicProvider
         {
             var hashAsync = await HashDirectoryAsync(destination).ConfigureAwait(false);
 
-            //await Task.WhenAll(hashAsync);
-
             var json = new JsonObject();
             json["hash"] = hashAsync;
 

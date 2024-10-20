@@ -29,11 +29,6 @@ namespace ChecklistTracker.ANTLR
                 parser.AddErrorListener(listener_parser);
 
                 var program = parser.expr_input().expr_stmt();
-                //parser.
-                //var tree = parser.statement();
-                //var statementList = parser.statementList();
-
-
 
                 return program;
             });

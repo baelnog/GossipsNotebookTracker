@@ -1,6 +1,5 @@
 ﻿using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider;
-//using CommunityToolkit.WinUI.UI;
 using CommunityToolkit.WinUI.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

@@ -13,7 +13,7 @@ namespace ChecklistTracker.Controls.Click
 
         private static Dictionary<MouseButton, UIElement> TrackedEvents = new Dictionary<MouseButton, UIElement>();
 
-        private static DragInfo CurrentDrag = null;
+        private static DragInfo? CurrentDrag = null;
 
         private static Dictionary<UIElement, ClickCallbacks> ClickCallbacks = new Dictionary<UIElement, ClickCallbacks>();
         private static ConcurrentQueue<object> operations = new ConcurrentQueue<object>();
@@ -143,20 +143,6 @@ namespace ChecklistTracker.Controls.Click
                 Button = button
             };
             CurrentDrag = drag;
-            if (button == MouseButton.Right)
-            {
-                //var op = source.StartDragAsync(pointer);
-                //drag.Operation = op;
-                //op.GetAwaiter().GetResult();
-                //op.Cancel();
-                //var status = op.Status;
-                //var disposable = op as IDisposable;
-
-                // Massive hack to avoid issues around Drag operation deconstructor.
-                // Just don't let it ever garbage collect...
-                // Hopefully usual usage would trigger enough drag and drops to cause a meaningful memory leak.
-                //operations.Enqueue(op);
-            }
             Logging.WriteLine($"StartDrag Current Drag set");
         }
 
@@ -265,10 +251,6 @@ namespace ChecklistTracker.Controls.Click
         {
             var drag = CurrentDrag;
             CurrentDrag = null;
-            //if (drag?.Operation?.Status == AsyncStatus.Started)
-            //{
-            //    drag?.Operation.Cancel();
-            //}
             if (drag?.CurrentTarget == null)
             {
                 return;

@@ -46,8 +46,6 @@ namespace ChecklistTracker.LogicProvider
             HasProjectile = Cache.Memoize<string, Accessibility>("HasProjectile", _HasProjectile);
             RegionHasShortcuts = Cache.Memoize<string, Accessibility>("RegionHasShortcuts", _RegionHasShortcuts);
             HasAllNotesForSong = Cache.Memoize<string, Accessibility>("HasAllNotesForSong", _HasAllNotesForSong);
-            //HasAvailableDungeonKeysMemoized = Cache.Memoize<string, int, Accessibility>("HasAvailableDungeonKeys", _HasAvailableDungeonKeys, onReentrance: () => false);
-
         }
         private Stack<string> VisitingHere = new Stack<string>();
         private Stack<string> VisitingAge = new Stack<string>();
@@ -716,37 +714,6 @@ namespace ChecklistTracker.LogicProvider
             }
             return Accessibility.None;
         }
-
-        //Func<string, int, bool, Accessibility> HasAvailableDungeonKeysMemoized;
-        //Accessibility HasAvailableDungeonKeys(string dungeon, int count)
-        //{
-        //    return HasAvailableDungeonKeysMemoized(dungeon, count, true);
-        //}
-        //private Accessibility _HasAvailableDungeonKeys(string dungeon, int count)
-        //{
-        //    var accessibleDungeonRegions = Regions.Values
-        //        .SelectMany(regionLocs => regionLocs.ToList())
-        //        .Where(region => Locations.RegionMap[region] == dungeon)
-        //        .ToHashSet();
-
-        //    var dungeonLocations = Locations.ActiveLocations.Values.Where(loc => accessibleDungeonRegions.Contains(loc.ParentRegion)).ToList();
-
-        //    var availableLocations = dungeonLocations
-        //        .Where(loc =>
-        //        {
-        //            try
-        //            {
-        //                return Locations.IsProgessLocation(loc) && IsLocationAvailable(loc.LocationName);
-        //            }
-        //            catch (InvalidOperationException e)
-        //            {
-        //                return false;
-        //            }
-        //        })
-        //        .Take(count)
-        //        .Count();
-        //    return availableLocations >= count;
-        //}
 
         private static ISet<string> MEDALLIONS = new HashSet<string>
         {

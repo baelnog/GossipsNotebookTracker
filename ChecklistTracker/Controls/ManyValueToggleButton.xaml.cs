@@ -8,47 +8,11 @@ namespace ChecklistTracker.Controls;
 
 public sealed partial class ManyValueToggleButton : FlipView
 {
-    //public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty
-    //    .Register(nameof(ItemsSource), typeof(ObservableCollection<object>), typeof(ManyValueToggleButton), new PropertyMetadata(null));
-
-    //public static readonly DependencyProperty SelectedItemProperty = DependencyProperty
-    //    .Register(nameof(SelectedItem), typeof(object), typeof(ManyValueToggleButton), new PropertyMetadata(null));
-
-    //public static readonly DependencyProperty HeaderProperty = DependencyProperty
-    //    .Register(nameof(Header), typeof(string), typeof(ManyValueToggleButton), new PropertyMetadata(null));
-
     public static readonly DependencyProperty LabelMemberPathProperty = DependencyProperty
         .Register(nameof(LabelMemberPath), typeof(string), typeof(ManyValueToggleButton), new PropertyMetadata(null));
 
     public static readonly DependencyProperty ImageMemberPathProperty = DependencyProperty
         .Register(nameof(ImageMemberPath), typeof(ImageSource), typeof(ManyValueToggleButton), new PropertyMetadata(null));
-
-    //ObservableCollection<object> ItemsSource
-    //{
-    //    get => (ObservableCollection<object>) GetValue(ItemsSourceProperty);
-    //    set
-    //    {
-    //        SetValue(ItemsSourceProperty, value);
-    //    }
-    //}
-
-    //object? SelectedItem
-    //{
-    //    get => (object?)GetValue(SelectedItemProperty);
-    //    set
-    //    {
-    //        SetValue(SelectedItemProperty, value);
-    //    }
-    //}
-
-    //string? Header
-    //{
-    //    get => (string?)GetValue(HeaderProperty);
-    //    set
-    //    {
-    //        SetValue(HeaderProperty, value);
-    //    }
-    //}
 
     internal string? LabelMemberPath
     {

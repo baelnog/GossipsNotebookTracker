@@ -29,7 +29,6 @@ namespace ChecklistTracker.CoreUtils
                         {
                             if (log.Args != null)
                             {
-                                //Debug.WriteLine(log.log, log.e);
                                 Debug.WriteLine(log.Log, log.Args);
                             }
                             else if (log.Exception != null)

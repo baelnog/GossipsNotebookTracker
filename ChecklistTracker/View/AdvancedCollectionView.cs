@@ -1,5 +1,4 @@
-﻿//using CommunityToolkit.WinUI.UI;
-using CommunityToolkit.WinUI.Collections;
+﻿using CommunityToolkit.WinUI.Collections;
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Data;
 using System;
