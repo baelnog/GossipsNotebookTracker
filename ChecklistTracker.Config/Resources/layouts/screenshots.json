@@ -25,8 +25,8 @@
 				{
 					"type": "screenshot",
 					"position": [ 0, 0 ],
-					"size": [ 1080, 580 ],
-					"screenshotSize": [ 325, 575],
+					"size": [ 1080, 575 ],
+					"screenshotSize": [ 325, 575 ],
 					"clipRegion": [
 						[20, 12],
 						[60, 60]

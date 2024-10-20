@@ -20,6 +20,7 @@ namespace ChecklistTracker.Config
             "layouts/season8.json",
             "layouts/season7.json",
             "layouts/season7-interiors.json",
+            "layouts/screenshots.json",
         };
 
         [JsonPropertyName("settings")]

@@ -86,7 +86,7 @@ namespace ChecklistTracker
 
         private void SetupMenus()
         {
-            Config.UserConfig.PropertyChanged += (s, e) => ShowOrHideMenuBar();
+            Config.UserConfig.OnPropertyChanged(nameof(UserConfig.ShowMenuBar), (s, e) => ShowOrHideMenuBar());
 
             foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag?.ToString() == "LayoutPath").ToList())
             {
@@ -133,8 +133,6 @@ namespace ChecklistTracker
             var windowStyle = new CoalescedStyle(layout.Style, style);
 
             SetupMenus();
-
-            this.VisibilityChanged += MainWindow_VisibilityChanged;
 
             this.Content.SetValue(FrameworkElement.WidthProperty, windowStyle.Width);
             this.Content.SetValue(FrameworkElement.HeightProperty, windowStyle.Height);
@@ -314,7 +312,6 @@ namespace ChecklistTracker
                         {
                             itemCount = hintTable.itemCount;
                         }
-                        //elementWidth += itemCount * (hintTable.itemSize[1] + paddingObj.HorizontalThickness);
 
                         for (int i = 0; i < sometimesHintTable.hintNumber; i++)
                         {
@@ -345,8 +342,6 @@ namespace ChecklistTracker
                             tableControl.Children.Add(hintControl);
                         }
 
-                        //tableControl.Wrap = FlexWrap.Wrap;
-                        //tableControl.Padding = paddingObj;
                         tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns + 1;
                         tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
                         tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
@@ -362,7 +357,7 @@ namespace ChecklistTracker
                         new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]));
                     var control = new ScreenCaptureControl(
                         vm,
-                        new LayoutParams(screenshotElem.screenshotSize[1], 1080)); // screenshotElem.Size[1], screenshotElem.Size[0], new Thickness(0)));
+                        new LayoutParams(screenshotElem.size[1], screenshotElem.size[0], new Thickness(0)));
 
                     control.SetValue(Canvas.LeftProperty, screenshotElem.position[1]);
                     control.SetValue(Canvas.TopProperty, screenshotElem.position[0]);
@@ -372,32 +367,13 @@ namespace ChecklistTracker
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId);
                     var item = ResourceFinder.FindItem(itemName);
-                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), new LayoutParams(element.Size[1], element.Size[0], new Thickness(0)));
+                    var control = new ElementControl(new ItemViewModel(ResourceFinder.FindItem(itemName), CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);
                     this.Layout.Children.Add(control);
                 }
             }
-
-            //this.Content = this.Layout;
-        }
-
-        private void MainWindow_VisibilityChanged(object sender, WindowVisibilityChangedEventArgs args)
-        {
-            //this.Layout.XamlRoot.
-            //CoreApplicationView newView = CoreApplication.CreateNewView();
-            //int newViewId = 0;
-
-            //Frame frame = new Frame();
-            //frame.Navigate(typeof(CheckPage), null);
-            //Window.Current.Content = frame;
-            //// You have to activate the window in order to show it later.
-            //Window.Current.Activate();
-
-            //newViewId = ApplicationView.GetForCurrentView().Id;
-
-            //ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
 
         private void MenuOpenLayout(object sender, RoutedEventArgs e)

@@ -14,7 +14,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         [JsonInclude]
         public int labelStartingIndex { get; set; } = 0;
         [JsonInclude]
-        public int[] Size { get; set; } = { 25, 25 };
+        public int[] size { get; set; } = { 25, 25 };
         [JsonInclude]
         public string[] icons { get; set; } = { };
         [JsonInclude]
