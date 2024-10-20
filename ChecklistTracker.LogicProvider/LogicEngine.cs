@@ -2,6 +2,7 @@ using ChecklistTracker.Config;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using static ChecklistTracker.LogicProvider.LocationsData;
 
@@ -30,9 +31,9 @@ namespace ChecklistTracker.LogicProvider
 
             var logicFiles = LogicFiles.LoadLogicFiles(LogicFileCache.GetCachedLogicFilesForTagAsync(version).Result).Result;
 
-            Locations = LocationsData.Initialize(Config, logicFiles).Result;
+            Locations = LocationsData.Initialize(Config, logicFiles);
 
-            Helpers = LogicHelpers.InitHelpers(Config, logicFiles, Locations).Result;
+            Helpers = LogicHelpers.InitHelpers(Config, logicFiles, Locations);
 
             Inventory = new Dictionary<string, int>(Config.DefaultInventory);
 
@@ -54,6 +55,7 @@ namespace ChecklistTracker.LogicProvider
             }
 
             InitRegions();
+            Contract.Assert(HintRegions != null);
 
             UpdateItems(Inventory);
 

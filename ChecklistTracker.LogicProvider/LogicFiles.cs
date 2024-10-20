@@ -1,21 +1,16 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ChecklistTracker.LogicProvider
 {
     public class LogicFiles
     {
-        private static Regex HashComments = new Regex(@"(#|(//)).*\n");
-        private static Regex MultilineString = new Regex(@"\n\s+");
+        private static readonly Regex HashComments = new Regex(@"(#|(//)).*\n");
+        private static readonly Regex MultilineString = new Regex(@"\n\s+");
 
         internal IDictionary<string, string> LogicHelpers { get; private set; }
         internal IDictionary<string, string> LogicHelpersAdditional { get; private set; }
@@ -26,7 +21,26 @@ namespace ChecklistTracker.LogicProvider
         internal IEnumerable<Region> OverworldFile { get; private set; }
         internal IEnumerable<Region> OverworldFileAdditional { get; private set; }
 
-        private LogicFiles() { }
+        private LogicFiles(
+            IDictionary<string, string> logicHelpers,
+            IDictionary<string, string> logicHelpersAdditional,
+            IDictionary<string, IEnumerable<Region>> dungeonFiles,
+            IDictionary<string, IEnumerable<Region>> dungeonFilesAdditional,
+            IEnumerable<Region> bossesFile,
+            IEnumerable<Region> bossesFileAdditional,
+            IEnumerable<Region> overworldFile,
+            IEnumerable<Region> overworldFileAdditional
+        )
+        {
+            LogicHelpers = logicHelpers;
+            LogicHelpersAdditional = logicHelpersAdditional;
+            DungeonFiles = dungeonFiles;
+            DungeonFilesAdditional = dungeonFilesAdditional;
+            BossesFile = bossesFile;
+            BossesFileAdditional = bossesFileAdditional;
+            OverworldFile = overworldFile;
+            OverworldFileAdditional = overworldFileAdditional;
+        }
 
         public static async Task<LogicFiles> LoadLogicFiles(
             DirectoryInfo dataDirectory)
@@ -57,17 +71,16 @@ namespace ChecklistTracker.LogicProvider
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            return new LogicFiles
-            {
-                LogicHelpers = await logicHelpers.ConfigureAwait(false),
-                LogicHelpersAdditional = await logicHelpersAdditional.ConfigureAwait(false),
-                BossesFile = await bossFile.ConfigureAwait(false),
-                BossesFileAdditional = await bossFileAdditional.ConfigureAwait(false),
-                OverworldFile = await overworldFile.ConfigureAwait(false),
-                OverworldFileAdditional = await overworldFileAdditional.ConfigureAwait(false),
-                DungeonFiles = dungeonFiles.ToDictionary(kv => kv.Key, kv => kv.Value.Result),
-                DungeonFilesAdditional = dungeonFilesAdditional.ToDictionary(kv => kv.Key, kv => kv.Value.Result),
-            };
+            return new LogicFiles(
+                logicHelpers: await logicHelpers.ConfigureAwait(false),
+                logicHelpersAdditional: await logicHelpersAdditional.ConfigureAwait(false),
+                dungeonFiles: dungeonFiles.ToDictionary(kv => kv.Key, kv => kv.Value.Result),
+                dungeonFilesAdditional: dungeonFilesAdditional.ToDictionary(kv => kv.Key, kv => kv.Value.Result),
+                bossesFile: await bossFile.ConfigureAwait(false),
+                bossesFileAdditional: await bossFileAdditional.ConfigureAwait(false),
+                overworldFile: await overworldFile.ConfigureAwait(false),
+                overworldFileAdditional: await overworldFileAdditional.ConfigureAwait(false)
+            );
         }
 
         private static async Task<T> LoadLogicFile<T>(FileInfo file)
@@ -86,7 +99,7 @@ namespace ChecklistTracker.LogicProvider
                     NumberHandling = JsonNumberHandling.AllowReadingFromString,
                 };
                 options.Converters.Add(new JsonBooleanConverter());
-                return JsonSerializer.Deserialize<T>(contents, options);
+                return JsonSerializer.Deserialize<T>(contents, options)!;
             }
             catch (Exception ex)
             {

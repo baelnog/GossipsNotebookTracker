@@ -8,6 +8,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -30,9 +31,45 @@ namespace ChecklistTracker.LogicProvider
         private Dictionary<string, ConcurrentDictionary<string, Accessibility>> Regions { get; set; }
         private LocationsData Locations { get; set; }
 
-        private LogicHelpers()
+        private LogicHelpers(
+            TrackerConfig TrackerConfig,
+            Dictionary<string, ParserRuleContext> RuleAliases,
+            IDictionary<string, object> RenamedAttributes,
+            Dictionary<string, int> Items,
+            Dictionary<string, ConcurrentDictionary<string, Accessibility>> Regions,
+            LocationsData Locations)
         {
+            this.TrackerConfig = TrackerConfig;
+            this.RuleAliases = RuleAliases;
+            this.RenamedAttributes = RenamedAttributes;
+            this.Items = Items;
+            this.Regions = Regions;
+            this.Locations = Locations;
             RegisterCaches();
+
+            Contract.Assert(_IsLocationAvailableMemoized != null);
+            Contract.Assert(_EvalNodeMemoized != null);
+            Contract.Assert(EvalAccessRuleAge != null);
+            Contract.Assert(EvalIdentifier != null);
+            Contract.Assert(EvalLookup != null);
+            Contract.Assert(EvalCall != null);
+            Contract.Assert(EvalRuleAlias != null);
+            Contract.Assert(EvalEvent != null);
+            Contract.Assert(CanBuy != null);
+            Contract.Assert(CanAccessDrop != null);
+            Contract.Assert(HasBottle != null);
+            Contract.Assert(CanPlay != null);
+            Contract.Assert(CanUse != null);
+            Contract.Assert(EvalBinaryComparison != null);
+            Contract.Assert(EvalCountCheck != null);
+            Contract.Assert(HasItemMemoized != null);
+            Contract.Assert(HasMedallions != null);
+            Contract.Assert(HasStones != null);
+            Contract.Assert(HasDungeonRewards != null);
+            Contract.Assert(HasHearts != null);
+            Contract.Assert(HasProjectile != null);
+            Contract.Assert(RegionHasShortcuts != null);
+            Contract.Assert(HasAllNotesForSong != null);
         }
 
         private static ParserRuleContext Parse(string key, string value)
@@ -40,7 +77,7 @@ namespace ChecklistTracker.LogicProvider
             return ParseRule(value);
         }
 
-        internal static async Task<LogicHelpers> InitHelpers(
+        internal static LogicHelpers InitHelpers(
             TrackerConfig config,
             LogicFiles logicFiles,
             LocationsData locations)
@@ -72,15 +109,14 @@ namespace ChecklistTracker.LogicProvider
                 ["adult"] = new ConcurrentDictionary<string, Accessibility>(),
             };
 
-            return new LogicHelpers()
-            {
-                TrackerConfig = config,
-                RuleAliases = ruleAliases,
-                RenamedAttributes = renamedAttributes,
-                Items = items,
-                Regions = regions,
-                Locations = locations,
-            };
+            return new LogicHelpers(
+                TrackerConfig: config,
+                RuleAliases: ruleAliases,
+                RenamedAttributes: renamedAttributes,
+                Items: items,
+                Regions: regions,
+                Locations: locations
+            );
         }
 
         internal static IDictionary<string, object> InitRenamedAttributes(Settings settings)
@@ -314,7 +350,7 @@ namespace ChecklistTracker.LogicProvider
             return _IsLocationAvailableMemoized(location, age);
         }
 
-        private Func<string, string, Accessibility> _IsLocationAvailableMemoized;
+        private Func<string, string?, Accessibility> _IsLocationAvailableMemoized;
         internal Accessibility _IsLocationAvailable(string locationName, string? age)
         {
             using var indent = Logging.Indented();

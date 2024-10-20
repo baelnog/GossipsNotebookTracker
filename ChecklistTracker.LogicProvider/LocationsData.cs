@@ -50,17 +50,24 @@ namespace ChecklistTracker.LogicProvider
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        internal static async Task<LocationsData> Initialize(TrackerConfig config, LogicFiles logicFiles)
+        private LocationsData(
+            TrackerConfig config,
+            IDictionary<string, string> regionMap,
+            IDictionary<string, LocationData> locationTable)
         {
-            var location = new LocationsData();
+            TrackerConfig = config;
+            RegionMap = regionMap;
+            LocationTable = locationTable;
+        }
 
-            location.TrackerConfig = config;
-
-            location.RegionMap = config.HintRegions
-                .SelectMany(entry => entry.Value.Select(subValue => (subValue, entry.Key)))
-                .ToDictionary(tuple => tuple.subValue, tuple => tuple.Key);
-
-            location.LocationTable = config.LocationTable;
+        internal static LocationsData Initialize(TrackerConfig config, LogicFiles logicFiles)
+        {
+            var location = new LocationsData(
+                config,
+                config.HintRegions
+                    .SelectMany(entry => entry.Value.Select(subValue => (subValue, entry.Key)))
+                    .ToDictionary(tuple => tuple.subValue, tuple => tuple.Key),
+                config.LocationTable);
 
             // TODO: Don't parse MQ files until there is a better way to disambiguate efficiently
             foreach (var dungeon in logicFiles.DungeonFiles.Where(df => !df.Key.EndsWith("MQ")))
@@ -111,7 +118,7 @@ namespace ChecklistTracker.LogicProvider
                 var parentRegion = region.RegionName;
                 if (!RegionMap.ContainsKey(parentRegion) && isDungeon)
                 {
-                    RegionMap[parentRegion] = region.Dungeon;
+                    RegionMap[parentRegion] = region.Dungeon!;
                 }
                 var hintRegion = RegionMap[parentRegion];
 

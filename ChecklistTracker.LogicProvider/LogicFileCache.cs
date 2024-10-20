@@ -14,7 +14,7 @@ namespace ChecklistTracker.LogicProvider
     public class LogicFileCache
     {
 
-        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName);
+        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName);
         private static Lazy<DirectoryInfo> CachedRoot = new Lazy<DirectoryInfo>(() =>
         {
             return new DirectoryInfo(Path.Combine(ProgramDir.Value, "logic_cache"));
@@ -64,10 +64,10 @@ namespace ChecklistTracker.LogicProvider
                     sha256.TransformBlock(contents, 0, contents.Length, null, 0);
                 }
             }
-            return null;
+            throw new Exception("Tried to hash empty directory");
         }
 
-        private static string GetCachedHash(DirectoryInfo directory)
+        private static string? GetCachedHash(DirectoryInfo directory)
         {
             var stamp = Path.Combine(directory.FullName, "stamp.json");
             if (!File.Exists(stamp))
@@ -76,11 +76,14 @@ namespace ChecklistTracker.LogicProvider
             }
             using var stampStream = File.OpenRead(stamp);
             var json = JsonNode.Parse(stampStream) as JsonObject;
-            if (!json.TryGetPropertyValue("hash", out var hashNode) || hashNode == null)
+
+            JsonNode? hashNode = null;
+            if (json?.TryGetPropertyValue("hash", out hashNode) ?? false || hashNode == null)
             {
                 return null;
             }
-            return hashNode.AsValue().GetValue<string>();
+
+            return hashNode!.AsValue().GetValue<string>();
         }
 
         static async Task DownloadLogicFilesToDirectoryAsync(string commit, DirectoryInfo cacheDirectory)
@@ -136,7 +139,7 @@ namespace ChecklistTracker.LogicProvider
                 Logging.WriteLine($"Get: {uri}");
 
                 var fileContent = await wc.GetStringAsync(uri).ConfigureAwait(false);
-                Directory.CreateDirectory(new FileInfo(Path.Combine(destination.FullName, file)).Directory.FullName);
+                Directory.CreateDirectory(new FileInfo(Path.Combine(destination.FullName, file)).Directory!.FullName);
                 await File.WriteAllTextAsync(Path.Combine(destination.FullName, file), fileContent).ConfigureAwait(false);
             }
             catch (Exception ex)

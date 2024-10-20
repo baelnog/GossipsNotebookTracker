@@ -52,7 +52,7 @@ namespace ChecklistTracker.CoreUtils
             logger.LogInformation(line);
         }
 
-        public static void WriteLine(string line, params object[]? args)
+        public static void WriteLine(string line, params object?[] args)
         {
             logger.LogInformation(line, args);
         }

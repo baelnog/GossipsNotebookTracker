@@ -6,6 +6,7 @@ using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 using Access = ChecklistTracker.LogicProvider.AccessibilityExtensions;
@@ -23,18 +24,18 @@ namespace ChecklistTracker.LogicProvider
 
         private void RegisterCaches()
         {
-            _IsLocationAvailableMemoized = Cache.Memoize<string, string, Accessibility>("IsLocationAvailable", _IsLocationAvailable);
+            _IsLocationAvailableMemoized = Cache.Memoize<string, string?, Accessibility>("IsLocationAvailable", _IsLocationAvailable);
             _EvalNodeMemoized = Cache.Memoize<IParseTree, string, string, Accessibility>("EvalNode", _EvalNode, onReentrance: () => Accessibility.None);
             EvalAccessRuleAge = Cache.Memoize<LocationsData.AccessRule, string, Accessibility>("EvalAccessRuleAge", _EvalAccessRuleAge);
-            EvalIdentifier = Cache.Memoize<string, string, Accessibility>("EvalIdentifier", _EvalIdentifier);
+            EvalIdentifier = Cache.Memoize<string, string?, Accessibility>("EvalIdentifier", _EvalIdentifier);
             EvalEvent = Cache.Memoize<string, Accessibility>("EvalEvent", _EvalEvent);
             EvalCall = Cache.Memoize<string, Python3Parser.ArgumentContext[], Accessibility>("EvalCall", _EvalCall);
             EvalLookup = Cache.Memoize<string, Python3Parser.Subscript_Context[], Accessibility>("EvalLookup", _EvalLookup);
-            EvalRuleAlias = Cache.Memoize<string, string, Accessibility>("EvalRuleAlias", _EvalRuleAlias);
-            CanBuy = Cache.Memoize<string, string, Accessibility>("CanBuy", _CanBuy);
-            CanAccessDrop = Cache.Memoize<string, string, Accessibility>("CanAccessDrop", _CanAccessDrop);
-            HasBottle = Cache.Memoize<string, Accessibility>("HasBottle", _HasBottle);
-            CanPlay = Cache.Memoize<string, string, Accessibility>("CanPlay", _CanPlay);
+            EvalRuleAlias = Cache.Memoize<string, string?, Accessibility>("EvalRuleAlias", _EvalRuleAlias);
+            CanBuy = Cache.Memoize<string, string?, Accessibility>("CanBuy", _CanBuy);
+            CanAccessDrop = Cache.Memoize<string, string?, Accessibility>("CanAccessDrop", _CanAccessDrop);
+            HasBottle = Cache.Memoize<string?, Accessibility>("HasBottle", _HasBottle);
+            CanPlay = Cache.Memoize<string, string?, Accessibility>("CanPlay", _CanPlay);
             CanUse = Cache.Memoize<string, string?, Accessibility>("CanUse", _CanUse);
             EvalBinaryComparison = Cache.Memoize<string, string, string, string, Accessibility>("EvalBinaryComparison", _EvalBinaryComparison);
             EvalCountCheck = Cache.Memoize<string, string, Accessibility>("EvalCountCheck", _EvalCountCheck);
@@ -94,8 +95,8 @@ namespace ChecklistTracker.LogicProvider
             return conditions.Or();
         }
 
-        Func<string, string, Accessibility> EvalIdentifier;
-        Accessibility _EvalIdentifier(string name, string age)
+        Func<string, string?, Accessibility> EvalIdentifier;
+        Accessibility _EvalIdentifier(string name, string? age)
         {
             using var indent = Logging.Indented();
             Logging.WriteLine($"EvalIdentifier({name}, {age})");
@@ -280,8 +281,8 @@ namespace ChecklistTracker.LogicProvider
             throw new NotImplementedException($"Unknown function: {name}");
         }
 
-        Func<string, string, Accessibility> EvalRuleAlias;
-        Accessibility _EvalRuleAlias(string name, string age)
+        Func<string, string?, Accessibility> EvalRuleAlias;
+        Accessibility _EvalRuleAlias(string name, string? age)
         {
             using var indent = Logging.Indented();
 
@@ -356,8 +357,8 @@ namespace ChecklistTracker.LogicProvider
             );
         }
 
-        Func<string, string, Accessibility> CanBuy;
-        Accessibility _CanBuy(string itemName, string age)
+        Func<string, string?, Accessibility> CanBuy;
+        Accessibility _CanBuy(string itemName, string? age)
         {
 
             var conditions = new List<Func<Accessibility>>();
@@ -419,8 +420,8 @@ namespace ChecklistTracker.LogicProvider
             return conditions.And();
         }
 
-        Func<string, string, Accessibility> CanAccessDrop;
-        Accessibility _CanAccessDrop(string dropName, string age)
+        Func<string, string?, Accessibility> CanAccessDrop;
+        Accessibility _CanAccessDrop(string dropName, string? age)
         {
             using var indent = Logging.Indented();
             Logging.WriteLine($"CanAccessDrop({dropName}, {age})");
@@ -428,15 +429,15 @@ namespace ChecklistTracker.LogicProvider
             return Locations.ActiveDropLocationsByItem[dropName].AccessRules.Or(EvalAccessRuleAnyAge);
         }
 
-        Func<string, Accessibility> HasBottle;
-        Accessibility _HasBottle(string age)
+        Func<string?, Accessibility> HasBottle;
+        Accessibility _HasBottle(string? age)
         {
             return HasItem("Bottle") |
                    HasItem("Rutos_Letter") & IsLocationAvailable("Deliver Rutos Letter");
         }
 
-        Func<string, string, Accessibility> CanPlay;
-        Accessibility _CanPlay(string songName, string age)
+        Func<string, string?, Accessibility> CanPlay;
+        Accessibility _CanPlay(string songName, string? age)
         {
             var hasOcarina = HasItem("Ocarina");
             if (songName == "Scarecrow_Song")
