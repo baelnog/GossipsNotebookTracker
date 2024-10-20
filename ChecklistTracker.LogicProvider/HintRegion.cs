@@ -7,7 +7,9 @@ namespace ChecklistTracker.LogicProvider
     public class HintRegion : INotifyPropertyChanged
     {
 
+#pragma warning disable 67
         public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 67
 
         public string Name { get; private set; }
 

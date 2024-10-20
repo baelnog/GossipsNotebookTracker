@@ -2,6 +2,9 @@
   <PropertyGroup>
     <RootNamespace>ChecklistTracker.ANTLR</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWarn>67;108</NoWarn>
+  </PropertyGroup>
 
   <ItemGroup>
     <Antlr4 Include="Python3Lexer.g4">

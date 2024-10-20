@@ -7,7 +7,9 @@ namespace ChecklistTracker.Config;
 
 public partial class Settings : INotifyPropertyChanged
 {
+#pragma warning disable 67
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 67
 
     [JsonPropertyName("reachable_locations")]
     public ReachableLocationsType ReachableLocations { get; set; } = ReachableLocationsType.AllLocations;

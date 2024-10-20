@@ -17,7 +17,9 @@ namespace ChecklistTracker.Config
     {
         public static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
 
+#pragma warning disable 67
         public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 67
 
         public UserConfig UserConfig { get; private set; }
         public ItemTable ItemTable { get; private set; }

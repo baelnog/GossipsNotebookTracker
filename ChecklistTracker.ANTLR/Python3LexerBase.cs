@@ -1,6 +1,7 @@
 using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -15,7 +16,7 @@ public abstract class Python3LexerBase : Lexer
     // The amount of opened braces, brackets and parenthesis.
     private int Opened = 0;
     // The most recently produced token.
-    private IToken LastToken = null;
+    private IToken? LastToken = null;
 
     public Python3LexerBase(ICharStream input)
         : base(input)
@@ -41,12 +42,13 @@ public abstract class Python3LexerBase : Lexer
 
     private IToken CreateDedent()
     {
+        Contract.Assert(LastToken != null);
         var dedent = CommonToken(Python3Parser.DEDENT, "");
         dedent.Line = LastToken.Line;
         return dedent;
     }
 
-    public override IToken NextToken()
+    public override IToken? NextToken()
     {
         // Check if the end-of-file is ahead and there are still some DEDENTS expected.
         if (((ICharStream)InputStream).LA(1) == Eof && Indents.Count != 0)
@@ -89,7 +91,7 @@ public abstract class Python3LexerBase : Lexer
         }
         else
         {
-            var x = Tokens.First.Value;
+            var x = Tokens.First?.Value;
             Tokens.RemoveFirst();
             return x;
         }

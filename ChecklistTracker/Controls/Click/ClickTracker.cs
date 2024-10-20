@@ -117,8 +117,6 @@ namespace ChecklistTracker.Controls.Click
             }
         }
 
-        static int closeCounter = 0;
-
         static void StartDrag(MouseButton button, UIElement source, PointerPoint pointer)
         {
             Logging.WriteLine($"StartDrag pre lock");

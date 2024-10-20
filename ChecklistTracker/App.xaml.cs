@@ -58,7 +58,6 @@ namespace ChecklistTracker
         }
 
         private MainWindow m_window;
-        private Window m_checkWindow;
 
         private void LayoutTracker()
         {

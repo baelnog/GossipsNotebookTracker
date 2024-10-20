@@ -19,9 +19,10 @@ namespace ChecklistTracker.LogicProvider
         private TrackerConfig Config;
 
         private ConcurrentDictionary<string, HintRegion> HintRegions;
-        private IDictionary<string, (HintRegion, LocationInfo, RuleData)> ActiveLocations;
 
+#pragma warning disable 67
         public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 67
 
         public LogicEngine(TrackerConfig config, string version)
         {
