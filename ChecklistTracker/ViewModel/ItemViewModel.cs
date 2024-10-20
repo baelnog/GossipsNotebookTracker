@@ -29,7 +29,7 @@ namespace ChecklistTracker.ViewModel
         {
             Item = item;
             ViewModel = viewModel;
-            ViewModel.Inventory.OnPropertyChanged(Item.logic_name, OnItemChanged);
+            ViewModel.Inventory.OnPropertyChanged(Item.logic_name, NotifyItemChanged);
             UpdateImageAndCount();
             Contract.Assert(CurrentImage != null);
         }
@@ -54,7 +54,7 @@ namespace ChecklistTracker.ViewModel
             Contract.Assert(CurrentImage != null);
         }
 
-        private void OnItemChanged(object? sender, PropertyChangedEventArgs e)
+        private void NotifyItemChanged(object? sender, PropertyChangedEventArgs e)
         {
             UpdateImageAndCount();
         }

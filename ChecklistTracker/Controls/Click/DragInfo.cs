@@ -8,10 +8,15 @@ namespace ChecklistTracker.Controls.Click
     {
         private class DragInfo
         {
-            internal IAsyncOperation<DataPackageOperation> Operation;
             internal MouseButton Button;
             internal UIElement Source;
-            internal UIElement CurrentTarget = null;
+            internal UIElement? CurrentTarget = null;
+
+            internal DragInfo(UIElement source, MouseButton button)
+            {
+                Button = button;
+                Source = source;
+            }
         }
 
     }

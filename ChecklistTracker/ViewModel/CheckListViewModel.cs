@@ -163,7 +163,7 @@ namespace ChecklistTracker.ViewModel
             set
             {
                 _SelectedRegion = value;
-                OnFiltersChanged();
+                HandleFiltersChanged();
                 this.RaisePropertyChanged(PropertyChanged);
             }
         }
@@ -198,7 +198,7 @@ namespace ChecklistTracker.ViewModel
             if (SkullsToggle != isChecked)
             {
                 SkullsToggle = isChecked;
-                OnFiltersChanged();
+                HandleFiltersChanged();
             }
         }
 
@@ -207,7 +207,7 @@ namespace ChecklistTracker.ViewModel
             if (InLogicToggle != isChecked)
             {
                 InLogicToggle = isChecked;
-                OnFiltersChanged();
+                HandleFiltersChanged();
             }
         }
 
@@ -221,7 +221,7 @@ namespace ChecklistTracker.ViewModel
             OpenSettingsPane = isChecked;
         }
 
-        private void OnFiltersChanged()
+        private void HandleFiltersChanged()
         {
             this.RaisePropertyChanged(PropertyChanged, "ViewModelFilters");
         }

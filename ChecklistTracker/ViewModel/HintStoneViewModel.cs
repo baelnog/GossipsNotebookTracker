@@ -51,7 +51,7 @@ namespace ChecklistTracker.ViewModel
             _Index = 0;
             _CurrentImage = startingImage ?? ResourceFinder.FindImageGroupImage(ImageGroup, Index);
 
-            this.OnPropertyChanged(nameof(Index), OnIndexChanged);
+            this.OnPropertyChanged(nameof(Index), NotifyIndexChanged);
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string? name = null)
@@ -59,7 +59,7 @@ namespace ChecklistTracker.ViewModel
             this.RaisePropertyChanged(PropertyChanged, name);
         }
 
-        private void OnIndexChanged(object? arg1, PropertyChangedEventArgs args)
+        private void NotifyIndexChanged(object? arg1, PropertyChangedEventArgs args)
         {
             UpdateCurrentImage();
         }

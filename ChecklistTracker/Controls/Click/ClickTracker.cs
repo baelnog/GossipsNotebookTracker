@@ -135,11 +135,7 @@ namespace ChecklistTracker.Controls.Click
 
             Logging.WriteLine($"StartDrag remove click");
 
-            var drag = new DragInfo
-            {
-                Source = source,
-                Button = button
-            };
+            var drag = new DragInfo(source, button);
             CurrentDrag = drag;
             Logging.WriteLine($"StartDrag Current Drag set");
         }

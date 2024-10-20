@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using PropertyChanged;
 using Windows.Foundation.Collections;
 
 namespace ChecklistTracker.View
@@ -27,6 +28,7 @@ namespace ChecklistTracker.View
         /// Currently selected item changed event
         /// </summary>
         /// <param name="e">event args</param>
+        [SuppressPropertyChangedWarnings]
         private void OnCurrentChanged(object e)
         {
             if (_deferCounter > 0)
@@ -44,6 +46,7 @@ namespace ChecklistTracker.View
         /// Vector changed event
         /// </summary>
         /// <param name="e">event args</param>
+        [SuppressPropertyChangedWarnings]
         private void OnVectorChanged(IVectorChangedEventArgs e)
         {
             if (_deferCounter > 0)
