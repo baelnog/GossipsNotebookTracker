@@ -50,11 +50,11 @@ namespace ChecklistTracker
 
         public static async Task<string> ReadResourceFile(string path)
         {
-            return File.ReadAllText($"{ProgramDir.Value}/{path}", Encoding.UTF8);
+            return await File.ReadAllTextAsync($"{ProgramDir.Value}/{path}", Encoding.UTF8).ConfigureAwait(false);
         }
 
 
-        public static Item FindItem(string itemName)
+        public static Item? FindItem(string itemName)
         {
             Config.Value.items.TryGetValue(itemName, out var value);
             return value;
@@ -69,7 +69,7 @@ namespace ChecklistTracker
             return null;
         }
 
-        public static ImageSource FindItem(string itemName, int count)
+        public static ImageSource? FindItem(string itemName, int count)
         {
             if (Config.Value.items.TryGetValue(itemName, out var item))
             {
