@@ -1,10 +1,7 @@
 ﻿using ChecklistTracker.CoreUtils;
 using CommunityToolkit.WinUI.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;
-
-using AdvancedCollectionView = ChecklistTracker.View.AdvancedCollectionView;
+using AdvancedCollectionView = CommunityToolkit.WinUI.Collections.AdvancedCollectionView;
 
 namespace ChecklistTracker.ViewModel
 {
