@@ -4,7 +4,7 @@
   },
   "style": {
     "width": 384,
-    "height": 820,
+    "height": 960,
     "backgroundColor": "#000000",
     "fontFamily": null,
     "fontSize": null,
@@ -16,7 +16,7 @@
         "title": "Season 8",
         "backgroundColor": "#000000",
         "width": 384,
-        "height": 820,
+        "height": 960,
         "fontFamily": null,
         "fontSize": null,
         "fontColor": null
@@ -28,7 +28,7 @@
           "position": [ 3, 3 ],
           "columns": 10,
           "padding": "2.5px",
-          "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "gerudo_card", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
+          "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "bottle", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
           "elementsSize": [ 30, 30 ],
           "displayName": "Items",
           "hidden": false,
@@ -230,7 +230,7 @@
             "Lake Hylia Shoot the Sun",
             "Lost Woods Skull Kid",
             "Redead Grave",
-            "Target in the Woods",
+            "Lost Woods Target in the Woods",
             "Treasure Chest Game",
             "ZF Bottom",
             "Fire Temple Hammer Chest",
@@ -242,7 +242,7 @@
             "Shadow Temple Freestanding Key (Pot Key)",
             "Water BK Chest",
             "Water Central Pillar",
-            "Haunted Wasteland"
+            "Haunted Wasteland Chest"
           ],
           "color": "#ffffff",
           "backgroundColor": "#333333",
@@ -313,7 +313,7 @@
           "elementId": "4c1b24c3e3954038b14f4daa3656e0b5",
           "position": [ 600, 10 ],
           "hintType": "location",
-          "hintNumber": 9,
+          "hintNumber": 16,
           "columns": 1,
           "width": 360,
           "padding": "2px",

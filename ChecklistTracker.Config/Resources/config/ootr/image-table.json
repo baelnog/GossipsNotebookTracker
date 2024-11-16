@@ -174,7 +174,7 @@
 			},
 			{
 				"name": "Lost Woods Skull Kid",
-				"alias": [ "Skull Kid", "LW Skull Kid" ]
+				"alias": [ "Skull Kid", "LW Skull Kid", "SK" ]
 			},
 			{
 				"name": "Lost Woods Target in the Woods",
@@ -1245,7 +1245,8 @@
 				"keaton-mask_32x32.png",
 				"skull-mask_32x32.png",
 				"mask-of-truth_32x32.png"
-			]
+			],
+			"logic_name": "progressive_trade_child"
 		},
 		"trade_2": {
 			"collection": "progressive",
@@ -1262,7 +1263,8 @@
 				"kz-frog_32x32.png",
 				"eye-drops_32x32.png",
 				"claim-check_32x32.png"
-			]
+			],
+			"logic_name": "progressive_trade_adult"
 		},
 		"trade_3": {
 			"collection": "progressive",
@@ -1274,7 +1276,8 @@
 				"keaton-mask_32x32.png",
 				"skull-mask_32x32.png",
 				"mask-of-truth_32x32.png"
-			]
+			],
+			"logic_name": "progressive_trade_child"
 		},
 		"trade_4": {
 			"collection": "progressive",
@@ -1284,7 +1287,8 @@
 				"kz-frog_32x32.png",
 				"eye-drops_32x32.png",
 				"claim-check_32x32.png"
-			]
+			],
+			"logic_name": "progressive_trade_adult"
 		},
 		"triforce": {
 			"images": [
