@@ -42,6 +42,14 @@ namespace ChecklistTracker
             }
         }
 
+        public void Reset()
+        {
+            foreach (var item in ItemCounts.Keys)
+            {
+                ItemCounts[item] = 0;
+            }
+        }
+
         public void Undo()
         {
             if (UndoActions.TryPop(out var result))

@@ -426,6 +426,7 @@ namespace ChecklistTracker
                 var result = task.Result;
                 if (result == ContentDialogResult.Primary)
                 {
+                    CheckListViewModel.GlobalInstance.Inventory.Reset();
                     Config.UserConfig.TriggerLayoutReload();
                 }
             });

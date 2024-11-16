@@ -168,6 +168,11 @@ namespace ChecklistTracker.ViewModel
             }
         }
 
+        public void Reset()
+        {
+            Inventory.Reset();
+        }
+
         public void Undo()
         {
             Inventory.Undo();
