@@ -3,6 +3,7 @@ using HPPH;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ScreenCapture.NET;
+using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -74,14 +75,23 @@ namespace ChecklistTracker.ViewModel
                 height,
                 BitmapAlphaMode.Premultiplied);
 
+            var retry = false;
             using (captureZone.Lock())
             {
                 var i0 = captureZone.Image[0, 0];
-                bitmap.CopyFromBuffer(captureZone.RawBuffer.ToArray().AsBuffer());
+                retry = !captureZone.RawBuffer.ContainsAnyExceptInRange((byte)0, (byte)0);
+                if (!retry)
+                {
+                    bitmap.CopyFromBuffer(captureZone.RawBuffer.ToArray().AsBuffer());
+                }
+            }
+            if (retry)
+            {
+                CaptureScreenshot();
+                return;
             }
 
             ScreenCapture.UnregisterCaptureZone(captureZone);
-
             var source = new SoftwareBitmapSource();
             source.SetBitmapAsync(bitmap).GetAwaiter().OnCompleted(() =>
             {
