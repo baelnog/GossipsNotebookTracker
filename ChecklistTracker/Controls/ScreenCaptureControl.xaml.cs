@@ -1,10 +1,6 @@
 ﻿using ChecklistTracker.ViewModel;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChecklistTracker.Controls
 {

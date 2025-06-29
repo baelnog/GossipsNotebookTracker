@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.WinUI.Collections;
 using HPPH;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ScreenCapture.NET;
+using SharpHook;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -27,7 +30,8 @@ namespace ChecklistTracker.ViewModel
 
         private DX11ScreenCapture ScreenCapture { get => _ScreenCapture.Value; }
 
-        internal ScreenCaptureViewModel(int graphicsCardIndex, int screenIndex, Rectangle clipRegion, LayoutParams layout)
+
+        internal ScreenCaptureViewModel(int graphicsCardIndex, int screenIndex, Rectangle clipRegion, LayoutParams layout, TaskPoolGlobalHook globalHooks, DispatcherQueue dispatchQueue)
         {
             _Screenshots = new ObservableCollection<ScreenCapture>();
             Screenshots = new AdvancedCollectionView(_Screenshots);
@@ -51,6 +55,15 @@ namespace ChecklistTracker.ViewModel
                 DX11ScreenCapture sc = _ScreenCaptureService.Value.GetScreenCapture(displays.Skip(ScreenIndex).First());
                 return sc;
             });
+
+            globalHooks.KeyPressed += (o, evt) =>
+            {
+                if (evt.RawEvent.Keyboard.KeyCode == SharpHook.Data.KeyCode.VcLeftControl ||
+                    evt.RawEvent.Keyboard.KeyCode == SharpHook.Data.KeyCode.VcRightControl)
+                {
+                    dispatchQueue.TryEnqueue(DispatcherQueuePriority.High, () => CaptureScreenshot());
+                }
+            };
         }
 
         internal void CaptureScreenshot()

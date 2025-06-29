@@ -14,16 +14,6 @@
                 <DataTemplate x:DataType="viewmodel:ScreenCapture">
                     <RelativePanel>
                         <Image Source="{x:Bind Screenshot, Mode=OneWay}" Width="{x:Bind LayoutParams.Width}" Height="{x:Bind LayoutParams.Height}"/>
-                        <!--<TextBlock
-                        x:Name="HeaderText"
-                        Text="{x:Bind Header}"
-                        RelativePanel.Above="Image"/>-->
-                        <!--<Image
-                        x:Name="Image"
-                        Source="{x:Bind ImageProperty, Mode=OneWay}" />
-                    <TextBlock
-                        Text="{x:Bind TextProperty, Mode=OneWay}"
-                        RelativePanel.AlignBottomWith="Image"/>-->
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>

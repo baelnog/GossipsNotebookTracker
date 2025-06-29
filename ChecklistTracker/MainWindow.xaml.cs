@@ -9,6 +9,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using SharpHook;
 using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -28,11 +29,17 @@ namespace ChecklistTracker
     public sealed partial class MainWindow : Window
     {
         private Config.TrackerConfig Config;
+        private TaskPoolGlobalHook GlobalHooks;
 
         public MainWindow(Config.TrackerConfig config)
         {
             Config = config;
             this.InitializeComponent();
+
+            GlobalHooks = new TaskPoolGlobalHook();
+            GlobalHooks.RunAsync();
+
+            AppWindow.Closing += (o, e) => GlobalHooks.Stop();
         }
 
         private bool SetupWindowSizeHanders = false;
@@ -356,7 +363,9 @@ namespace ChecklistTracker
                         graphicsCardIndex: screenshotElem.graphicsCardIndex,
                         screenIndex: screenshotElem.screenIndex,
                         clipRegion: new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
-                        new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]));
+                        new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]),
+                        GlobalHooks,
+                        DispatcherQueue);
                     var control = new ScreenCaptureControl(
                         vm,
                         new LayoutParams(screenshotElem.size[1], screenshotElem.size[0], new Thickness(0)));
