@@ -56,8 +56,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
     <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
-    <PackageReference Include="ScreenCapture.NET" />
-    <PackageReference Include="ScreenCapture.NET.DX11" />
+    <PackageReference Include="ScreenCapturer" />
     <PackageReference Include="SharpHook" />
   </ItemGroup>
 
