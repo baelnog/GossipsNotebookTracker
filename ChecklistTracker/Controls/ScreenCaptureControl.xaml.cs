@@ -16,6 +16,8 @@ namespace ChecklistTracker.Controls
 
             ViewModel = viewModel;
             LayoutParams = layout;
+            // Disable transitions
+            Screenshots.ItemContainerTransitions = null;
         }
 
         private void OnClickCaptureScreenshot(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

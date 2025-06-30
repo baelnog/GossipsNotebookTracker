@@ -9,7 +9,7 @@
     mc:Ignorable="d">
 
     <RelativePanel MaxHeight="{x:Bind LayoutParams.Height}" MaxWidth="{x:Bind LayoutParams.Width}">
-        <GridView ItemsSource="{x:Bind ViewModel.Screenshots, Mode=OneWay}">
+        <GridView Name="Screenshots" ItemsSource="{x:Bind ViewModel.Screenshots, Mode=OneWay}">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodel:ScreenCapture">
                     <RelativePanel>
