@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI.Collections;
+﻿using ChecklistTracker.CoreUtils;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ScreenCapturerNS;
@@ -50,6 +51,7 @@ namespace ChecklistTracker.ViewModel
 
         private async void SaveScreenshotAsync(Bitmap bitmap)
         {
+            Logging.WriteLine("SaveScreenshotAsync");
             using (bitmap)
             using (var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream())
             {
@@ -66,6 +68,7 @@ namespace ChecklistTracker.ViewModel
                     var source = new SoftwareBitmapSource();
                     source.SetBitmapAsync(softwareBitmap).GetAwaiter().OnCompleted(() =>
                     {
+                        Logging.WriteLine("SaveScreenshotAsync Add Screenshot");
                         _Screenshots.Add(new ScreenCapture(source, LayoutParams));
                     });
                     
@@ -75,6 +78,7 @@ namespace ChecklistTracker.ViewModel
 
         internal void CaptureScreenshot()
         {
+            Logging.WriteLine("Collect screenshot start");
             ScreenCapturer.SkipFirstFrame = true;
             ScreenCapturer.PreserveBitmap = true;
             var once = true;
@@ -82,6 +86,8 @@ namespace ChecklistTracker.ViewModel
             {
                 if (!once) return;
                 once = false;
+
+                Logging.WriteLine("Collect screenshot collected");
                 ScreenCapturer.StopCapture();
                 SaveScreenshotAsync(bitmap);
             }, ScreenIndex, GraphicsCardIndex);
