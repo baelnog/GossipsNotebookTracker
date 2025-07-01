@@ -16,7 +16,7 @@ namespace ChecklistTracker.CoreUtils
         {
             ILoggerFactory factory = LoggerFactory.Create(builder =>
             {
-                builder.AddFile("app-log.txt", options =>
+                builder.AddFile($"app-log-{System.Environment.MachineName}.txt", options =>
                 {
                     options.Append = false;
                     options.MinLevel = LogLevel.Debug;
