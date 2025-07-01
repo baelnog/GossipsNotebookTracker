@@ -1,0 +1,38 @@
+{
+	"trackerConfig": {
+		"name": "ScreenShots Doors"
+	},
+	"style": {
+		"width": 580,
+		"height": 1080,
+		"backgroundColor": "#000000",
+		"fontFamily": null,
+		"fontSize": null,
+		"fontColor": null
+	},
+	"windows": [
+		{
+			"style": {
+				"title": "ScreenShots Doors",
+				"backgroundColor": "#000000",
+				"width": 580,
+				"height": 1080,
+				"fontFamily": null,
+				"fontSize": null,
+				"fontColor": null
+			},
+			"components": [
+				{
+					"type": "screenshot",
+					"position": [ 0, 0 ],
+					"size": [ 1080, 575 ],
+					"screenshotSize": [ 300, 575 ],
+					"clipRegion": [
+						[ 20, 20 ],
+						[ 60, 50 ]
+					]
+				}
+			]
+		}
+	]
+}
