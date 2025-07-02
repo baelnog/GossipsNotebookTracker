@@ -24,7 +24,6 @@
     <PackageVersion Include="NReco.Logging.File" Version="1.2.1" />
     <PackageVersion Include="ScreenCapture.NET" Version="3.0.0" />
     <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
-    <PackageVersion Include="ScreenCapturer" Version="3.0.1" />
     <PackageVersion Include="SharpHook" Version="6.1.2" />
     <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
   </ItemGroup>
