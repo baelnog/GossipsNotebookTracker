@@ -13,6 +13,8 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="8.1.240916" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="Fody" Version="6.8.2" />
+    <PackageVersion Include="HPPH.SkiaSharp" Version="1.0.0" />
+    <PackageVersion Include="HPPH.System.Drawing" Version="1.0.0" />
     <PackageVersion Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
@@ -21,11 +23,15 @@
     <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.6.0" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
+    <PackageVersion Include="Nito.Disposables" Version="2.5.0" />
     <PackageVersion Include="NReco.Logging.File" Version="1.2.1" />
     <PackageVersion Include="ScreenCapture.NET" Version="3.0.0" />
     <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
     <PackageVersion Include="ScreenCapturer" Version="3.0.1" />
     <PackageVersion Include="SharpHook" Version="6.1.2" />
+    <PackageVersion Include="SkiaSharp" Version="3.119.0" />
+    <PackageVersion Include="SkiaSharp.Extended" Version="2.0.0" />
+    <PackageVersion Include="SkiaSharp.Views.WinUI" Version="3.119.0" />
     <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
   </ItemGroup>
 </Project>

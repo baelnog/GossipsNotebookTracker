@@ -14,9 +14,9 @@ namespace ChecklistTracker
     public static class OcrHelper
     {
         /// <summary>
-        /// Recognizes text from a WriteableBitmap using Windows.Media.Ocr.
+        /// Recognizes text from a SoftwareBitmap using Windows.Media.Ocr.
         /// </summary>
-        /// <param name="bitmap">The WriteableBitmap to process.</param>
+        /// <param name="softwareBitmap">The SoftwareBitmap to process.</param>
         /// <returns>The recognized text, or an empty string if OCR fails.</returns>
         public static async Task<string> RecognizeTextAsync(SoftwareBitmap softwareBitmap)
         {

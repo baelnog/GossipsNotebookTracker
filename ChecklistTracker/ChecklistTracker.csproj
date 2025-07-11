@@ -56,9 +56,15 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
     <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
+    <PackageReference Include="HPPH.SkiaSharp" />
+    <PackageReference Include="HPPH.System.Drawing" />
+    <PackageReference Include="Nito.Disposables" />
     <PackageReference Include="ScreenCapture.NET" />
     <PackageReference Include="ScreenCapture.NET.DX11" />
     <PackageReference Include="SharpHook" />
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.Extended" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" />
   </ItemGroup>
 
   <!-- 

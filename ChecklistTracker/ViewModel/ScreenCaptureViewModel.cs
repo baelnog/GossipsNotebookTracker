@@ -1,12 +1,16 @@
 ﻿using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Images;
 using CommunityToolkit.WinUI.Collections;
 using HPPH;
+using HPPH.SkiaSharp;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ScreenCapture.NET;
 using SharpHook;
+using SkiaSharp;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
 using Rectangle = System.Drawing.Rectangle;
@@ -65,71 +69,20 @@ namespace ChecklistTracker.ViewModel
             };
         }
 
-        /// <summary>
-        /// Adjusts the contrast of a SoftwareBitmap (Gray8 or BGRA8) using the algorithm described at:
-        /// https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/
-        /// </summary>
-        /// <param name="input">Input SoftwareBitmap (Gray8 or BGRA8)</param>
-        /// <param name="contrast">Contrast value in range [-100, 100], 0 = no change</param>
-        /// <returns>New SoftwareBitmap with adjusted contrast</returns>
-        public static SoftwareBitmap AdjustContrast(SoftwareBitmap input, int contrast)
+        private SKBitmap? DoCapture(CaptureZone<ColorBGRA> captureZone)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
-            // Clamp contrast to [-100, 100]
-            contrast = Math.Max(-128, Math.Min(11, contrast));
-
-            // Calculate contrast factor
-            double factor = (259.0 * (contrast + 255)) / (255 * (259 - contrast));
-
-            if (input.BitmapPixelFormat == BitmapPixelFormat.Gray8)
+            using (captureZone.Lock())
             {
-                // Grayscale: adjust each pixel
-                var buffer = new byte[input.PixelWidth * input.PixelHeight];
-                input.CopyToBuffer(buffer.AsBuffer());
+                var i0 = captureZone.Image[0, 0];
 
-                for (int i = 0; i < buffer.Length; i++)
+                if (!captureZone.RawBuffer.ContainsAnyExceptInRange((byte)0, (byte)0))
                 {
-                    int newValue = (int)(factor * (buffer[i] - 128) + 128);
-                    buffer[i] = (byte)Math.Clamp(newValue, 0, 255);
+                    return null;
                 }
 
-                var contrasted = new SoftwareBitmap(BitmapPixelFormat.Gray8, input.PixelWidth, input.PixelHeight, BitmapAlphaMode.Ignore);
-                contrasted.CopyFromBuffer(buffer.AsBuffer());
-                return contrasted;
+                return captureZone.Image.ToSKBitmap();
             }
-            else if (input.BitmapPixelFormat == BitmapPixelFormat.Bgra8)
-            {
-                // BGRA8: adjust R, G, B channels, leave A unchanged
-                var buffer = new byte[input.PixelWidth * input.PixelHeight * 4];
-                input.CopyToBuffer(buffer.AsBuffer());
 
-                for (int i = 0; i < buffer.Length; i += 4)
-                {
-                    // B
-                    int b = (int)(factor * (buffer[i + 0] - 128) + 128);
-                    // G
-                    int g = (int)(factor * (buffer[i + 1] - 128) + 128);
-                    // R
-                    int r = (int)(factor * (buffer[i + 2] - 128) + 128);
-                    // A remains unchanged
-                    buffer[i + 0] = (byte)Math.Clamp(b, 0, 255);
-                    buffer[i + 1] = (byte)Math.Clamp(g, 0, 255);
-                    buffer[i + 2] = (byte)Math.Clamp(r, 0, 255);
-                    // buffer[i + 3] = buffer[i + 3];
-                }
-
-                var contrasted = new SoftwareBitmap(BitmapPixelFormat.Bgra8, input.PixelWidth, input.PixelHeight, input.BitmapAlphaMode);
-                contrasted.CopyFromBuffer(buffer.AsBuffer());
-                return contrasted;
-            }
-            else
-            {
-                // For other formats, convert to BGRA8 and process
-                var converted = SoftwareBitmap.Convert(input, BitmapPixelFormat.Bgra8);
-                return AdjustContrast(converted, contrast);
-            }
         }
 
         internal void CaptureScreenshot()
@@ -147,45 +100,35 @@ namespace ChecklistTracker.ViewModel
             CaptureZone<ColorBGRA> captureZone = ScreenCapture.RegisterCaptureZone(x, y, width, height);
 
             ScreenCapture.CaptureScreen();
+            using var _ = new Nito.Disposables.Disposable(() => ScreenCapture.UnregisterCaptureZone(captureZone));
 
-            var bitmap = new SoftwareBitmap(
-                BitmapPixelFormat.Bgra8,
-                width,
-                height,
-                BitmapAlphaMode.Premultiplied);
-
-            var retry = false;
-            using (captureZone.Lock())
+            var bitmap = DoCapture(captureZone);
+            if (bitmap == null)
             {
-                var i0 = captureZone.Image[0, 0];
-                retry = !captureZone.RawBuffer.ContainsAnyExceptInRange((byte)0, (byte)0);
-                if (!retry)
-                {
-                    bitmap.CopyFromBuffer(captureZone.RawBuffer.ToArray().AsBuffer());
-                }
-            }
-            if (retry)
-            {
-                CaptureScreenshot();
+                Logging.WriteLine("Capture failed, retrying...");
+                bitmap = DoCapture(captureZone);
                 return;
             }
 
-            ScreenCapture.UnregisterCaptureZone(captureZone);
+            if (bitmap == null)
+            {
+                Logging.WriteLine("Capture failed again. Giving up...");
+                return;
+            }
+
+            bitmap = bitmap.AdjustContrast(.75f);
+            var softBitmap = bitmap.ToSoftwareBitmap();
             var source = new SoftwareBitmapSource();
-            source.SetBitmapAsync(bitmap).GetAwaiter().OnCompleted(() =>
+            source.SetBitmapAsync(softBitmap).GetAwaiter().OnCompleted(() =>
             {
                 _Screenshots.Add(new ScreenCapture(source, LayoutParams));
             });
 
-            bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Gray8);
-            bitmap = AdjustContrast(bitmap, 96);
-
-            var task = OcrHelper.RecognizeTextAsync(bitmap);
+            var task = OcrHelper.RecognizeTextAsync(softBitmap);
             task.GetAwaiter().OnCompleted(() =>
             {
                 Logging.WriteLine($"OCR: {task.Result}");
             });
-
         }
 
     }
