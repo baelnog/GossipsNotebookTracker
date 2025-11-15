@@ -116,15 +116,14 @@ namespace ChecklistTracker.ViewModel
                 return;
             }
 
-            bitmap = bitmap.AdjustContrast(.75f);
             var softBitmap = bitmap.ToSoftwareBitmap();
             var source = new SoftwareBitmapSource();
-            source.SetBitmapAsync(softBitmap).GetAwaiter().OnCompleted(() =>
+            var addBitmapTask = source.SetBitmapAsync(softBitmap);
+            addBitmapTask.GetAwaiter().OnCompleted(() =>
             {
                 _Screenshots.Add(new ScreenCapture(source, LayoutParams));
             });
-
-            var task = OcrHelper.RecognizeTextAsync(softBitmap);
+            var task = OcrHelper.RecognizeTextAsync(bitmap);
             task.GetAwaiter().OnCompleted(() =>
             {
                 Logging.WriteLine($"OCR: {task.Result}");

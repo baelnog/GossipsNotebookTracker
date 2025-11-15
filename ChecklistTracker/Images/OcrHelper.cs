@@ -5,6 +5,8 @@ using Windows.Media.Ocr;
 using Windows.Storage.Streams;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Globalization;
+using SkiaSharp;
+using ChecklistTracker.Images;
 
 namespace ChecklistTracker
 {
@@ -13,6 +15,17 @@ namespace ChecklistTracker
     /// </summary>
     public static class OcrHelper
     {
+        /// <summary>
+        /// Recognizes text from a SoftwareBitmap using Windows.Media.Ocr.
+        /// </summary>
+        /// <param name="softwareBitmap">The SoftwareBitmap to process.</param>
+        /// <returns>The recognized text, or an empty string if OCR fails.</returns>
+        public static async Task<string> RecognizeTextAsync(SKBitmap bitmap)
+        {
+            // Run OCR
+            return await RecognizeTextAsync(bitmap.AdjustContrast(.75f).ToSoftwareBitmap());
+        }
+
         /// <summary>
         /// Recognizes text from a SoftwareBitmap using Windows.Media.Ocr.
         /// </summary>
