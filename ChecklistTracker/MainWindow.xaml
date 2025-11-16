@@ -39,6 +39,9 @@
                 <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
+            <MenuBarItem Title="Screen Capture" x:Name="ScreenCaptureMenu">
+                <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
+            </MenuBarItem>
         </MenuBar>
         <Canvas
             x:Name="Layout">

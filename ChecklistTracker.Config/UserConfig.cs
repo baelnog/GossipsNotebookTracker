@@ -11,6 +11,9 @@ namespace ChecklistTracker.Config
         [JsonPropertyName("showMenuBar")]
         public bool ShowMenuBar { get; set; } = true;
 
+        [JsonPropertyName("screenshotScreen")]
+        public int ScreenShotScreen { get; set; } = 0;
+
         [JsonPropertyName("layout")]
         public string LayoutPath { get; set; } = "layouts/season8.json";
 

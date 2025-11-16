@@ -30,10 +30,12 @@ namespace ChecklistTracker
     {
         private Config.TrackerConfig Config;
         private TaskPoolGlobalHook GlobalHooks;
+        private ScreenCaptureManager ScreenCaptureManager;
 
         public MainWindow(Config.TrackerConfig config)
         {
             Config = config;
+            ScreenCaptureManager = new ScreenCaptureManager(Config.UserConfig);
             this.InitializeComponent();
 
             GlobalHooks = new TaskPoolGlobalHook();
@@ -44,6 +46,7 @@ namespace ChecklistTracker
 
         private bool SetupWindowSizeHanders = false;
         private (int width, int height)? ConstrainedSize { get; set; }
+
 
         private void SetWindowSize(int width, int height)
         {
@@ -128,6 +131,37 @@ namespace ChecklistTracker
                     this.SettingsMenu.Items.Add(item);
                 }
             }
+
+            // Dynamically create MenuFlyout for ScreenCaptureMenu
+            var screenFlyout = ScreenCaptureMenu;
+            void PopulateScreenFlyout()
+            {
+                screenFlyout.Items.Clear(); 
+                foreach (var display in ScreenCaptureManager.AvailableDisplays)
+                {
+                    var item = new RadioMenuFlyoutItem { Text = display.DeviceName, IsChecked = display.Index == ScreenCaptureManager.SelectedScreenIndex };
+                    item.Click += (s, e) => ScreenCaptureManager.SelectedScreenIndex = display.Index;
+                    screenFlyout.Items.Add(item);
+                }
+            }
+            // Initial population
+            PopulateScreenFlyout();
+            // Re-populate when screens change
+            ScreenCaptureManager.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(ScreenCaptureManager.AvailableDisplays))
+                {
+                    PopulateScreenFlyout();
+                }
+            };
+            Config.UserConfig.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(UserConfig.ScreenShotScreen))
+                {
+                    PopulateScreenFlyout();
+                }
+            };
+
             this.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, ShowOrHideMenuBar);
         }
 
@@ -360,9 +394,8 @@ namespace ChecklistTracker
                 else if (component is ScreenshotElement screenshotElem)
                 {
                     var vm = new ScreenCaptureViewModel(
-                        graphicsCardIndex: screenshotElem.graphicsCardIndex,
-                        screenIndex: screenshotElem.screenIndex,
-                        clipRegion: new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
+                        ScreenCaptureManager,
+                        new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
                         new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]),
                         GlobalHooks,
                         DispatcherQueue);
