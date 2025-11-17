@@ -133,15 +133,15 @@ namespace ChecklistTracker
             }
 
             // Dynamically create MenuFlyout for ScreenCaptureMenu
-            var screenFlyout = ScreenCaptureMenu;
             void PopulateScreenFlyout()
             {
-                screenFlyout.Items.Clear(); 
+                var oldItems = ScreenCaptureMenu.Items.ToList();
+                foreach (var item in oldItems) { ScreenCaptureMenu.Items.Remove(item); }
                 foreach (var display in ScreenCaptureManager.AvailableDisplays)
                 {
                     var item = new RadioMenuFlyoutItem { Text = display.DeviceName, IsChecked = display.Index == ScreenCaptureManager.SelectedScreenIndex };
                     item.Click += (s, e) => ScreenCaptureManager.SelectedScreenIndex = display.Index;
-                    screenFlyout.Items.Add(item);
+                    ScreenCaptureMenu.Items.Add(item);
                 }
             }
             // Initial population
