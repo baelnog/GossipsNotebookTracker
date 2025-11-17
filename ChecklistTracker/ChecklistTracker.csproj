@@ -6,7 +6,7 @@
     <Platforms>x86;x64;ARM64</Platforms>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <WindowsPackageType>None</WindowsPackageType>
-    <EnableMsixTooling>false</EnableMsixTooling>
+    <EnableMsixTooling>true</EnableMsixTooling>
 
     <WindowsAppSDKBootstrapAutoInitialize>true</WindowsAppSDKBootstrapAutoInitialize>
     <WindowsAppSDKBootstrapAutoInitializeOptions_Default>true</WindowsAppSDKBootstrapAutoInitializeOptions_Default>
@@ -16,6 +16,8 @@
     <ApplicationIcon>Assets\notebook.ico</ApplicationIcon>
 
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="CheckListView.xaml" />
