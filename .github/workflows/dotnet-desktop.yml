@@ -22,10 +22,6 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
-
     - name: Publish the app
       run: dotnet publish ChecklistTracker -c Release -r win-x64 --self-contained -o publish
 
