@@ -8,6 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
+    <!-- Disable localization -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <DebugType>embedded</DebugType>
+
     <EnableMsixTooling>false</EnableMsixTooling>
 
     <!-- https://github.com/microsoft/WindowsAppSDK/issues/3548 -->

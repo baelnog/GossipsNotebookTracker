@@ -15,7 +15,7 @@ namespace ChecklistTracker.Config
 {
     public partial class TrackerConfig : INotifyPropertyChanged
     {
-        public static string ProgramDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory?.FullName ?? "wtf";
+        public static string ProgramDir = new FileInfo(Environment.ProcessPath).Directory?.FullName ?? "wtf";
 
 #pragma warning disable 67
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -67,6 +67,10 @@ namespace ChecklistTracker.Config
 
         public static async Task<TrackerConfig> Init()
         {
+            Logging.WriteLine(Environment.ProcessPath);
+            Logging.WriteLine(Environment.CurrentDirectory);
+            Logging.WriteLine(ProgramDir);
+
             var userConfig = await LoadUserConfig().ConfigureAwait(false);
             var userConfigSaveTask = Task.CompletedTask;
             userConfig.PropertyChanged += (o, e) =>

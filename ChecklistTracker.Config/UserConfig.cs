@@ -15,20 +15,20 @@ namespace ChecklistTracker.Config
         public int ScreenShotScreen { get; set; } = 0;
 
         [JsonPropertyName("layout")]
-        public string LayoutPath { get; set; } = "layouts/season8.json";
+        public string LayoutPath { get; set; } = "layouts\\season8.json";
 
         [JsonPropertyName("layouts")]
         public List<string> LayoutHistory { get; set; } = new List<string>
         {
-            "layouts/season8.json",
-            "layouts/season7.json",
-            "layouts/season7-interiors.json",
-            "layouts/screenshots.json",
-            "layouts/screenshots-doors.json",
+            "layouts\\season8.json",
+            "layouts\\season7.json",
+            "layouts\\season7-interiors.json",
+            "layouts\\screenshots.json",
+            "layouts\\screenshots-doors.json",
         };
 
         [JsonPropertyName("settings")]
-        public string SettingsPath { get; set; } = "settings/season7-base.json";
+        public string SettingsPath { get; set; } = "settings\\season7-base.json";
 
         [JsonPropertyName("settingsPresets")]
         public List<string> SettingsPresets { get; set; } = new List<string>();

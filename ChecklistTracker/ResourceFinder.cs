@@ -18,7 +18,7 @@ namespace ChecklistTracker
     class ResourceFinder
     {
 
-        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName);
+        private static Lazy<string> ProgramDir = new Lazy<string>(() => TrackerConfig.ProgramDir);
 
         private static Lazy<ItemTable> Config = new Lazy<ItemTable>(() =>
         {

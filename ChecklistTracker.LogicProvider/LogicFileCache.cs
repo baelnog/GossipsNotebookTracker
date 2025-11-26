@@ -14,7 +14,7 @@ namespace ChecklistTracker.LogicProvider
     public class LogicFileCache
     {
 
-        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName);
+        private static Lazy<string> ProgramDir = new Lazy<string>(() => new FileInfo(Environment.ProcessPath).Directory!.FullName);
         private static Lazy<DirectoryInfo> CachedRoot = new Lazy<DirectoryInfo>(() =>
         {
             return new DirectoryInfo(Path.Combine(ProgramDir.Value, "logic_cache"));
