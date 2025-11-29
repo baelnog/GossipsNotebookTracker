@@ -41,6 +41,7 @@ namespace ChecklistTracker.CoreUtils
                         return builder.ToString();
                     };
                 });
+                builder.AddDebug();
             });
             logger = factory.CreateLogger("Program");
         }
