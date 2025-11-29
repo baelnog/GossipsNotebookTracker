@@ -111,7 +111,7 @@ namespace ChecklistTracker
             CollectAmount(item, -1);
         }
 
-        public void CollectAmount(Item item, int amount)
+        public int PeekCollectAmount(Item item, int amount)
         {
             var oldValue = ItemCounts[item];
             var newValue = oldValue + amount;
@@ -124,6 +124,14 @@ namespace ChecklistTracker
                 newValue = Math.Min(newValue, item.images.Length - 1);
             }
             newValue = Math.Max(newValue, 0);
+
+            return newValue;
+        }
+
+        public void CollectAmount(Item item, int amount)
+        {
+            var oldValue = ItemCounts[item];
+            var newValue = PeekCollectAmount(item, amount);
 
             var set = (int value) =>
             {

@@ -1,14 +1,17 @@
-﻿using ChecklistTracker.Controls.Click;
+﻿using ChecklistTracker.Controls;
+using ChecklistTracker.Controls.Click;
 using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace ChecklistTracker.ViewModel
 {
-    internal class HintStoneViewModel : INotifyPropertyChanged
+    internal class HintStoneViewModel : INotifyPropertyChanged, IDragProvider<ImageSource>, IDropProvider<ImageSource>
     {
         public virtual event PropertyChangedEventHandler? PropertyChanged;
 
@@ -94,6 +97,24 @@ namespace ChecklistTracker.ViewModel
         internal virtual void OnScroll(UIElement sender, int scrollAmount)
         {
             Collect(scrollAmount);
+        }
+
+        public ImageSource GetDragData(MouseButton dragType)
+        {
+            return CurrentImage;
+        }
+
+        public void OnDataDraggedFrom(MouseButton dragType)
+        {
+            if (dragType == MouseButton.Right)
+            {
+                Index = 0;
+            }
+        }
+
+        public void OnDataDroppedTo(ImageSource data)
+        {
+            CurrentImage = data;
         }
     }
 }

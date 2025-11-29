@@ -2,14 +2,16 @@
 using ChecklistTracker.Controls.Click;
 using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace ChecklistTracker.ViewModel
 {
-    public class ItemViewModel : INotifyPropertyChanged
+    public class ItemViewModel : INotifyPropertyChanged, IDragProvider<ImageSource>
     {
         public virtual event PropertyChangedEventHandler? PropertyChanged;
 
@@ -100,6 +102,25 @@ namespace ChecklistTracker.ViewModel
         internal virtual void OnScroll(UIElement sender, int scrollAmount)
         {
             Collect(scrollAmount);
+        }
+
+        public ImageSource GetDragData(MouseButton dragType)
+        {
+            var index = 1;
+            if (dragType == MouseButton.Left)
+            {
+                index = ViewModel.Inventory.PeekCollectAmount(Item, 1);
+            }
+
+            return ResourceFinder.FindItemImage(Item, index);
+        }
+
+        public void OnDataDraggedFrom(MouseButton dragType)
+        {
+            if (dragType == MouseButton.Left)
+            {
+                Collect();
+            }
         }
     }
 }

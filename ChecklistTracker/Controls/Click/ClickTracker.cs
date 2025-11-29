@@ -1,273 +1,249 @@
 ﻿using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
 
 namespace ChecklistTracker.Controls.Click
 {
     internal static partial class ClickTracker
     {
-
-        private static Dictionary<MouseButton, UIElement> TrackedEvents = new Dictionary<MouseButton, UIElement>();
-
-        private static DragInfo? CurrentDrag = null;
-
-        private static Dictionary<UIElement, ClickCallbacks> ClickCallbacks = new Dictionary<UIElement, ClickCallbacks>();
-        private static ConcurrentQueue<object> operations = new ConcurrentQueue<object>();
-
         internal static void ConfigureClickHandler(this UIElement source, ClickCallbacks callbacks)
         {
-            ClickCallbacks[source] = callbacks;
+            if (callbacks.OnClick != null)
+            {
+                source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e);
+            }
 
-            source.CanDrag = callbacks.OnDragImageCompleted != null || callbacks.OnDragHintControlCompleted != null;
-            source.AllowDrop = callbacks.OnDropImageCompleted != null || callbacks.OnDropHintControlCompleted != null;
-            source.DropCompleted += (s, e) => OnDropCompleted(source, s, e);
-            source.PointerReleased += OnPointerReleased;
-            source.PointerPressed += OnPointerPressed;
-            source.PointerExited += OnPointerMoved;
-            source.DragOver += OnDragOver;
+            if (callbacks.DragHintControlProvider != null || callbacks.DragImageProvider != null)
+            {
+                source.CanDrag = true;
+                source.PointerPressed += (s, e) => Drag_OnPointerPressed(callbacks, source, e);
+            }
+
+            if (callbacks.DropHintControlProvider != null || callbacks.DropImageProvider != null)
+            {
+                source.AllowDrop = true;
+                source.DragOver += (s, e) => OnDragOver(callbacks, source, e);
+                source.Drop += (s, e) => OnDrop(callbacks, source, e);
+            }
 
             if (callbacks.OnScroll != null)
             {
-                source.PointerWheelChanged += (object sender, PointerRoutedEventArgs args) => OnPointerWheelChanged(source, args);
+                source.PointerWheelChanged += (object s, PointerRoutedEventArgs e) => OnPointerWheelChanged(callbacks.OnScroll, source, e);
             }
         }
 
-        static void OnPointerPressed(object s, PointerRoutedEventArgs e)
+        static string GetDescription(UIElement elem)
         {
-            var now = DateTime.Now;
-            var sincelastRelease = now - LastRelease;
-            if (sincelastRelease.TotalMilliseconds <= 50)
+            if (elem is Image image)
             {
-                Logging.WriteLine($"Ignoring pointer press too close to release. Ignoring event. LastRelease {LastRelease}. Now {now}");
+                if (image.Source is BitmapImage bitmapImage)
+                {
+                    var uri = bitmapImage.UriSource;
+                    var filePart = uri.PathAndQuery.Split("/").Last();
+                    return $"Image: {filePart}";
+                }
+                return "Image";
+            }
+            return elem?.ToString() ?? "<null>";
+        }
+
+        static MouseButton? GetButton(PointerPoint pointer)
+        {
+            var props = pointer.Properties;
+            switch (props.PointerUpdateKind)
+            {
+                case PointerUpdateKind.LeftButtonReleased:
+                case PointerUpdateKind.LeftButtonPressed:
+                    return MouseButton.Left;
+                case PointerUpdateKind.RightButtonReleased:
+                case PointerUpdateKind.RightButtonPressed:
+                    return MouseButton.Right;
+                case PointerUpdateKind.MiddleButtonReleased:
+                case PointerUpdateKind.MiddleButtonPressed:
+                    return MouseButton.Middle;
+                default:
+                    return null;
+            }
+        }
+
+        private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e)
+        {
+            var button = GetButton(e.GetCurrentPoint(source));
+            if (button.HasValue)
+            {
+                PointerEventHandler? onRelease = null;
+                PointerEventHandler? onLeave = null;
+                onRelease = (object s, PointerRoutedEventArgs e) =>
+                {
+                    source.PointerReleased -= onRelease;
+                    source.PointerExited -= onLeave;
+
+                    onClick(source, button.Value);
+                };
+
+                onLeave = (object s, PointerRoutedEventArgs e) =>
+                {
+                    source.PointerReleased -= onRelease;
+                    source.PointerExited -= onLeave;
+                };
+                source.PointerReleased += onRelease;
+                source.PointerExited += onLeave;
+            }
+        }
+
+        private static void Drag_OnPointerPressed(ClickCallbacks callbacks, UIElement source, PointerRoutedEventArgs e)
+        {
+            var pointerPoint = e.GetCurrentPoint(source);
+            var button = GetButton(pointerPoint);
+            if (!button.HasValue)
+            {
+                Logging.WriteLine($"Drag_OnPointerPressed {GetDescription(source)} - no button?");
                 return;
             }
-            else
+
+            TypedEventHandler<UIElement, DragStartingEventArgs>? dragStarting = null;
+            dragStarting = (s, e) =>
             {
-                Logging.WriteLine($"Since last press {sincelastRelease.TotalMilliseconds}. LastRelease {LastRelease}. Now {now}");
-            }
-            if (s is UIElement sender)
+                source.DragStarting -= dragStarting;
+                Drag_OnDragStarting(callbacks, source, button.Value, e);
+            };
+            source.DragStarting += dragStarting;
+
+            PointerEventHandler? onLeave = null;
+            PointerEventHandler? onRelease = null;
+
+            onRelease = (s, e) =>
             {
-                Logging.WriteLine($"OnPointerPressed {sender}");
-                var pointer = e.GetCurrentPoint((UIElement)e.OriginalSource);
-                var props = pointer.Properties;
-                MouseButton clickedButton;
-                switch (props.PointerUpdateKind)
+                source.PointerReleased -= onRelease;
+                source.PointerExited -= onLeave;
+                source.DragStarting -= dragStarting;
+            };
+
+            onLeave = async (s, e) =>
+            {
+                source.PointerReleased -= onRelease;
+                source.PointerExited -= onLeave;
+
+                if (button != MouseButton.Left)
                 {
-                    case PointerUpdateKind.LeftButtonPressed:
-                        clickedButton = MouseButton.Left;
-                        break;
-                    case PointerUpdateKind.RightButtonPressed:
-                        clickedButton = MouseButton.Right;
-                        break;
-                    case PointerUpdateKind.MiddleButtonPressed:
-                        clickedButton = MouseButton.Middle;
-                        break;
-                    default:
-                        return;
-                }
-                TrackedEvents[clickedButton] = sender;
-                e.Handled = true;
-            }
+                    var result = await source.StartDragAsync(pointerPoint);
+                }             
+            };
+            source.PointerExited += onLeave;
+            source.PointerReleased += onRelease;
         }
 
-        static void OnPointerMoved(object s, PointerRoutedEventArgs e)
+        private static void Drag_OnDragStarting(ClickCallbacks callbacks, UIElement source, MouseButton button, DragStartingEventArgs e)
         {
-            Logging.WriteLine($"OnPointerMoved {s}");
-            if (s is UIElement sender && e.OriginalSource is UIElement originalSource)
-            {
-                var pointer = e.GetCurrentPoint(originalSource);
-                var props = pointer.Properties;
+            var imageSource = callbacks.DragImageProvider?.GetDragData(button);
+            var hintSource = callbacks.DragHintControlProvider?.GetDragData(button);
+            Logging.WriteLine($"Drag_OnDragStarting {GetDescription(source)}");
 
-                MouseButton button;
-                if (props.IsLeftButtonPressed)
+            var operation = GetDataPackageOperation(button);
+            if (!operation.HasValue)
+            {
+                Logging.WriteLine($"Drag_OnDragStarting {GetDescription(source)} - no operation?");
+                return;
+            }
+            e.AllowedOperations = operation.Value;
+
+            e.Data.Properties["imageSource"] = imageSource;
+            e.Data.Properties["hintControl"] = hintSource;
+
+            TypedEventHandler<UIElement, DropCompletedEventArgs>? onDropped = null;
+            onDropped = (s, e) =>
+            {
+                Logging.WriteLine($"DropCompleted for {GetDescription(source)} result: {e.DropResult}");
+                source.DropCompleted -= onDropped;
+
+                var result = e.DropResult;
+                if (result == DataPackageOperation.None)
                 {
-                    button = MouseButton.Left;
-                }
-                else if (props.IsRightButtonPressed)
-                {
-                    button = MouseButton.Right;
-                    e.Handled = true;
-                }
-                else
-                {
+                    Logging.WriteLine($"Drag_OnDragStarting OnDropped {GetDescription(source)} - no drop?");
                     return;
                 }
-                Logging.WriteLine($"OnPointerMoved {button}");
-                Logging.WriteLine($"StartDrag {button}");
-                StartDrag(button, sender, pointer);
-            }
-        }
-
-        static void OnDragOver(object s, DragEventArgs e)
-        {
-            e.DragUIOverride.IsGlyphVisible = false;
-            if (s is UIElement sender)
-            {
-                var drag = CurrentDrag;
-                if (drag != null)
+                Logging.WriteLine($"Drag_OnDragStarting OnDropped {GetDescription(source)}");
+                if (callbacks.DragImageProvider != null)
                 {
-                    Logging.WriteLine($"OnDragOver {drag}.CurrentTarget = {sender}");
-                    drag.CurrentTarget = sender;
+                    callbacks.DragImageProvider.OnDataDraggedFrom(button);
                 }
-                e.Handled |= true;
-            }
+                if (callbacks.DragHintControlProvider != null && hintSource != null)
+                {
+                    callbacks.DragHintControlProvider.OnDataDraggedFrom(button);
+                }
+            };
+            source.DropCompleted += onDropped;
         }
 
-        static void StartDrag(MouseButton button, UIElement source, PointerPoint pointer)
+        static void OnDragOver(ClickCallbacks callback, UIElement target, DragEventArgs e)
         {
-            Logging.WriteLine($"StartDrag pre lock");
-            Logging.WriteLine($"StartDrag");
-            TrackedEvents.Remove(button);
-            if (CurrentDrag?.Button != button)
+            Logging.WriteLine($"OnDragOver: {GetDescription(target)}");
+            e.AcceptedOperation = DataPackageOperation.None;
+            e.DragUIOverride.IsCaptionVisible = false;
+            e.DragUIOverride.IsContentVisible = true;
+            e.DragUIOverride.IsGlyphVisible = false;
+
+            if (callback.DropHintControlProvider != null && e.DataView.Properties.ContainsKey("hintControl")
+                || callback.DropImageProvider != null && e.DataView.Properties.ContainsKey("imageSource"))
             {
-                Logging.WriteLine($"StartDrag CancelDrag");
-                CancelDrag();
+                e.AcceptedOperation = e.AllowedOperations;
             }
-            if (CurrentDrag?.Button == button)
+
+            Logging.WriteLine($"OnDragOver: {GetDescription(target)}: {e.AcceptedOperation}");
+        }
+
+        private static DataPackageOperation? GetDataPackageOperation(MouseButton button)
+        {
+            if (button.HasFlag(MouseButton.Left))
             {
-                Logging.WriteLine($"StartDrag Same drag");
+                return DataPackageOperation.Copy;
+            }
+            if (button.HasFlag(MouseButton.Right))
+            {
+                return DataPackageOperation.Move;
+            }
+            return null;
+        }
+
+        private static async void OnDrop(ClickCallbacks callback, UIElement target, DragEventArgs e)
+        {
+            var element = target;
+
+            Logging.WriteLine($"OnDrop {GetDescription(element)} {e.AllowedOperations} - operation");
+
+            Logging.WriteLine($"hintControl: {e.DataView.Properties["hintControl"]}");
+            Logging.WriteLine($"imageSource: {e.DataView.Properties["imageSource"]}");
+            if (callback.DropHintControlProvider != null && e.DataView.Properties["hintControl"] is HintControl hintControlData)
+            {
+                Logging.WriteLine($"OnDrop invoking OnDropHintControlCompleted");
+                callback.DropHintControlProvider.OnDataDroppedTo(hintControlData);
+                e.DataView.ReportOperationCompleted(e.AllowedOperations);
                 return;
             }
-
-            Logging.WriteLine($"StartDrag remove click");
-
-            var drag = new DragInfo(source, button);
-            CurrentDrag = drag;
-            Logging.WriteLine($"StartDrag Current Drag set");
-        }
-
-        static void CancelDrag()
-        {
-            Logging.WriteLine($"CancelDrag pre lock");
-            Logging.WriteLine($"CancelDrag");
-            if (CurrentDrag == null)
+            if (callback.DropImageProvider != null && e.DataView.Properties["imageSource"] is ImageSource imageSourceData)
             {
+                Logging.WriteLine($"OnDrop invoking OnDropImageCompleted");
+                callback.DropImageProvider.OnDataDroppedTo(imageSourceData);
+                e.DataView.ReportOperationCompleted(e.AllowedOperations);
                 return;
             }
-
-            var drag = CurrentDrag;
-            CurrentDrag = null;
         }
 
-        static void OnPointerWheelChanged(UIElement uiElement, PointerRoutedEventArgs winArgs)
+        static void OnPointerWheelChanged(ClickCallbacks.ScrollHandler sourceCallback, UIElement uiElement, PointerRoutedEventArgs winArgs)
         {
             Logging.WriteLine($"OnPointerWheelChanged");
-            if (ClickCallbacks.TryGetValue(uiElement, out var sourceCallback) && sourceCallback.OnScroll != null)
-            {
-                Logging.WriteLine($"OnPointerWheelChanged has callback");
-                var delta = winArgs.GetCurrentPoint(uiElement).Properties.MouseWheelDelta;
-                var dir = Math.Sign(delta);
-                sourceCallback.OnScroll(uiElement, dir);
-                winArgs.Handled = true;
-            }
+            Logging.WriteLine($"OnPointerWheelChanged has callback");
+            var delta = winArgs.GetCurrentPoint(uiElement).Properties.MouseWheelDelta;
+            var dir = Math.Sign(delta);
+            sourceCallback(uiElement, dir);
+            winArgs.Handled = true;
             Logging.WriteLine($"OnPointerWheelChanged Done");
         }
-
-        private static DateTime LastRelease = DateTime.MinValue;
-
-        static void OnPointerReleased(object s, PointerRoutedEventArgs winArgs)
-        {
-            var last = LastRelease;
-            LastRelease = DateTime.Now;
-            Logging.WriteLine($"OnPointerReleased {s}. Last Release {last}. Now {LastRelease}.");
-            if (s is UIElement sender)
-            {
-                var pointer = winArgs.GetCurrentPoint((UIElement)winArgs.OriginalSource);
-                var senderPointer = winArgs.GetCurrentPoint(sender);
-                var props = pointer.Properties;
-                MouseButton clickedButton;
-                switch (props.PointerUpdateKind)
-                {
-                    case PointerUpdateKind.LeftButtonReleased:
-                        clickedButton = MouseButton.Left;
-                        break;
-                    case PointerUpdateKind.RightButtonReleased:
-                        clickedButton = MouseButton.Right;
-                        if (pointer.Properties.IsRightButtonPressed)
-                        {
-                            return;
-                        }
-                        break;
-                    case PointerUpdateKind.MiddleButtonReleased:
-                        clickedButton = MouseButton.Middle;
-                        break;
-                    default:
-                        return;
-                }
-                if (TrackedEvents.TryGetValue(clickedButton, out var clickStartedElement))
-                {
-                    TrackedEvents.Remove(clickedButton);
-                    if (ClickCallbacks.TryGetValue(clickStartedElement, out var sourceCallback) &&
-                        ClickCallbacks.TryGetValue(sender, out var destinationCallback))
-                    {
-                        if (clickStartedElement == sender)
-                        {
-                            if (sourceCallback?.OnClick != null)
-                            {
-                                sourceCallback.OnClick(sender, clickedButton);
-                                winArgs.Handled = true;
-                            }
-                        }
-                    }
-                }
-                if (clickedButton != MouseButton.Left && CurrentDrag?.Button == clickedButton)
-                {
-                    var drag = CurrentDrag;
-                    var source = drag.Source;
-                    var target = sender;
-                    if (ClickCallbacks.TryGetValue(source, out var sourceCallback) && ClickCallbacks.TryGetValue(target, out var destinationCallback))
-                    {
-                        if (sourceCallback?.OnDragHintControlCompleted != null && destinationCallback?.OnDropHintControlCompleted != null)
-                        {
-                            var dragged = sourceCallback.OnDragHintControlCompleted(source, drag.Button);
-                            destinationCallback.OnDropHintControlCompleted(target, drag.Button, dragged);
-                            CurrentDrag = null;
-                            winArgs.Handled = true;
-                        }
-
-                        if (sourceCallback?.OnDragImageCompleted != null && destinationCallback?.OnDropImageCompleted != null)
-                        {
-                            var dragged = sourceCallback.OnDragImageCompleted(source, drag.Button);
-                            destinationCallback.OnDropImageCompleted(target, drag.Button, dragged);
-                            CurrentDrag = null;
-                            winArgs.Handled = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void OnDropCompleted(UIElement dest, UIElement s, DropCompletedEventArgs e)
-        {
-            var drag = CurrentDrag;
-            CurrentDrag = null;
-            if (drag?.CurrentTarget == null)
-            {
-                return;
-            }
-            var source = drag.Source;
-            var target = drag.CurrentTarget;
-            var button = drag.Button;
-
-            if (ClickCallbacks.TryGetValue(source, out var sourceCallback) && ClickCallbacks.TryGetValue(target, out var destinationCallback))
-            {
-                if (sourceCallback?.OnDragHintControlCompleted != null && destinationCallback?.OnDropHintControlCompleted != null)
-                {
-                    var dragged = sourceCallback.OnDragHintControlCompleted(source, drag.Button);
-                    destinationCallback.OnDropHintControlCompleted(target, drag.Button, dragged);
-                }
-
-                if (sourceCallback?.OnDragImageCompleted != null && destinationCallback?.OnDropImageCompleted != null)
-                {
-                    var dragged = sourceCallback.OnDragImageCompleted(source, drag.Button);
-                    destinationCallback.OnDropImageCompleted(target, drag.Button, dragged);
-                }
-            }
-        }
-
     }
 }

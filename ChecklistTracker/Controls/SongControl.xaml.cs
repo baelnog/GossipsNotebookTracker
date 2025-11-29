@@ -33,14 +33,14 @@ public partial class SongControl : UserControl, INotifyPropertyChanged
         var callbacks = new ClickCallbacks();
         callbacks.OnClick = ViewModel.OnClick;
         callbacks.OnScroll = ViewModel.OnScroll;
-        callbacks.OnDragImageCompleted = ViewModel.OnDragImage;
-        callbacks.OnDropImageCompleted = ViewModel.OnDropImage;
+        callbacks.DragImageProvider = ViewModel;
+        callbacks.DropImageProvider = ViewModel;
 
         Image.ConfigureClickHandler(callbacks);
 
         var smallImageCallbacks = new ClickCallbacks();
         smallImageCallbacks.OnClick = ViewModel.OnSmallClick;
-        smallImageCallbacks.OnDropImageCompleted += ViewModel.OnDropImage;
+        smallImageCallbacks.DropImageProvider = ViewModel;
         Image2.ConfigureClickHandler(smallImageCallbacks);
     }
 

@@ -43,8 +43,8 @@ namespace ChecklistTracker.Controls
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = ViewModel.OnClick;
             callbacks.OnScroll = ViewModel.OnScroll;
-            callbacks.OnDragImageCompleted = ViewModel.OnDrag;
-            callbacks.OnDropImageCompleted = ViewModel.OnDrop;
+            callbacks.DragImageProvider = ViewModel;
+            callbacks.DropImageProvider = ViewModel;
 
             this.ConfigureClickHandler(callbacks);
         }

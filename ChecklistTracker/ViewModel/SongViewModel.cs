@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Media;
 
 namespace ChecklistTracker.ViewModel
 {
-    internal class SongViewModel : ItemViewModel
+    internal class SongViewModel : ItemViewModel, IDropProvider<ImageSource>
     {
         public ImageSource BottomImage { get; set; }
 
@@ -32,6 +32,11 @@ namespace ChecklistTracker.ViewModel
         internal void OnDropImage(UIElement sender, MouseButton button, ImageSource image)
         {
             BottomImage = image;
+        }
+
+        public void OnDataDroppedTo(ImageSource data)
+        {
+            BottomImage = data;
         }
     }
 }

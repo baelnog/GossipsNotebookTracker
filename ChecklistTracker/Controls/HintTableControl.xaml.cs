@@ -4,11 +4,12 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI;
 
 namespace ChecklistTracker.Controls
 {
-    public sealed partial class HintTableControl : UserControl
+    public sealed partial class HintTableControl : UserControl, IDropProvider<HintControl>
     {
         private double HintHeight { get; set; }
 
@@ -89,7 +90,8 @@ namespace ChecklistTracker.Controls
             Entry.GetEntryBox().QuerySubmitted += OnEnterLocation;
 
             var clickCallbacks = new ClickCallbacks();
-            clickCallbacks.OnDropHintControlCompleted = OnDropHint;
+            clickCallbacks.DropHintControlProvider = this;
+            //clickCallbacks.OnDropHintControlCompleted = OnDropHint;
             this.ConfigureClickHandler(clickCallbacks);
 
             this.Layout.Children.Add(Entry);
@@ -172,7 +174,11 @@ namespace ChecklistTracker.Controls
 
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = (s, e) => OnClick(hintControl, e);
-            callbacks.OnDragHintControlCompleted = (s, e) => OnDragHint(hintControl, s, e);
+            callbacks.DragHintControlProvider = new HintControlDragProvider
+            {
+                Control = hintControl,
+                OnRemove = RemoveHintControl
+            };
 
             hintControl.ConfigureClickHandler(callbacks);
 
@@ -191,6 +197,30 @@ namespace ChecklistTracker.Controls
             if (this.Layout.Children.Count <= MaxHints)
             {
                 Entry.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void OnDataDroppedTo(HintControl data)
+        {
+            CopyHintControl(data);
+        }
+
+        private class HintControlDragProvider : IDragProvider<HintControl>
+        {
+            internal HintControl Control;
+            internal Action<HintControl> OnRemove;
+
+            public HintControl GetDragData(MouseButton dragType)
+            {
+                return Control;
+            }
+
+            public void OnDataDraggedFrom(MouseButton dragType)
+            {
+                if (dragType == MouseButton.Left)
+                {
+                    OnRemove(Control);
+                }
             }
         }
     }
