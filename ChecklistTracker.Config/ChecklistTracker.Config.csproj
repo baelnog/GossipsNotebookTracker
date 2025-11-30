@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>ChecklistTracker.Config</RootNamespace>
+    <IsTrimmable>false</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>
