@@ -31,7 +31,10 @@ namespace ChecklistTracker.Config
         public string SettingsPath { get; set; } = "settings\\season7-base.json";
 
         [JsonPropertyName("settingsPresets")]
-        public List<string> SettingsPresets { get; set; } = new List<string>();
+        public List<string> SettingsPresets { get; set; } = new List<string>()
+        {
+            "settings\\season7-base.json"
+        };
 
         [JsonInclude]
         public bool ShowLocationTracker { get; set; } = false;

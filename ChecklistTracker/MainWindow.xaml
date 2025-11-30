@@ -10,8 +10,8 @@
     <StackPanel
         VerticalAlignment="Top">
         <MenuBar x:Name="Menu">
-            <MenuBarItem Title="File" x:Name="LayoutsMenu">
-                <MenuFlyoutItem Text="Open..." Click="MenuOpenLayout">
+            <MenuBarItem Title="File">
+                <MenuFlyoutItem Text="Open Layout..." Click="MenuOpenLayout">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator 
                                 Modifiers="Control" 
@@ -19,6 +19,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
+                <MenuFlyoutSubItem Text="Layout History" x:Name="LayoutsMenu"/>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem Text="Hide Toolbar" Click="ToggleMenuBar">
                     <MenuFlyoutItem.KeyboardAccelerators>
@@ -35,9 +36,9 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-            <MenuBarItem Title="Settings" x:Name="SettingsMenu">
-                <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
-                <MenuFlyoutSeparator />
+            <MenuBarItem Title="Checklist Settings">
+                <MenuFlyoutItem Text="Load Settings..." Click="MenuLoadSettings"/>
+                <MenuFlyoutSubItem Text="Settings History" x:Name="SettingsMenu"/>
             </MenuBarItem>
             <MenuBarItem Title="Screen Capture" x:Name="ScreenCaptureMenu">
                 <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>

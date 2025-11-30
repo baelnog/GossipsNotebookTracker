@@ -95,42 +95,57 @@ namespace ChecklistTracker
             Menu.Visibility = Config.UserConfig.ShowMenuBar ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        bool menusSetup = false;
         private void SetupMenus()
         {
+            if (menusSetup)
+            {
+                return;
+            }
+            menusSetup = true;
             Config.UserConfig.OnPropertyChanged(nameof(UserConfig.ShowMenuBar), (s, e) => ShowOrHideMenuBar());
 
-            foreach (var oldItem in LayoutsMenu.Items.Where(item => item.Tag?.ToString() == "LayoutPath").ToList())
+            var PopulateLayoutsMenu = () =>
             {
-                LayoutsMenu.Items.Remove(oldItem);
-            }
-
-            foreach (string layoutPath in Config.UserConfig.LayoutHistory)
-            {
-                if (layoutPath != Config.UserConfig.LayoutPath)
+                foreach (var oldItem in LayoutsMenu.Items.ToList())
                 {
-                    var item = new MenuFlyoutItem()
+                    LayoutsMenu.Items.Remove(oldItem);
+                }
+                foreach (string layoutPath in Config.UserConfig.LayoutHistory)
+                {
+                    var item = new RadioMenuFlyoutItem()
                     {
                         Text = layoutPath,
-                        Tag = "LayoutPath"
+                        GroupName = "LayoutPath",
+                        IsChecked = layoutPath == Config.UserConfig.LayoutPath,
                     };
                     item.Click += (s, e) => { OpenLayout(layoutPath); };
-                    this.LayoutsMenu.Items.Insert(this.LayoutsMenu.Items.Count - 4, item);
+                    this.LayoutsMenu.Items.Add(item);
                 }
-            }
+            };
+            PopulateLayoutsMenu();
+            Config.UserConfig.OnPropertyChanged(nameof(UserConfig.LayoutHistory), (s, e) => PopulateLayoutsMenu());
 
-            foreach (string settingsPresetPath in Config.UserConfig.SettingsPresets)
+            var PopulateSettingsMenu = () =>
             {
-                if (!SettingsMenu.Items.Any(item => (item as MenuFlyoutItem)?.Text == settingsPresetPath))
+                foreach (var oldItem in SettingsMenu.Items.ToList())
                 {
-                    var item = new MenuFlyoutItem()
+                    SettingsMenu.Items.Remove(oldItem);
+                }
+                foreach (string settingsPresetPath in Config.UserConfig.SettingsPresets)
+                {
+                    var item = new RadioMenuFlyoutItem()
                     {
                         Text = settingsPresetPath,
-                        Tag = "SettingsPath"
+                        GroupName = "SettingsPath",
+                        IsChecked = settingsPresetPath == Config.UserConfig.SettingsPath
                     };
                     item.Click += (s, e) => { LoadSettings(settingsPresetPath); };
                     this.SettingsMenu.Items.Add(item);
                 }
-            }
+            };
+            PopulateSettingsMenu();
+            Config.UserConfig.OnPropertyChanged(nameof(UserConfig.SettingsPresets), (s, e) => PopulateSettingsMenu());
 
             // Dynamically create MenuFlyout for ScreenCaptureMenu
             void PopulateScreenFlyout()
@@ -139,7 +154,12 @@ namespace ChecklistTracker
                 foreach (var item in oldItems) { ScreenCaptureMenu.Items.Remove(item); }
                 foreach (var display in ScreenCaptureManager.AvailableDisplays)
                 {
-                    var item = new RadioMenuFlyoutItem { Text = display.DeviceName, IsChecked = display.Index == ScreenCaptureManager.SelectedScreenIndex };
+                    var item = new RadioMenuFlyoutItem
+                    {
+                        Text = display.DeviceName,
+                        GroupName = "Display",
+                        IsChecked = display.Index == ScreenCaptureManager.SelectedScreenIndex
+                    };
                     item.Click += (s, e) => ScreenCaptureManager.SelectedScreenIndex = display.Index;
                     ScreenCaptureMenu.Items.Add(item);
                 }
@@ -147,20 +167,8 @@ namespace ChecklistTracker
             // Initial population
             PopulateScreenFlyout();
             // Re-populate when screens change
-            ScreenCaptureManager.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(ScreenCaptureManager.AvailableDisplays))
-                {
-                    PopulateScreenFlyout();
-                }
-            };
-            Config.UserConfig.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(UserConfig.ScreenShotScreen))
-                {
-                    PopulateScreenFlyout();
-                }
-            };
+            ScreenCaptureManager.OnPropertyChanged(nameof(ScreenCaptureManager.AvailableDisplays), (s, e) => PopulateScreenFlyout());
+            Config.UserConfig.OnPropertyChanged(nameof(UserConfig.ScreenShotScreen), (s, e) => PopulateScreenFlyout());
 
             this.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, ShowOrHideMenuBar);
         }
