@@ -39,11 +39,10 @@ namespace ChecklistTracker.ViewModel
             foreach (var display in displays)
             {
                 _ScreenCaptures.Add(display.Index, InitializeScreenCapture(display));
-            }
-
-            if (UserConfig.ScreenShotScreen < displays.Count)
-            {
-                SelectedScreenIndex = UserConfig.ScreenShotScreen;
+                if (display.DeviceName == userConfig.ScreenShotScreen)
+                {
+                    SelectedScreenIndex = display.Index;
+                }
             }
 
             PropertyChanged += ScreenCaptureManager_PropertyChanged;
@@ -53,7 +52,10 @@ namespace ChecklistTracker.ViewModel
         {
             if (e.PropertyName == nameof(SelectedScreenIndex))
             {
-                UserConfig.ScreenShotScreen = SelectedScreenIndex;
+                UserConfig.ScreenShotScreen = AvailableDisplays
+                    .Where(d => d.Index == SelectedScreenIndex)
+                    .Select(d => d.DeviceName)
+                    .FirstOrDefault();
             }
         }
 
