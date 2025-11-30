@@ -1,4 +1,5 @@
-﻿using ChecklistTracker.CoreUtils;
+﻿using ChecklistTracker.Config;
+using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Images;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Dispatching;
@@ -23,8 +24,11 @@ namespace ChecklistTracker.ViewModel
         private ScreenCaptureManager ScreenCaptureManager;
         private DispatcherQueue Dispatcher;
 
-        internal ScreenCaptureViewModel(ScreenCaptureManager screenCaptureManager, Rectangle clipRegion, LayoutParams layout, TaskPoolGlobalHook globalHooks, DispatcherQueue dispatchQueue)
+        private TrackerConfig Config;
+
+        internal ScreenCaptureViewModel(ScreenCaptureManager screenCaptureManager, Rectangle clipRegion, LayoutParams layout, TrackerConfig config, TaskPoolGlobalHook globalHooks, DispatcherQueue dispatchQueue)
         {
+            Config = config;
             ScreenCaptureManager = screenCaptureManager;
             LayoutParams = layout;
             ClipRegion = clipRegion;
@@ -36,8 +40,7 @@ namespace ChecklistTracker.ViewModel
 
             globalHooks.KeyPressed += (o, evt) =>
             {
-                if (evt.RawEvent.Keyboard.KeyCode == SharpHook.Data.KeyCode.VcLeftControl ||
-                    evt.RawEvent.Keyboard.KeyCode == SharpHook.Data.KeyCode.VcRightControl)
+                if (Config.UserConfig.ScreenshotKeys.Contains(evt.RawEvent.Keyboard.KeyCode))
                 {
                     CaptureScreenshot();
                 }

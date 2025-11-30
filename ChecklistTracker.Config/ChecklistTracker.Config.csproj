@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Macross.Json.Extensions" />
+    <PackageReference Include="SharpHook" />
   </ItemGroup>
 
 </Project>

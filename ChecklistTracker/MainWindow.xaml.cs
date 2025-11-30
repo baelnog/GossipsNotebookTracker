@@ -405,6 +405,7 @@ namespace ChecklistTracker
                         ScreenCaptureManager,
                         new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
                         new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]),
+                        Config,
                         GlobalHooks,
                         DispatcherQueue);
                     var control = new ScreenCaptureControl(

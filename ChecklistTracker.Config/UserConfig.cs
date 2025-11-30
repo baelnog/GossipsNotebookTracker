@@ -1,4 +1,5 @@
 ﻿using ChecklistTracker.CoreUtils;
+using SharpHook.Data;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
@@ -38,6 +39,13 @@ namespace ChecklistTracker.Config
 
         [JsonInclude]
         public bool ShowLocationTracker { get; set; } = false;
+
+        [JsonPropertyName("screenshotKeys")]
+        public ISet<KeyCode> ScreenshotKeys { get; set; } = new HashSet<KeyCode>()
+        {
+            KeyCode.VcLeftControl,
+            KeyCode.VcRightControl,
+        };
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
