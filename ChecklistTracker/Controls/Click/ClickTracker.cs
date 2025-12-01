@@ -16,6 +16,9 @@ namespace ChecklistTracker.Controls.Click
         {
             if (callbacks.OnClick != null)
             {
+                source.Tapped += (s, e) => callbacks.OnClick(source, MouseButton.Left);
+                source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
+                source.IsDoubleTapEnabled = false;
                 source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e);
             }
 
@@ -75,12 +78,21 @@ namespace ChecklistTracker.Controls.Click
         private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e)
         {
             var button = GetButton(e.GetCurrentPoint(source));
-            if (button.HasValue)
+            if (button.HasValue && button.Value == MouseButton.Middle)
             {
                 PointerEventHandler? onRelease = null;
                 PointerEventHandler? onLeave = null;
+                TypedEventHandler<UIElement, DragStartingEventArgs>? onDrag = null;
+                onDrag = (UIElement s, DragStartingEventArgs e) =>
+                {
+                    source.DragStarting -= onDrag;
+                    source.PointerReleased -= onRelease;
+                    source.PointerExited -= onLeave;
+                };
+
                 onRelease = (object s, PointerRoutedEventArgs e) =>
                 {
+                    source.DragStarting -= onDrag;
                     source.PointerReleased -= onRelease;
                     source.PointerExited -= onLeave;
 
@@ -89,9 +101,11 @@ namespace ChecklistTracker.Controls.Click
 
                 onLeave = (object s, PointerRoutedEventArgs e) =>
                 {
+                    source.DragStarting -= onDrag;
                     source.PointerReleased -= onRelease;
                     source.PointerExited -= onLeave;
                 };
+                source.DragStarting += onDrag;
                 source.PointerReleased += onRelease;
                 source.PointerExited += onLeave;
             }
