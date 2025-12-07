@@ -16,11 +16,12 @@ namespace ChecklistTracker.Config
         public string ScreenShotScreen { get; set; } = @"\\.\DISPLAY1";
 
         [JsonPropertyName("layout")]
-        public string LayoutPath { get; set; } = "layouts\\season8.json";
+        public string LayoutPath { get; set; } = "layouts\\season9.json";
 
         [JsonPropertyName("layouts")]
         public List<string> LayoutHistory { get; set; } = new List<string>
         {
+            "layouts\\season9.json",
             "layouts\\season8.json",
             "layouts\\season7.json",
             "layouts\\season7-interiors.json",

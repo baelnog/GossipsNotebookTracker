@@ -11,10 +11,23 @@
 
     <RelativePanel
         x:Name="Layout">
+        <TextBlock
+            x:Name="CounterBox"
+            Text="{x:Bind ViewModel.Counter, Mode=TwoWay}"
+            Foreground="{x:Bind TextColor, Mode=OneWay}"
+            FontSize="{x:Bind CounterTextFontSize, Mode=OneWay}"
+            TextAlignment="Center"
+            HorizontalTextAlignment="Center"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            Padding="0,2"
+            />
         <StackPanel
             x:Name="LeftItemsLayout"
-            RelativePanel.AlignLeftWithPanel="True"
             Orientation="Horizontal"
+            RelativePanel.RightOf="CounterBox"
             />
         <RelativePanel
             Background="{x:Bind TextBackgroundColor, Mode=OneWay}"

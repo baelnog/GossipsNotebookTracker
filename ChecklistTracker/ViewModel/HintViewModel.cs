@@ -1,15 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using ChecklistTracker.Controls.Click;
+using ChecklistTracker.CoreUtils;
+using Microsoft.UI.Xaml;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ChecklistTracker.ViewModel
 {
-    public class HintViewModel
+    public class HintViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         internal bool IsEntry { get; set; }
         public string Text { get; set; }
         internal string? LabelSet { get; set; }
         internal ISet<string>? LabelsFilter { get; set; }
         internal List<Config.Label>? BaseLabelSet { get; set; }
+        internal int? Counter { get; set; } = null;
 
         internal ObservableCollection<HintStoneViewModel> LeftStones { get; private set; }
         internal ObservableCollection<HintStoneViewModel> RightStones { get; private set; }
@@ -18,6 +26,7 @@ namespace ChecklistTracker.ViewModel
             CheckListViewModel viewModel,
             int leftItems = 0, int rightItems = 0,
             string? leftIconSet = "bosses", string? rightIconSet = "sometimes",
+            bool showCounter = false,
             string? labelSet = null, string[]? labelsFilter = null, string text = "", bool isEntry = false)
         {
             LeftStones = new ObservableCollection<HintStoneViewModel>();
@@ -34,6 +43,10 @@ namespace ChecklistTracker.ViewModel
             IsEntry = isEntry;
             LabelSet = labelSet;
             LabelsFilter = labelsFilter != null ? new HashSet<string>(labelsFilter) : null;
+            if (showCounter)
+            {
+                Counter = 0;
+            }
 
             if (isEntry)
             {
@@ -62,6 +75,31 @@ namespace ChecklistTracker.ViewModel
                 RightStones[i].CurrentImage = other.RightStones[i].CurrentImage;
             }
             Text = other.Text;
+        }
+
+        internal void OnClickCounter(UIElement sender, MouseButton button)
+        {
+            if (!Counter.HasValue)
+            {
+                return;
+            }
+            var change = 1;
+            if (button == MouseButton.Right) { change = -1; }
+            Counter = int.Clamp(Counter.Value + change, 0, int.MaxValue);
+        }
+
+        internal void OnScrollCounter(UIElement sender, int change)
+        {
+            if (!Counter.HasValue)
+            {
+                return;
+            }
+            Counter = int.Clamp(Counter.Value + change, 0, int.MaxValue);
+        }
+
+        public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            this.RaisePropertyChanged(PropertyChanged, propertyName);
         }
     }
 }

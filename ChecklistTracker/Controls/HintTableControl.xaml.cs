@@ -26,6 +26,7 @@ namespace ChecklistTracker.Controls
         private int RightItems;
         private int ItemWidth;
         private int ItemHeight;
+        private bool ShowCounter;
 
         private TextParams TextParams { get; set; }
 
@@ -39,7 +40,7 @@ namespace ChecklistTracker.Controls
         private string LeftIconSet { get; set; }
         private string RightIconSet { get; set; }
 
-        internal HintTableControl(int hintCount, int hintColumns, int totalWidth, int leftItems, int rightItems, int itemWidth, int itemHeight, Thickness padding, TextParams textParams, string rightIconSet, string leftIconSet, string? labelSet, string[]? labelsFilter, bool allowOverflow = false, string placeholderText = "")
+        internal HintTableControl(int hintCount, int hintColumns, int totalWidth, int leftItems, int rightItems, int itemWidth, int itemHeight, bool showCounter, Thickness padding, TextParams textParams, string rightIconSet, string leftIconSet, string? labelSet, string[]? labelsFilter, bool allowOverflow = false, string placeholderText = "")
         {
             InitializeComponent();
 
@@ -65,6 +66,7 @@ namespace ChecklistTracker.Controls
             RightIconSet = rightIconSet;
             ItemWidth = itemWidth;
             ItemHeight = itemHeight;
+            ShowCounter = showCounter;
 
             TextParams = textParams;
             HintBackgroundColorRaw = textParams.BackgroundColor;
@@ -156,6 +158,7 @@ namespace ChecklistTracker.Controls
                     CheckListViewModel.GlobalInstance!,
                     leftItems: LeftItems,
                     rightItems: RightItems,
+                    showCounter: ShowCounter,
                     leftIconSet: LeftIconSet,
                     rightIconSet: RightIconSet,
                     text: text

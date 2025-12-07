@@ -1,3 +1,4 @@
+using ChecklistTracker.Controls.Click;
 using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,6 +16,7 @@ namespace ChecklistTracker.Controls
         public double TextWidth { get; set; }
         public double TextHeight { get; set; }
         public double TextFontSize { get; set; }
+        public double CounterTextFontSize { get; set; }
         public Color TextColorRaw { get; set; }
         public Brush TextColor { get { return new SolidColorBrush(TextColorRaw); } }
         public Color TextBackgroundColorRaw { get; set; }
@@ -89,6 +91,18 @@ namespace ChecklistTracker.Controls
                 LabelBox.Visibility = Visibility.Visible;
                 LabelBox.Text = viewModel.Text;
             }
+
+            CounterBox.ConfigureClickHandler(new ClickCallbacks
+            {
+                OnClick = ViewModel.OnClickCounter,
+                OnScroll = ViewModel.OnScrollCounter,
+            });
+            CounterBox.Visibility = ViewModel.Counter.HasValue ? Visibility.Visible : Visibility.Collapsed;
+            CounterTextFontSize = TextFontSize + 4;
+
+            CounterBox.Width = itemLayout.Width;
+            CounterBox.Height = itemLayout.Height;
+            CounterBox.VerticalAlignment = VerticalAlignment.Center;
 
             this.EntryBox.TextChanged += OnTextChanged;
             this.EntryBox.QuerySubmitted += OnQuerySubmitted;

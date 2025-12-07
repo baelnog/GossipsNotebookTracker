@@ -22,6 +22,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public bool inverted { get; set; } = false;
         public bool showBoss { get; set; } = true;
         public int bossCount { get; set; } = 1;
+        public bool showCounter { get; set; } = false;
         public bool showItems { get; set; } = true;
         public int itemCount { get; set; } = 4;
         public int[] itemSize { get; set; } = { 24, 24 };

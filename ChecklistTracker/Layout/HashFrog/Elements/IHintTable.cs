@@ -13,6 +13,7 @@
         public string backgroundColor { get; set; }
         public int? fontSize { get; set; }
         public int[] itemSize { get; set; }
+        public bool showCounter { get; set; }
 
         public string itemIconSet { get; set; }
         public string bossIconSet { get; set; }

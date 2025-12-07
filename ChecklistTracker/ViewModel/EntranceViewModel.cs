@@ -29,12 +29,5 @@ namespace ChecklistTracker.ViewModel
             IconLayoutParams = iconLayoutParams;
             TextParams = textParams;
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        internal void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            this.RaisePropertyChanged(PropertyChanged, propertyName);
-        }
     }
 }

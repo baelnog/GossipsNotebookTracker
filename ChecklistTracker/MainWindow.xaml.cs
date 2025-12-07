@@ -296,6 +296,7 @@ namespace ChecklistTracker
                                 rightItems: locationHintTable.showItems ? locationHintTable.itemCount : 0,
                                 itemWidth: locationHintTable.itemSize[1],
                                 itemHeight: locationHintTable.itemSize[0],
+                                showCounter: locationHintTable.showCounter,
                                 padding: paddingObj,
                                 textParams: textParams,
                                 leftIconSet: locationHintTable.bossIconSet,
