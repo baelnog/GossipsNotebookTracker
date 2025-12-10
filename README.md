@@ -1,5 +1,7 @@
 # Gossips Notebook Tracker
 
+[![.NET Core Desktop](https://github.com/baelnog/GossipsNotebookTracker/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/baelnog/GossipsNotebookTracker/actions/workflows/dotnet-desktop.yml)
+
 A configurable tracker inspired by [Gossip Stone Tracker HD](https://github.com/HapaxL/GSTHD) and [HashFrog Tracker](https://github.com/wafo/hashfrog_tracker).
 
 Gossips Notebook aims to offer the easier to define tracker layouts of HashFrog while maintaining the standalone nature of GSTHD which allows bringing your own long-lived resources.
