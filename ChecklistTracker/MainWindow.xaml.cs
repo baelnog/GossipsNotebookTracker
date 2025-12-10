@@ -195,7 +195,7 @@ namespace ChecklistTracker
             SetWindowSize(width, height);
 
             this.Layout.Background = new SolidColorBrush(windowStyle.BackgroundColor?.ToColor() ?? throw new ArgumentNullException("BackgroundColor is not set."));
-            this.Title = style.Title;
+            this.Title = layout.Style.Title ?? style.Title;
 
             foreach (var component in layout.Components)
             {
