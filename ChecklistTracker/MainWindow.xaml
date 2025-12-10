@@ -36,7 +36,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-            <MenuBarItem Title="Checklist Settings">
+            <MenuBarItem Title="Checklist Settings" Visibility="Collapsed">
                 <MenuFlyoutItem Text="Load Settings..." Click="MenuLoadSettings"/>
                 <MenuFlyoutSubItem Text="Settings History" x:Name="SettingsMenu"/>
             </MenuBarItem>
