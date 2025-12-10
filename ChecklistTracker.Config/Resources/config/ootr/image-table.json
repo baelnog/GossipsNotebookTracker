@@ -1020,6 +1020,72 @@
 			],
 			"logic_name": "Light_Medallion"
 		},
+		"entrance_deku": {
+			"type": "song",
+			"images": [
+				"bosses/gohma_32x32.png"
+			]
+		},
+		"entrance_dc": {
+			"type": "song",
+			"images": [
+				"bosses/dodongo_32x32.png"
+			]
+		},
+		"entrance_jabu": {
+			"type": "song",
+			"images": [
+				"bosses/barinade_32x32.png"
+			]
+		},
+		"entrance_forest": {
+			"type": "song",
+			"images": [
+				"bosses/pg_32x32.png"
+			]
+		},
+		"entrance_fire": {
+			"type": "song",
+			"images": [
+				"bosses/volvagia_32x32.png"
+			]
+		},
+		"entrance_water": {
+			"type": "song",
+			"images": [
+				"bosses/morpha_32x32.png"
+			]
+		},
+		"entrance_shadow": {
+			"type": "song",
+			"images": [
+				"bosses/bongo_32x32.png"
+			]
+		},
+		"entrance_spirit": {
+			"type": "song",
+			"images": [
+				"bosses/twinrova_32x32.png"
+			]
+		},
+		"entrance_botw": {
+			"type": "song",
+			"images": [
+				"lens_32x32.png"
+			]
+		},
+		"entrance_icecavern": {
+			"type": "song",
+			"images": [
+				"iron-boots_32x32.png"
+			]
+		},
+		"entrance_gtg": {
+			"type": "song",
+			"images": [
+				"gerudosymbol.png"
+			]
+		},
 		"mirror_shield": {
 			"images": [
 				"mirror-shield-bw_32x32.png",
