@@ -40,7 +40,7 @@ namespace ChecklistTracker.ViewModel
 
             globalHooks.KeyPressed += (o, evt) =>
             {
-                if (Config.UserConfig.ScreenshotKeys.Contains(evt.RawEvent.Keyboard.KeyCode))
+                if (Config.UserConfig.ScreenshotHotKeysEnabled && Config.UserConfig.ScreenshotKeys.Contains(evt.RawEvent.Keyboard.KeyCode))
                 {
                     CaptureScreenshot();
                 }

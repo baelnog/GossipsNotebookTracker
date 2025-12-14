@@ -19,7 +19,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="Layout History" x:Name="LayoutsMenu"/>
+                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.LayoutPath, Mode=TwoWay}" x:Name="LayoutsMenu"/>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem Text="Hide Toolbar" Click="ToggleMenuBar">
                     <MenuFlyoutItem.KeyboardAccelerators>
@@ -41,7 +41,16 @@
                 <MenuFlyoutSubItem Text="Settings History" x:Name="SettingsMenu"/>
             </MenuBarItem>
             <MenuBarItem Title="Screen Capture" x:Name="ScreenCaptureMenu">
-                <MenuFlyoutItem Text="Load..." Click="MenuLoadSettings"/>
+                <ToggleMenuFlyoutItem
+                    Text="HotKey Enabled"
+                    IsChecked="{ x:Bind Config.UserConfig.ScreenshotHotKeysEnabled, Mode=TwoWay }">
+                    <ToggleMenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F12" />
+                    </ToggleMenuFlyoutItem.KeyboardAccelerators>
+                </ToggleMenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.ScreenShotScreen, Mode=TwoWay}" x:Name="ScreenCaptureList"/>
+                <MenuFlyoutSeparator />
             </MenuBarItem>
         </MenuBar>
         <Canvas

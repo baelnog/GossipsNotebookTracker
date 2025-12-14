@@ -41,6 +41,9 @@ namespace ChecklistTracker.Config
         [JsonInclude]
         public bool ShowLocationTracker { get; set; } = false;
 
+        [JsonPropertyName("screenshotHotKeyEnabled")]
+        public bool ScreenshotHotKeysEnabled { get; set; } = true;
+
         [JsonPropertyName("screenshotKeys")]
         public ISet<KeyCode> ScreenshotKeys { get; set; } = new HashSet<KeyCode>()
         {
