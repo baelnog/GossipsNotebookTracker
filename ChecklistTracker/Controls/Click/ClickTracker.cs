@@ -16,8 +16,7 @@ namespace ChecklistTracker.Controls.Click
         {
             if (callbacks.OnClick != null)
             {
-                source.Tapped += (s, e) => callbacks.OnClick(source, MouseButton.Left);
-                source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
+                //source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
                 source.IsDoubleTapEnabled = false;
                 source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e);
             }
@@ -78,7 +77,7 @@ namespace ChecklistTracker.Controls.Click
         private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e)
         {
             var button = GetButton(e.GetCurrentPoint(source));
-            if (button.HasValue && button.Value == MouseButton.Middle)
+            if (button.HasValue)
             {
                 PointerEventHandler? onRelease = null;
                 PointerEventHandler? onLeave = null;

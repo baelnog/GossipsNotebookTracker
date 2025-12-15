@@ -226,6 +226,9 @@ namespace ChecklistTracker
                     var padding = compTable.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
 
+                    var quickFillLabels = compTable.quickFillLabels.ToCircularQueue();
+                    var quickFillImages= compTable.quickFillImages.ToCircularQueue();
+
                     foreach (var element in compTable.elements)
                     {
                         var item = ResourceFinder.FindItem(element);
@@ -241,14 +244,14 @@ namespace ChecklistTracker
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance), layoutParams);
+                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance, quickFillImages), layoutParams);
                                 break;
                             case ItemType.Reward:
                                 if (item == null)
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3), layoutParams);
+                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3, quickFillLabels), layoutParams);
                                 break;
                             case ItemType.Hint:
                                 elementControl = new HintStoneControl(new HintStoneViewModel(CheckListViewModel.GlobalInstance, element), layoutParams);

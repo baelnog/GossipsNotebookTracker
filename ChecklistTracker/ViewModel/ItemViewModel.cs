@@ -71,7 +71,7 @@ namespace ChecklistTracker.ViewModel
             ViewModel.Inventory.CollectAmount(Item, -n);
         }
 
-        internal void OnClick(UIElement sender, MouseButton button)
+        internal virtual void OnClick(UIElement sender, MouseButton button)
         {
             switch (button)
             {
