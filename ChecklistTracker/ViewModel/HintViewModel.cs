@@ -75,6 +75,10 @@ namespace ChecklistTracker.ViewModel
                 RightStones[i].CurrentImage = other.RightStones[i].CurrentImage;
             }
             Text = other.Text;
+            if (other.Counter.HasValue)
+            {
+                Counter = other.Counter;
+            }
         }
 
         internal void OnClickCounter(UIElement sender, MouseButton button)

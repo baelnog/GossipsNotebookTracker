@@ -138,7 +138,8 @@ namespace ChecklistTracker.Controls
                 leftItems: LeftItems,
                 rightItems: RightItems,
                 leftIconSet: LeftIconSet,
-                rightIconSet: RightIconSet);
+                rightIconSet: RightIconSet,
+                showCounter: ShowCounter);
 
             viewModel.AdoptFrom(source.ViewModel);
 
