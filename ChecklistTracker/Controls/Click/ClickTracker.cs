@@ -12,13 +12,19 @@ namespace ChecklistTracker.Controls.Click
 {
     internal static partial class ClickTracker
     {
+        private class AtomicBool
+        {
+            internal bool Value = false;
+        }
         internal static void ConfigureClickHandler(this UIElement source, ClickCallbacks callbacks)
         {
             if (callbacks.OnClick != null)
             {
-                //source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
+                var middleClick = new AtomicBool();
+                source.Tapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, middleClick);
+                source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
                 source.IsDoubleTapEnabled = false;
-                source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e);
+                source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e, middleClick);
             }
 
             if (callbacks.DragHintControlProvider != null || callbacks.DragImageProvider != null)
@@ -74,38 +80,30 @@ namespace ChecklistTracker.Controls.Click
             }
         }
 
-        private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e)
+        private static void Click_OnClick(ClickCallbacks.ClickHandler onClick, UIElement source, TappedRoutedEventArgs e, AtomicBool isMiddleClick)
+        {
+            onClick.Invoke(source, isMiddleClick.Value ? MouseButton.Middle : MouseButton.Left);
+            isMiddleClick.Value = false;
+        }
+
+        private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e, AtomicBool isMiddleClick)
         {
             var button = GetButton(e.GetCurrentPoint(source));
-            if (button.HasValue)
+            if (button.HasValue && button.Value == MouseButton.Middle)
             {
-                PointerEventHandler? onRelease = null;
+                isMiddleClick.Value = true;
+
                 PointerEventHandler? onLeave = null;
                 TypedEventHandler<UIElement, DragStartingEventArgs>? onDrag = null;
-                onDrag = (UIElement s, DragStartingEventArgs e) =>
+                var cleanup = () =>
                 {
+                    isMiddleClick.Value = false;
                     source.DragStarting -= onDrag;
-                    source.PointerReleased -= onRelease;
                     source.PointerExited -= onLeave;
                 };
-
-                onRelease = (object s, PointerRoutedEventArgs e) =>
-                {
-                    source.DragStarting -= onDrag;
-                    source.PointerReleased -= onRelease;
-                    source.PointerExited -= onLeave;
-
-                    onClick(source, button.Value);
-                };
-
-                onLeave = (object s, PointerRoutedEventArgs e) =>
-                {
-                    source.DragStarting -= onDrag;
-                    source.PointerReleased -= onRelease;
-                    source.PointerExited -= onLeave;
-                };
+                onDrag = (UIElement s, DragStartingEventArgs e) => cleanup();
+                onLeave = (object s, PointerRoutedEventArgs e) => cleanup();
                 source.DragStarting += onDrag;
-                source.PointerReleased += onRelease;
                 source.PointerExited += onLeave;
             }
         }
