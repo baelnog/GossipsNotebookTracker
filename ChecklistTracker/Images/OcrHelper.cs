@@ -1,12 +1,13 @@
+using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Images;
+using Microsoft.UI.Xaml.Media.Imaging;
+using SkiaSharp;
 using System;
 using System.Threading.Tasks;
+using Windows.Globalization;
 using Windows.Graphics.Imaging;
 using Windows.Media.Ocr;
 using Windows.Storage.Streams;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.Globalization;
-using SkiaSharp;
-using ChecklistTracker.Images;
 
 namespace ChecklistTracker
 {
@@ -39,6 +40,12 @@ namespace ChecklistTracker
                 throw new NotSupportedException("OCR engine could not be created. Check Windows language support.");
 
             var result = await ocrEngine.RecognizeAsync(softwareBitmap);
+            Logging.WriteLine("OCR!");
+            foreach (var line in result.Lines)
+            {
+                Logging.WriteLine($"  : {line.Text}");
+            }
+            Logging.WriteLine("OCR.");
             return result?.Text ?? string.Empty;
         }
     }

@@ -28,7 +28,7 @@
     <PackageVersion Include="ScreenCapture.NET" Version="3.0.0" />
     <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
     <PackageVersion Include="ScreenCapturer" Version="3.0.1" />
-    <PackageVersion Include="SharpHook" Version="7.0.3" />
+    <PackageVersion Include="SharpHook" Version="7.1.0" />
     <PackageVersion Include="SkiaSharp" Version="3.119.1" />
     <PackageVersion Include="SkiaSharp.Extended" Version="3.0.0" />
     <PackageVersion Include="SkiaSharp.Views.WinUI" Version="3.119.1" />
