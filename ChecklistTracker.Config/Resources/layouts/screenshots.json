@@ -13,7 +13,7 @@
 	"windows": [
 		{
 			"style": {
-				"title": "Season 8",
+				"title": "Fullscreen Screenshots",
 				"backgroundColor": "#000000",
 				"width": 580,
 				"height": 1080,
@@ -28,8 +28,8 @@
 					"size": [ 1080, 575 ],
 					"screenshotSize": [ 325, 575 ],
 					"clipRegion": [
-						[20, 12],
-						[60, 60]
+						[0, 0],
+						[100, 100]
 					]
 				}
 			]
