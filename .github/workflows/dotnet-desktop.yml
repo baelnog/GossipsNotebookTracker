@@ -6,7 +6,10 @@ on:
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
-
+    inputs:
+      publish:
+        default: false
+        type: boolean
 jobs:
   build:
     runs-on: windows-latest  # For a list of available runner types, refer to
@@ -28,7 +31,7 @@ jobs:
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
-      if: ${{ github.event.name == 'workflow_dispath' }}
+      if: ${{ inputs.publish }}
       with:
         name: Tracker
         path: publish
