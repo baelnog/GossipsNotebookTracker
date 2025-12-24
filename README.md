@@ -14,10 +14,11 @@ GNT comes with a number of pre-defined layouts.
 
 <img width="216" height="565" alt="image" src="https://github.com/user-attachments/assets/37f0f522-0284-4d60-bdc7-e2f796d2337c" />
 
-
 ### Screenshots
 
 Captures a screenshot of the configured window and adds it to a scrollable list.
+
+Screen capture is bound to the CTRL key on the keyboard by default. The hotkey(s) are configurable as a list in the tracker userconfig.json file. A full list of supported keys can be found in [SharpHook KeyCode.cs](https://github.com/TolikPylypchuk/SharpHook/blob/main/SharpHook/Data/KeyCode.cs)
 
 ### Screenshots-Doors
 
