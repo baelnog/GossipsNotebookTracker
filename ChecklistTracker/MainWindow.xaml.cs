@@ -154,13 +154,13 @@ namespace ChecklistTracker
                 foreach (var item in oldItems) { ScreenCaptureList.Items.Remove(item); }
                 foreach (var display in ScreenCaptureManager.AvailableDisplays)
                 {
-                    if (!DisplayHardwareMapper.TryGetHardwareId(display.DeviceName, out var hardwareId))
+                    if (!DisplayHardwareMapper.TryGetDeviceString(display.DeviceName, out var deviceString))
                     {
-                        hardwareId = display.DeviceName;
+                        deviceString = display.DeviceName;
                     }
                     var item = new RadioMenuFlyoutItem
                     {
-                        Text = hardwareId,
+                        Text = deviceString,
                         GroupName = "Display",
                         IsChecked = display.Index == ScreenCaptureManager.SelectedScreenIndex
                     };

@@ -29,6 +29,7 @@ namespace ChecklistTracker.ViewModel
         private const uint EDD_GET_DEVICE_INTERFACE_NAME = 0x00000001;
 
         private static readonly Dictionary<string, string> DisplayToHardwareId;
+        private static readonly Dictionary<string, string> DisplayToDeviceString;
         private static readonly Dictionary<string, string> HardwareIdToDisplay;
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace ChecklistTracker.ViewModel
         static DisplayHardwareMapper()
         {
             var mapping = new Dictionary<string, string>();
+            var deviceString = new Dictionary<string, string>();
             DISPLAY_DEVICE d = new DISPLAY_DEVICE();
             d.cb = Marshal.SizeOf(d);
 
@@ -53,11 +55,13 @@ namespace ChecklistTracker.ViewModel
                     // Map the device name to the hardware ID
                     var deviceName = m.DeviceName.Substring(0, m.DeviceName.LastIndexOf(@"\"));
                     mapping[deviceName] = m.DeviceID;
+                    deviceString[deviceName] = m.DeviceString;
                 }
             }
 
             DisplayToHardwareId = mapping;
             HardwareIdToDisplay = mapping.ToDictionary(kv => kv.Value, kv => kv.Key);
+            DisplayToDeviceString = deviceString;
         }
 
         /// <summary>
@@ -73,6 +77,11 @@ namespace ChecklistTracker.ViewModel
         public static bool TryGetDeviceName(string hardwareId, out string? deviceName)
         {
             return HardwareIdToDisplay.TryGetValue(hardwareId, out deviceName);
+        }
+
+        public static bool TryGetDeviceString(string deviceName, out string? deviceString)
+        {
+            return DisplayToDeviceString.TryGetValue(deviceName, out deviceString);
         }
 
     }

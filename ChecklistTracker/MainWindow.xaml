@@ -49,7 +49,7 @@
                     </ToggleMenuFlyoutItem.KeyboardAccelerators>
                 </ToggleMenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.ScreenShotScreen, Mode=TwoWay}" x:Name="ScreenCaptureList"/>
+                <MenuFlyoutSubItem Text="{x:Bind ScreenCaptureManager.ScreenShotDisplayString, Mode=TwoWay}" x:Name="ScreenCaptureList"/>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
         </MenuBar>

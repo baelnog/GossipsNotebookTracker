@@ -26,6 +26,8 @@ namespace ChecklistTracker.ViewModel
 
         public int SelectedScreenIndex { get; set; }
 
+        public string ScreenShotDisplayString { get; set; }
+
         public ScreenCaptureManager(UserConfig userConfig)
         {
             this.UserConfig = userConfig;
@@ -44,6 +46,8 @@ namespace ChecklistTracker.ViewModel
                     if (hardwareId == userConfig.ScreenShotScreen)
                     {
                         SelectedScreenIndex = display.Index;
+                        DisplayHardwareMapper.TryGetDeviceString(display.DeviceName, out var displayString);
+                        ScreenShotDisplayString = displayString ?? display.DeviceName;
                     }
                 }
             }
@@ -57,13 +61,13 @@ namespace ChecklistTracker.ViewModel
             {
                 var selectedDevice = AvailableDisplays
                     .Where(d => d.Index == SelectedScreenIndex)
-                    .Select(d => { DisplayHardwareMapper.TryGetHardwareId(d.DeviceName, out var hardwareId); return hardwareId; })
-                    .Where(d => d != null)
                     .FirstOrDefault();
 
-                if (selectedDevice != null)
+                if (DisplayHardwareMapper.TryGetHardwareId(selectedDevice.DeviceName, out var deviceId))
                 {
-                    UserConfig.ScreenShotScreen = selectedDevice;
+                    UserConfig.ScreenShotScreen = deviceId;
+                    DisplayHardwareMapper.TryGetDeviceString(selectedDevice.DeviceName, out var displayString);
+                    ScreenShotDisplayString = displayString ?? selectedDevice.DeviceName;
                 }
             }
         }
