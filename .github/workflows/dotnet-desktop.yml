@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,6 +28,7 @@ jobs:
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
+      if: ${{ github.event.name == 'workflow_dispath' }}
       with:
         name: Tracker
         path: publish
