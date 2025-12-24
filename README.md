@@ -12,7 +12,8 @@ GNT comes with a number of pre-defined layouts.
 
 ### Season 9
 
-<img width="216" height="565" alt="image" src="https://github.com/user-attachments/assets/b7e8f1e9-7d9f-4088-9a53-b46d87b4983b" />
+<img width="216" height="565" alt="image" src="https://github.com/user-attachments/assets/37f0f522-0284-4d60-bdc7-e2f796d2337c" />
+
 
 ### Screenshots
 
