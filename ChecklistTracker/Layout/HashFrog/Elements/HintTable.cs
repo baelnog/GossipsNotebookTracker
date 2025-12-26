@@ -8,7 +8,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public HintType hintType { get; set; }
         public int width { get; set; }
         public int hintNumber { get; set; }
-        public int columns { get; set; }
+        public int columns { get; set; } = 1;
         public string padding { get; set; } = "0px";
         public string labels { get; set; } = "sometimes";
         public string[]? labelsSet { get; set; } = null;
@@ -20,7 +20,7 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public string[]? bossIcons { get; set; }
         public bool showIcon { get; set; } = true;
         public bool inverted { get; set; } = false;
-        public bool showBoss { get; set; } = true;
+        public bool showBoss { get; set; } = false;
         public int bossCount { get; set; } = 1;
         public bool showCounter { get; set; } = false;
         public bool showItems { get; set; } = true;

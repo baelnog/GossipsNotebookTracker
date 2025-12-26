@@ -31,7 +31,6 @@ namespace ChecklistTracker.Layout.GossipNotebook
                         new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                         new ElementConverter(),
                     }
-
                 }) ?? throw new Exception("Failed to parse layout file.");
         }
     }
