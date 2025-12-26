@@ -1,26 +1,12 @@
 {
-	"trackerConfig": {
-		"name": "ScreenShots Doors"
-	},
 	"style": {
+		"title": "ScreenShots Doors",
 		"width": 580,
 		"height": 1080,
-		"backgroundColor": "#000000",
-		"fontFamily": null,
-		"fontSize": null,
-		"fontColor": null
+		"backgroundColor": "#000000"
 	},
 	"windows": [
 		{
-			"style": {
-				"title": "ScreenShots Doors",
-				"backgroundColor": "#000000",
-				"width": 580,
-				"height": 1080,
-				"fontFamily": null,
-				"fontSize": null,
-				"fontColor": null
-			},
 			"components": [
 				{
 					"type": "screenshot",
