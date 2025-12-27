@@ -1389,7 +1389,8 @@
 			"max_count": 100,
 			"images": [
 				"token.png"
-			]
+			],
+			"logic_name": "Gold_Skulltula_Token"
 		},
 		"queen_gohma": {
 			"images": [

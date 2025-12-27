@@ -126,17 +126,28 @@
           ],
           "elementsSize": [ 24, 24 ],
           "displayName": "Spawn Icons",
-          "hidden": false,
+          "hidden": false
         },
         {
           "type": "table",
-          "position": [ 366, 160 ],
+          "position": [ 366, 144 ],
+          "padding": "0px",
+          "elements": [
+            "gold_skulls"
+          ],
+          "elementsSize": [ 18, 18 ],
+          "displayName": "skulls",
+          "hidden": false
+        },
+        {
+          "type": "table",
+          "position": [ 366, 184 ],
           "padding": "0px",
           "elements": [
             "frogs_song"
           ],
-          "size": [ 24, 214 ],
-          "elementsSize": [ 24, 214 ],
+          "size": [ 24, 190 ],
+          "elementsSize": [ 24, 190 ],
           "displayName": "frogs",
           "hidden": false
         },

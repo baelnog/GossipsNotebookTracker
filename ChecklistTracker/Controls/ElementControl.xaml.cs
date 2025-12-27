@@ -29,7 +29,7 @@ namespace ChecklistTracker.Controls
             callbacks.OnScroll += ViewModel.OnScroll;
             callbacks.DragImageProvider = ViewModel;
 
-            this.Image.ConfigureClickHandler(callbacks);
+            this.ConfigureClickHandler(callbacks);
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
