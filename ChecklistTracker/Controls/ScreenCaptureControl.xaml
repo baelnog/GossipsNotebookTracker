@@ -9,11 +9,14 @@
     mc:Ignorable="d">
 
     <RelativePanel MaxHeight="{x:Bind LayoutParams.Height}" MaxWidth="{x:Bind LayoutParams.Width}">
-        <GridView Name="Screenshots" ItemsSource="{x:Bind ViewModel.Screenshots, Mode=OneWay}">
+        <GridView Name="Screenshots" ItemsSource="{x:Bind ViewModel.Screenshots, Mode=OneWay}" SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodel:ScreenCapture">
                     <RelativePanel>
-                        <Image Source="{x:Bind Screenshot, Mode=OneWay}" Width="{x:Bind LayoutParams.Width}" Height="{x:Bind LayoutParams.Height}"/>
+                        <Image
+                            Source="{x:Bind Screenshot, Mode=OneWay}"
+                            Width="{x:Bind LayoutParams.Width}"
+                            Height="{x:Bind LayoutParams.Height}" />
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>

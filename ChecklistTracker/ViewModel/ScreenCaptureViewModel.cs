@@ -1,8 +1,12 @@
 ﻿using ChecklistTracker.Config;
+using ChecklistTracker.Controls.Click;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Images;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Input;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using SharpHook;
@@ -71,8 +75,16 @@ namespace ChecklistTracker.ViewModel
             var source = new SoftwareBitmapSource();
             var addBitmapTask = source.SetBitmapAsync(softBitmap).AsTask().ContinueWith(_ =>
             {
-                _Screenshots.Add(new ScreenCapture(source, LayoutParams));
+                _Screenshots.Insert(0 ,new ScreenCapture(source, LayoutParams));
             });
+        }
+
+        internal void OnItemClick(UIElement sender, object item, MouseButton button)
+        {
+            if (button == MouseButton.Middle && item is ScreenCapture screenCapture)
+            {
+                _Screenshots.Remove(screenCapture);
+            }
         }
     }
 

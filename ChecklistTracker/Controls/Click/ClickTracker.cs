@@ -12,20 +12,31 @@ namespace ChecklistTracker.Controls.Click
 {
     internal static partial class ClickTracker
     {
-        private class AtomicBool
+        private class ClickMetadata
         {
-            internal bool Value = false;
+            internal MouseButton Value = MouseButton.None;
         }
         internal static void ConfigureClickHandler(this UIElement source, ClickCallbacks callbacks)
         {
             if (callbacks.OnClick != null)
             {
-                var middleClick = new AtomicBool();
-                source.Tapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, middleClick);
-                source.DoubleTapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, middleClick);
-                source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
+                var metadata = new ClickMetadata();
+                source.Tapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, metadata);
+                source.DoubleTapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, metadata);
+                source.RightTapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, metadata);
                 source.IsDoubleTapEnabled = true;
-                source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e, middleClick);
+                source.PointerPressed += (s, e) => Click_OnPointerPressed(source, e, metadata);
+            }
+
+            if (callbacks.OnItemClick != null && source is ListViewBase listView)
+            {
+                var metadata = new ClickMetadata();
+                source.PointerPressed += (s, e) => Click_OnPointerPressed(source, e, metadata);
+
+                source.Tapped += (s, e) => Click_OnItemClick(callbacks.OnItemClick, source, e, metadata);
+                source.DoubleTapped += (s, e) => Click_OnItemClick(callbacks.OnItemClick, source, e, metadata);
+                source.RightTapped += (s, e) => Click_OnItemClick(callbacks.OnItemClick, source, e, metadata);
+                source.IsDoubleTapEnabled = true;
             }
 
             if (callbacks.DragHintControlProvider != null || callbacks.DragImageProvider != null)
@@ -81,24 +92,33 @@ namespace ChecklistTracker.Controls.Click
             }
         }
 
-        private static void Click_OnClick(ClickCallbacks.ClickHandler onClick, UIElement source, RoutedEventArgs e, AtomicBool isMiddleClick)
+        private static void Click_OnClick(ClickCallbacks.ClickHandler onClick, UIElement source, RoutedEventArgs e, ClickMetadata metadata)
         {
-            onClick.Invoke(source, isMiddleClick.Value ? MouseButton.Middle : MouseButton.Left);
-            isMiddleClick.Value = false;
+            onClick.Invoke(source, metadata.Value);
+            metadata.Value = MouseButton.None;
         }
 
-        private static void Click_OnPointerPressed(ClickCallbacks.ClickHandler onClick, UIElement source, PointerRoutedEventArgs e, AtomicBool isMiddleClick)
+        private static void Click_OnItemClick(ClickCallbacks.ItemClickHandler onClick, UIElement source, RoutedEventArgs e, ClickMetadata metadata)
+        {
+            if (e.OriginalSource is FrameworkElement origSource)
+            {
+                onClick.Invoke(source, origSource.DataContext, metadata.Value);
+            }
+            metadata.Value = MouseButton.None;
+        }
+
+        private static void Click_OnPointerPressed(UIElement source, PointerRoutedEventArgs e, ClickMetadata metadata)
         {
             var button = GetButton(e.GetCurrentPoint(source));
-            if (button.HasValue && button.Value == MouseButton.Middle)
+            if (button.HasValue)
             {
-                isMiddleClick.Value = true;
+                metadata.Value = button.Value;
 
                 PointerEventHandler? onLeave = null;
                 TypedEventHandler<UIElement, DragStartingEventArgs>? onDrag = null;
                 var cleanup = () =>
                 {
-                    isMiddleClick.Value = false;
+                    metadata.Value = MouseButton.None;
                     source.DragStarting -= onDrag;
                     source.PointerExited -= onLeave;
                 };
