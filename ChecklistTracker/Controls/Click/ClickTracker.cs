@@ -22,8 +22,9 @@ namespace ChecklistTracker.Controls.Click
             {
                 var middleClick = new AtomicBool();
                 source.Tapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, middleClick);
+                source.DoubleTapped += (s, e) => Click_OnClick(callbacks.OnClick, source, e, middleClick);
                 source.RightTapped += (s, e) => callbacks.OnClick(source, MouseButton.Right);
-                source.IsDoubleTapEnabled = false;
+                source.IsDoubleTapEnabled = true;
                 source.PointerPressed += (s, e) => Click_OnPointerPressed(callbacks.OnClick, source, e, middleClick);
             }
 
@@ -80,7 +81,7 @@ namespace ChecklistTracker.Controls.Click
             }
         }
 
-        private static void Click_OnClick(ClickCallbacks.ClickHandler onClick, UIElement source, TappedRoutedEventArgs e, AtomicBool isMiddleClick)
+        private static void Click_OnClick(ClickCallbacks.ClickHandler onClick, UIElement source, RoutedEventArgs e, AtomicBool isMiddleClick)
         {
             onClick.Invoke(source, isMiddleClick.Value ? MouseButton.Middle : MouseButton.Left);
             isMiddleClick.Value = false;
