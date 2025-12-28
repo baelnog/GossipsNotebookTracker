@@ -132,28 +132,28 @@
         },
         {
           "type": "table",
-          "position": [ 366, 144 ],
+          "position": [ 128, 344 ],
           "padding": "0px",
           "elements": [
             "gold_skulls"
           ],
-          "elementsSize": [ 18, 18 ],
+          "elementsSize": [ 24, 24 ],
           "displayName": "skulls",
-          "fontSize": 12,
+          "fontSize": 16,
           "fontWeight": "Bold",
           "backgroundColor": "#000000",
-          "TextBackgroundOpacity": 0.3,
+          "TextBackgroundOpacity": 0.5,
           "hidden": false
         },
         {
           "type": "table",
-          "position": [ 366, 184 ],
+          "position": [ 366, 160 ],
           "padding": "0px",
           "elements": [
             "frogs_song"
           ],
-          "size": [ 24, 190 ],
-          "elementsSize": [ 24, 190 ],
+          "size": [ 24, 214 ],
+          "elementsSize": [ 24, 214 ],
           "displayName": "frogs",
           "hidden": false
         },
