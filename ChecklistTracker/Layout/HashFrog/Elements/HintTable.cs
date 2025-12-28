@@ -1,9 +1,10 @@
 ﻿using ChecklistTracker.Layout.GossipNotebook;
+using System.Text.Json.Serialization;
 
 namespace ChecklistTracker.Layout.HashFrog.Elements
 {
     [JsonDiscriminatorValue("hinttable")]
-    public record HintTable : Element, ISometimesHintTable, ILocationHintTable, IEntranceTable
+    public record HintTable : Element, ISometimesHintTable, ILocationHintTable, IEntranceTable, ITextStyle
     {
         public HintType hintType { get; set; }
         public int width { get; set; }
@@ -12,9 +13,6 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public string padding { get; set; } = "0px";
         public string labels { get; set; } = "sometimes";
         public string[]? labelsSet { get; set; } = null;
-        public string color { get; set; } = "FFFFFF";
-        public string backgroundColor { get; set; } = "333333";
-        public int? fontSize { get; set; } = null;
         public string itemIconSet { get; set; } = "sometimes";
         public string bossIconSet { get; set; } = "bosses";
         public string[]? bossIcons { get; set; }
@@ -29,6 +27,22 @@ namespace ChecklistTracker.Layout.HashFrog.Elements
         public bool dual { get; set; } = false;
         public bool allowScroll { get; set; } = false;
         public string placeholderText { get; set; } = "";
-        public StyleConfig? style { get; set; } = null;
+
+        [JsonPropertyName("fontSize")]
+        public double? FontSize { get; set; }
+        [JsonPropertyName("textColor")]
+        public string? TextColor { get; set; }
+        [JsonPropertyName("backgroundColor")]
+        public string? TextBackgroundColor { get; set; }
+
+        [JsonPropertyName("fontFamily")]
+        public string? FontFamily { get; set; }
+        [JsonPropertyName("fontStyle")]
+        public string? FontStyle { get; set; }
+        [JsonPropertyName("fontWeight")]
+        public string? FontWeight { get; set; }
+
+        [JsonPropertyName("TextBackgroundOpacity")]
+        public double? TextBackgroundOpacity { get; set; }
     }
 }

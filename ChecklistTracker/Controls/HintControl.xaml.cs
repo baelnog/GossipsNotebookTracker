@@ -1,5 +1,8 @@
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.Layout;
 using ChecklistTracker.ViewModel;
+using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -15,24 +18,18 @@ namespace ChecklistTracker.Controls
         public double FullHeight { get; set; }
         public double TextWidth { get; set; }
         public double TextHeight { get; set; }
-        public double TextFontSize { get; set; }
         public double CounterTextFontSize { get; set; }
-        public Color TextColorRaw { get; set; }
-        public Brush TextColor { get { return new SolidColorBrush(TextColorRaw); } }
-        public Color TextBackgroundColorRaw { get; set; }
-        public Brush TextBackgroundColor { get { return new SolidColorBrush(TextBackgroundColorRaw); } }
 
         private List<Config.Label>? BaseLabelSet { get; set; }
 
         private bool IsEntry { get; set; }
 
-        //public string Text { get { return IsEntry ? EntryBox.Text: LabelBox.Text; } }
         public UIElement TextBox { get { return IsEntry ? EntryBox : LabelBox; } }
 
+        private ITextStyle TextStyle { get; set; }
+
         private List<HintStoneControl> LeftStones { get; set; }
-        //public List<ImageSource> LeftImages { get { return LeftStones.Select(stone => stone.ViewModel.CurrentImage).ToList(); } }
         private List<HintStoneControl> RightStones { get; set; }
-        //public List<ImageSource> RightImages { get { return RightStones.Select(stone => stone.ViewModel.CurrentImage).ToList(); } }
 
         internal HintViewModel ViewModel;
 
@@ -41,7 +38,7 @@ namespace ChecklistTracker.Controls
             int totalWidth,
             LayoutParams itemLayout,
             Thickness padding,
-            TextParams textParams,
+            ITextStyle textStyle,
             string placeholderText = "")
         {
             InitializeComponent();
@@ -67,9 +64,8 @@ namespace ChecklistTracker.Controls
             Height = itemLayout.Height;
             TextHeight = itemLayout.Height;
             FullHeight = itemLayout.Height + padding.Bottom + padding.Top;
-            TextFontSize = textParams.FontSize;
-            TextBackgroundColorRaw = textParams.BackgroundColor;
-            TextColorRaw = textParams.FontColor;
+
+            TextStyle = textStyle;
 
             IsEntry = viewModel.IsEntry;
             if (IsEntry)
@@ -98,7 +94,7 @@ namespace ChecklistTracker.Controls
                 OnScroll = ViewModel.OnScrollCounter,
             });
             CounterBox.Visibility = ViewModel.Counter.HasValue ? Visibility.Visible : Visibility.Collapsed;
-            CounterTextFontSize = TextFontSize + 4;
+            CounterTextFontSize = TextStyle.FontSize.Value;
 
             CounterBox.Width = itemLayout.Width;
             CounterBox.Height = itemLayout.Height;

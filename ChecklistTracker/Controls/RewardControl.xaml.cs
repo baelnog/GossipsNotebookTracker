@@ -1,4 +1,5 @@
 using ChecklistTracker.Controls.Click;
+using ChecklistTracker.Layout;
 using ChecklistTracker.ViewModel;
 using Microsoft.UI.Xaml.Controls;
 
@@ -10,12 +11,15 @@ namespace ChecklistTracker.Controls
 
         internal RewardViewModel ViewModel { get; private set; }
 
-        internal RewardControl(RewardViewModel viewModel, LayoutParams layout)
+        internal ITextStyle TextStyle { get; private set; }
+
+        internal RewardControl(RewardViewModel viewModel, LayoutParams layout, ITextStyle textStyle)
         {
             InitializeComponent();
 
             ViewModel = viewModel;
             Layout = layout;
+            TextStyle = textStyle;
 
             var callbacks = new ClickCallbacks();
             callbacks.OnClick = ViewModel.OnClick;

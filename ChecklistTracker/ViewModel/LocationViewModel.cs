@@ -1,4 +1,5 @@
 ﻿using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Layout;
 using ChecklistTracker.LogicProvider;
 using Microsoft.UI.Xaml.Media;
 using System.ComponentModel;

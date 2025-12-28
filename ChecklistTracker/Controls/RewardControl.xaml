@@ -14,19 +14,30 @@
             Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay}"
             Width="{x:Bind Layout.Width, Mode=OneWay}"
             Height="{x:Bind Layout.Height, Mode=OneWay}" />
-        <StackPanel Background="Black"
+        <RelativePanel
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.AlignBottomWithPanel="True"
                 Margin="-14,0,-14,-6">
 
+            <RelativePanel
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                Background="{x:Bind TextStyle.TextBackgroundColor, Mode=OneWay}"
+                Opacity="{x:Bind TextStyle.TextBackgroundOpacity.Value, Mode=OneWay}"
+                />
             <TextBlock 
                 x:Name="RewardLabel"
                 Text="{x:Bind ViewModel.Label, Mode=OneWay}"
-                Foreground="White"
-                FontWeight="Bold"
-                FontSize="9.5"
-                HorizontalTextAlignment="Center" 
+                Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+                FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+                FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+                FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+                FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
+                HorizontalTextAlignment="Center"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
                 />
-        </StackPanel>
+        </RelativePanel>
     </RelativePanel>
 </UserControl>

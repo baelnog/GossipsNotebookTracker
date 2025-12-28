@@ -1,6 +1,6 @@
 ﻿namespace ChecklistTracker.Layout
 {
-    public interface IStyle
+    public interface IStyle : ITextStyle
     {
         public string? Title { get; }
 
@@ -8,13 +8,7 @@
 
         public int? Height { get; }
 
-        public string? BackgroundColor { get; }
-
-        public string? FontColor { get; }
-
-        public string? FontFamilty { get; }
-
-        public int? FontSize { get; }
+        public string? TextBackgroundColor { get; }
 
         public string? Padding { get; }
     }

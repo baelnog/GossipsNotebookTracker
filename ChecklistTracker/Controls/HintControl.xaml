@@ -14,12 +14,14 @@
         <TextBlock
             x:Name="CounterBox"
             Text="{x:Bind ViewModel.Counter, Mode=TwoWay}"
-            Foreground="{x:Bind TextColor, Mode=OneWay}"
-            FontSize="{x:Bind CounterTextFontSize, Mode=OneWay}"
-            TextAlignment="Center"
+            Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+            FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+            FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+            FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+            FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
             HorizontalTextAlignment="Center"
-            FontWeight="Bold"
             VerticalAlignment="Center"
+            TextWrapping="NoWrap"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True"
             Padding="0,2"
@@ -30,16 +32,24 @@
             RelativePanel.RightOf="CounterBox"
             />
         <RelativePanel
-            Background="{x:Bind TextBackgroundColor, Mode=OneWay}"
             RelativePanel.RightOf="LeftItemsLayout"
             RelativePanel.LeftOf="RightItemsLayout"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True">
+            <RelativePanel
+                Background="{x:Bind TextStyle.TextBackgroundColor, Mode=OneWay}"
+                Opacity="{x:Bind TextStyle.TextBackgroundOpacity.Value, Mode=OneWay}"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
             <AutoSuggestBox
                 x:Name="EntryBox"
-                Foreground="{x:Bind TextColor, Mode=OneWay}"
-                FontSize="{x:Bind TextFontSize, Mode=OneWay}"
-                FontWeight="Bold"
+                Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+                FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+                FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+                FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+                FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
                 VerticalAlignment="Center"
                 BorderThickness="1"
                 CornerRadius="0,0,0,0"
@@ -47,9 +57,11 @@
                 RelativePanel.AlignRightWithPanel="True"/>
             <TextBlock
                 x:Name="LabelBox"
-                Foreground="{x:Bind TextColor, Mode=OneWay}"
-                FontSize="{x:Bind TextFontSize, Mode=OneWay}"
-                FontWeight="Bold"
+                Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+                FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+                FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+                FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+                FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 TextWrapping="NoWrap"

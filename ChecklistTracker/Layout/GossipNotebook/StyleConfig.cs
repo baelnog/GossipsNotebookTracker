@@ -9,17 +9,22 @@ namespace ChecklistTracker.Layout.GossipNotebook
         [JsonInclude]
         public int? Height { get; set; }
         [JsonInclude]
-        public string? BackgroundColor { get; set; } = "#000000";
+        public string? TextBackgroundColor { get; set; } = "#000000";
         [JsonInclude]
-        public string? FontColor { get; set; }
+        public string? TextColor { get; set; } = "#FFFFFF";
         [JsonInclude]
-        public string? FontFamilty { get; set; }
+        public string? FontFamily { get; set; } = "Segoe UI";
         [JsonInclude]
-        public int? FontSize { get; set; }
+        public string? FontStyle { get; set; } = "Normal";
+        [JsonInclude]
+        public string? FontWeight { get; set; } = "Bold";
+        [JsonInclude]
+        public double? FontSize { get; set; } = 12;
         [JsonInclude]
         public string? Padding { get; set; }
-
         [JsonInclude]
         public string? Title { get; set; }
+        [JsonInclude]
+        public double? TextBackgroundOpacity { get; set; } = 1.0;
     }
 }

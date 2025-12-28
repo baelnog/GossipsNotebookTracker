@@ -1,4 +1,5 @@
 ﻿using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Layout;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -12,14 +13,14 @@ namespace ChecklistTracker.ViewModel
         internal EntranceViewModel EntranceVM { get => this; }
         internal LayoutParams LayoutParams { get; private set; }
         internal LayoutParams IconLayoutParams { get; private set; }
-        internal TextParams TextParams { get; private set; }
+        internal ITextStyle TextStyle { get; private set; }
 
         internal EntranceViewModel(CheckListViewModel viewModel,
             string elementId, int initialIndex,
             string? labels, string[]? labelsFilter,
             LayoutParams layoutParams,
             LayoutParams iconLayoutParams,
-            TextParams textParams)
+            ITextStyle textStyle)
             : base(viewModel, leftItems: 1, leftIconSet: elementId, labelSet: labels, labelsFilter: labelsFilter, isEntry: true)
         {
             Index = initialIndex;
@@ -27,7 +28,7 @@ namespace ChecklistTracker.ViewModel
 
             LayoutParams = layoutParams;
             IconLayoutParams = iconLayoutParams;
-            TextParams = textParams;
+            TextStyle = textStyle;
         }
     }
 }

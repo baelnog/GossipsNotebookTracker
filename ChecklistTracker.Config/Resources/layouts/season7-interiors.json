@@ -3,24 +3,13 @@
     "name": "Season 7",
   },
   "style": {
+    "name": "Season 7",
     "backgroundColor": "#000000",
     "width": 540,
-    "height": 840,
-    "fontFamily": null,
-    "fontSize": null,
-    "fontColor": null
+    "height": 840
   },
   "windows": [
     {
-      "style": {
-        "name": "Season 7",
-        "backgroundColor": "#000000",
-        "width": 540,
-        "height": 840,
-        "fontFamily": null,
-        "fontSize": null,
-        "fontColor": null
-      },
       "components": [
         {
           "id": "110b12cf2b6547faa1c8a93f351d0e73",

@@ -1,6 +1,6 @@
 ﻿namespace ChecklistTracker.Layout.HashFrog.Elements
 {
-    internal interface IHintTable
+    internal interface IHintTable : ITextStyle
     {
         public HintType hintType { get; set; }
         public int width { get; set; }
@@ -9,9 +9,6 @@
         public string padding { get; set; }
         public string labels { get; set; }
         public string[]? labelsSet { get; set; }
-        public string color { get; set; }
-        public string backgroundColor { get; set; }
-        public int? fontSize { get; set; }
         public int[] itemSize { get; set; }
         public bool showCounter { get; set; }
 

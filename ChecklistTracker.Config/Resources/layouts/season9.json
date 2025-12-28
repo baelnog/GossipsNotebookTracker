@@ -66,6 +66,8 @@
             "FREE"
           ],
           "elementsSize": [ 32, 32 ],
+          "fontSize": 9.5,
+          "TextBackgroundOpacity": 0.5,
           "displayName": "Rewards",
           "hidden": false
         },
@@ -137,6 +139,10 @@
           ],
           "elementsSize": [ 18, 18 ],
           "displayName": "skulls",
+          "fontSize": 12,
+          "fontWeight": "Bold",
+          "backgroundColor": "#000000",
+          "TextBackgroundOpacity": 0.3,
           "hidden": false
         },
         {

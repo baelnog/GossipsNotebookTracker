@@ -8,22 +8,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-  <RelativePanel>
-      <Image 
-          x:Name="Image"
-          Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay }"
-          Width="{x:Bind Layout.Width, Mode=OneWay }"
-          Height="{x:Bind Layout.Height, Mode=OneWay }"
-          Stretch="Uniform"
-          VerticalAlignment="Center"
-          HorizontalAlignment="Center" />
-    <TextBlock 
-          x:Name="Counter"
-          Text="{x:Bind ViewModel.Count, Mode=OneWay }"
-          Visibility="{x:Bind CountVisibility}"
-          TextAlignment="End"
-          Margin="0,0,0,-8"
-          RelativePanel.AlignRightWithPanel="True"
-          RelativePanel.AlignBottomWithPanel="True"/>
+    <RelativePanel>
+        <Image 
+            x:Name="Image"
+            Source="{x:Bind ViewModel.CurrentImage, Mode=OneWay }"
+            Width="{x:Bind Layout.Width, Mode=OneWay }"
+            Height="{x:Bind Layout.Height, Mode=OneWay }"
+            Stretch="Uniform"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" />
+
+        <RelativePanel
+            Visibility="{x:Bind CountVisibility}"
+            Margin="2,0,2,-8"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True">
+            <Border
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                Background="{x:Bind TextStyle.TextBackgroundColor, Mode=OneWay}"
+                Opacity="{x:Bind TextStyle.TextBackgroundOpacity.Value, Mode=OneWay}"
+                />
+            <TextBlock 
+                x:Name="Counter"
+                Text="{x:Bind ViewModel.Count, Mode=OneWay }"
+                FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+                FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+                FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+                FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
+                Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+                TextAlignment="End"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"/>
+        </RelativePanel>
     </RelativePanel>
 </UserControl>

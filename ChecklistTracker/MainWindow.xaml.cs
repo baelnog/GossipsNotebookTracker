@@ -1,6 +1,7 @@
 using ChecklistTracker.Config;
 using ChecklistTracker.Controls;
 using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Layout;
 using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.Layout.HashFrog.Elements;
 using ChecklistTracker.ViewModel;
@@ -198,7 +199,7 @@ namespace ChecklistTracker
 
             SetWindowSize(width, height);
 
-            this.Layout.Background = new SolidColorBrush(windowStyle.BackgroundColor?.ToColor() ?? throw new ArgumentNullException("BackgroundColor is not set."));
+            this.Layout.Background = new SolidColorBrush(windowStyle.TextBackgroundColor?.ToColor() ?? throw new ArgumentNullException("BackgroundColor is not set."));
             this.Title = layout.Style.Title ?? style.Title;
 
             foreach (var component in layout.Components)
@@ -240,6 +241,7 @@ namespace ChecklistTracker
 
                         var layoutParams = new LayoutParams(compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
 
+                        var elementTextStyle = new CoalescedTextStyle(compTable, style);
                         UIElement elementControl;
                         switch (type)
                         {
@@ -255,7 +257,7 @@ namespace ChecklistTracker
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3, quickFillLabels), layoutParams);
+                                elementControl = new RewardControl(new RewardViewModel(item, CheckListViewModel.GlobalInstance, "dungeons", 3, quickFillLabels), layoutParams, elementTextStyle);
                                 break;
                             case ItemType.Hint:
                                 elementControl = new HintStoneControl(new HintStoneViewModel(CheckListViewModel.GlobalInstance, element), layoutParams);
@@ -265,7 +267,7 @@ namespace ChecklistTracker
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), layoutParams);
+                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), layoutParams, elementTextStyle);
                                 break;
 
                         }
@@ -288,13 +290,6 @@ namespace ChecklistTracker
                     {
                         var locationHintTable = hintTable as ILocationHintTable;
 
-                        var textParams = new TextParams
-                        {
-                            FontColor = locationHintTable.color.ToColor(),
-                            FontSize = locationHintTable.fontSize ?? 10,
-                            BackgroundColor = locationHintTable.backgroundColor.ToColor(),
-                        };
-
                         var tableControl = new HintTableControl(
                                 hintCount: locationHintTable.hintNumber,
                                 hintColumns: locationHintTable.columns,
@@ -305,7 +300,7 @@ namespace ChecklistTracker
                                 itemHeight: locationHintTable.itemSize[0],
                                 showCounter: locationHintTable.showCounter,
                                 padding: paddingObj,
-                                textParams: textParams,
+                                textParams: new CoalescedTextStyle(locationHintTable, style),
                                 leftIconSet: locationHintTable.bossIconSet,
                                 rightIconSet: locationHintTable.itemIconSet,
                                 labelSet: locationHintTable.labels,
@@ -333,12 +328,7 @@ namespace ChecklistTracker
                             padding: paddingObj
                         );
 
-                        var textParams = new TextParams
-                        {
-                            FontColor = entranceHintTable.color.ToColor(),
-                            FontSize = entranceHintTable.fontSize ?? 10,
-                            BackgroundColor = entranceHintTable.backgroundColor.ToColor(),
-                        };
+                        var textParams = new CoalescedTextStyle(entranceHintTable, style);
 
                         var viewMode = new EntranceTableViewModel(
                             CheckListViewModel.GlobalInstance,
@@ -374,12 +364,7 @@ namespace ChecklistTracker
 
                         for (int i = 0; i < sometimesHintTable.hintNumber; i++)
                         {
-                            var textParams = new TextParams
-                            {
-                                FontColor = sometimesHintTable.color.ToColor(),
-                                FontSize = sometimesHintTable.fontSize ?? 12,
-                                BackgroundColor = sometimesHintTable.backgroundColor.ToColor(),
-                            };
+                            var textParams = new CoalescedTextStyle(sometimesHintTable, style);
 
                             var model = new HintViewModel(
                                 CheckListViewModel.GlobalInstance,
@@ -394,7 +379,7 @@ namespace ChecklistTracker
                                 totalWidth: hintTable.width,
                                 itemLayout: new LayoutParams(sometimesHintTable.itemSize[1], sometimesHintTable.itemSize[0], new Thickness(0)),
                                 padding: paddingObj,
-                                textParams: textParams,
+                                textStyle: textParams,
                                 placeholderText: sometimesHintTable.placeholderText);
                             hintControl.Width = elementWidth;
 
@@ -428,7 +413,7 @@ namespace ChecklistTracker
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId)!;
                     var item = ResourceFinder.FindItem(itemName)!;
-                    var control = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)));
+                    var control = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)), new CoalescedTextStyle(style));
 
                     control.SetValue(Canvas.LeftProperty, element.position[1]);
                     control.SetValue(Canvas.TopProperty, element.position[0]);
