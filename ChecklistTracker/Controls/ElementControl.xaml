@@ -24,6 +24,7 @@
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True">
             <Border
+                Margin="-2,2"
                 RelativePanel.AlignTopWithPanel="True"
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignLeftWithPanel="True"
