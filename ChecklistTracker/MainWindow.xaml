@@ -19,7 +19,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.LayoutPath, Mode=OneTime}" x:Name="LayoutsMenu"/>
+                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.LayoutPath, Mode=TwoWay}" x:Name="LayoutsMenu"/>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem Text="Hide Toolbar" Click="ToggleMenuBar">
                     <MenuFlyoutItem.KeyboardAccelerators>
@@ -49,7 +49,7 @@
                     </ToggleMenuFlyoutItem.KeyboardAccelerators>
                 </ToggleMenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="{x:Bind ScreenCaptureManager.ScreenShotDisplayString, Mode=TwoWay}" x:Name="ScreenCaptureList"/>
+                <MenuFlyoutSubItem Text="Capture Display" x:Name="ScreenCaptureList"/>
                 <MenuFlyoutSeparator />
             </MenuBarItem>
         </MenuBar>
