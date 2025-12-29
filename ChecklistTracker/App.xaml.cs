@@ -3,7 +3,9 @@ using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.LogicProvider;
 using ChecklistTracker.ViewModel;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using SharpHook;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 
@@ -18,6 +20,14 @@ namespace ChecklistTracker
     public partial class App : Application
     {
         private static Lazy<string> ProgramDir = new Lazy<string>(() => TrackerConfig.ProgramDir);
+
+        private List<MainWindow> SecondaryWindows = [];
+
+        private ScreenCaptureManager? ScreenCaptureManager;
+        public static TaskPoolGlobalHook GlobalHooks;
+
+        private MainWindow? MainWindow;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -34,8 +44,8 @@ namespace ChecklistTracker
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-
             var config = TrackerConfig.Init().Result;
+            ScreenCaptureManager = new ScreenCaptureManager(config.UserConfig);
 
             var logicEngine = config.UserConfig.ShowLocationTracker ? new LogicEngine(config, "v8.0") : null;
 
@@ -46,8 +56,9 @@ namespace ChecklistTracker
                 inventory,
                 logicEngine);
 
-            MainWindow = new MainWindow(config);
+            MainWindow = new MainWindow(config, ScreenCaptureManager);
             MainWindow.Activate();
+            MainWindow.AppWindow.Closing += (o, e) => GlobalHooks?.Stop();
 
             LayoutTracker();
 
@@ -56,20 +67,38 @@ namespace ChecklistTracker
                 (o, args) => MainWindow.DispatcherQueue.TryEnqueue(DispatchLayoutChange));
         }
 
-        private MainWindow? MainWindow;
-
         private void LayoutTracker()
         {
+            if (GlobalHooks != null)
+            {
+                GlobalHooks.Stop();
+            }
+
+            GlobalHooks = new TaskPoolGlobalHook();
+            GlobalHooks.RunAsync();
+
+            SecondaryWindows.ForEach(w => w.Close());
+            SecondaryWindows.Clear();
+
             Contract.Assert(MainWindow != null);
             Contract.Assert(CheckListViewModel.GlobalInstance != null);
 
             var layoutDoc = ResourceFinder.ReadResourceFile(CheckListViewModel.GlobalInstance.Config.UserConfig.LayoutPath).Result;
             var layout = GossipNotebookLayout.ParseLayout(layoutDoc);
 
-            // TODO: Enumerate all windows.
             var window = layout.Windows[0];
 
             MainWindow.LayoutDesign(window, layout.Style);
+
+            foreach (var item in layout.Windows.Skip(1))
+            {
+                var otherWindow = new MainWindow(CheckListViewModel.GlobalInstance.Config, ScreenCaptureManager);
+                otherWindow.LayoutDesign(item, layout.Style);
+                otherWindow.Activate();
+                SecondaryWindows.Add(otherWindow);
+            }
+
+            MainWindow.Activate();
 
             if (layout.TrackerConfig.EnableLogic)
             {

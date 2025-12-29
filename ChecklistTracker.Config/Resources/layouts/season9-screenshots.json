@@ -7,6 +7,11 @@
   },
   "windows": [
     {
+      "style": {
+        "title": "Season 9",
+        "width": 384,
+        "height": 960,
+      },
       "components": [
         {
           "type": "table",
@@ -347,6 +352,25 @@
           "hidden": false,
           "allowScroll": true,
           "placeholderText": ":: Other Locations ::"
+        }
+      ]
+    },
+    {
+      "style": {
+        "title": "Season 9 Screenshots",
+        "width": 580,
+        "height": 1080
+      },
+      "components": [
+        {
+          "type": "screenshot",
+          "position": [ 0, 0 ],
+          "size": [ 1080, 575 ],
+          "screenshotSize": [ 325, 575 ],
+          "clipRegion": [
+            [ 25, 15 ],
+            [ 50, 70 ]
+          ]
         }
       ]
     }

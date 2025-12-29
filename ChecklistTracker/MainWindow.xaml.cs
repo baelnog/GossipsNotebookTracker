@@ -30,19 +30,13 @@ namespace ChecklistTracker
     public sealed partial class MainWindow : Window
     {
         private Config.TrackerConfig Config;
-        private TaskPoolGlobalHook GlobalHooks;
         private ScreenCaptureManager ScreenCaptureManager;
 
-        public MainWindow(Config.TrackerConfig config)
+        public MainWindow(Config.TrackerConfig config, ScreenCaptureManager screenCaptureManager)
         {
             Config = config;
-            ScreenCaptureManager = new ScreenCaptureManager(Config.UserConfig);
+            ScreenCaptureManager = screenCaptureManager;
             this.InitializeComponent();
-
-            GlobalHooks = new TaskPoolGlobalHook();
-            GlobalHooks.RunAsync();
-
-            AppWindow.Closing += (o, e) => GlobalHooks.Stop();
         }
 
         private bool SetupWindowSizeHanders = false;
@@ -399,7 +393,7 @@ namespace ChecklistTracker
                         new Rectangle(screenshotElem.clipRegion[0][0], screenshotElem.clipRegion[0][1], screenshotElem.clipRegion[1][0], screenshotElem.clipRegion[1][1]),
                         new LayoutParams(screenshotElem.screenshotSize[1], screenshotElem.screenshotSize[0]),
                         Config,
-                        GlobalHooks,
+                        App.GlobalHooks,
                         DispatcherQueue);
                     var control = new ScreenCaptureControl(
                         vm,

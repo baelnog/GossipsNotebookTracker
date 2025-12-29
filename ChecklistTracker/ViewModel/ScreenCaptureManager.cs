@@ -12,7 +12,7 @@ using System.Drawing;
 
 namespace ChecklistTracker.ViewModel
 {
-    internal partial class ScreenCaptureManager : INotifyPropertyChanged
+    public partial class ScreenCaptureManager : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

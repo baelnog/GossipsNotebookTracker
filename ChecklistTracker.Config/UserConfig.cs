@@ -22,6 +22,7 @@ namespace ChecklistTracker.Config
         public List<string> LayoutHistory { get; set; } = new List<string>
         {
             "layouts\\season9.json",
+            "layouts\\season9-screenshots.json",
             "layouts\\season8.json",
             "layouts\\season7.json",
             "layouts\\season7-interiors.json",
