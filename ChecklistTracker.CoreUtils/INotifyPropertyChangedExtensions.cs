@@ -20,8 +20,15 @@ namespace ChecklistTracker.CoreUtils
 
         public static void RaisePropertyChanged(this INotifyPropertyChanged obj, PropertyChangedEventHandler? handler, [CallerMemberName] string? name = null)
         {
-            Logging.WriteLine($"Rasing property changed for {obj} property {name}");
-            handler?.Invoke(obj, new PropertyChangedEventArgs(name));
+            try
+            {
+                Logging.WriteLine($"Rasing property changed for {obj} property {name}");
+                handler?.Invoke(obj, new PropertyChangedEventArgs(name));
+            }
+            catch (Exception e)
+            {
+                Logging.WriteLine($"Failed to raise property changed for {obj} property {name}", e);
+            }
         }
     }
 }

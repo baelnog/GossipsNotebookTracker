@@ -19,7 +19,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="{x:Bind Config.UserConfig.LayoutPath, Mode=TwoWay}" x:Name="LayoutsMenu"/>
+                <MenuFlyoutSubItem Text="Layout" x:Name="LayoutsMenu"/>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem Text="Hide Toolbar" Click="ToggleMenuBar">
                     <MenuFlyoutItem.KeyboardAccelerators>
