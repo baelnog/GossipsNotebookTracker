@@ -1,7 +1,4 @@
-﻿using ChecklistTracker.Controls;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace ChecklistTracker.Layout.HashFrog.Elements
 {

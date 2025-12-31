@@ -1,11 +1,4 @@
-﻿using CommunityToolkit.WinUI.Helpers;
-using Microsoft.UI.Xaml.Media;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Windows.UI;
-
-namespace ChecklistTracker.Layout
+﻿namespace ChecklistTracker.Layout
 {
     public interface ITextStyle
     {

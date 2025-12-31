@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ChecklistTracker.Layout.GossipNotebook
 {
-    class CoalescedStyle : IStyle
+    public class CoalescedStyle : IStyle
     {
         readonly IEnumerable<IStyle> Styles;
 

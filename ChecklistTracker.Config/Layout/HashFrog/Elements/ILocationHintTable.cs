@@ -1,6 +1,6 @@
 ﻿namespace ChecklistTracker.Layout.HashFrog.Elements
 {
-    internal interface ILocationHintTable : IHintTable
+    public interface ILocationHintTable : IHintTable
     {
         public bool showBoss { get; set; }
         public string[]? bossIcons { get; set; }

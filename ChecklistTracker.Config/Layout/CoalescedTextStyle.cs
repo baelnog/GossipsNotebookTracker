@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChecklistTracker.Layout
 {
-    internal class CoalescedTextStyle : ITextStyle
+    public class CoalescedTextStyle : ITextStyle
     {
         readonly IEnumerable<ITextStyle> Styles;
 
