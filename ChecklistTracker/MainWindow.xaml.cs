@@ -398,16 +398,6 @@ namespace ChecklistTracker
                     control.SetValue(Canvas.TopProperty, screenshotElem.position[0]);
                     this.Layout.Children.Add(control);
                 }
-                else if (component is Element element)
-                {
-                    var itemName = ResourceFinder.FindItemById(element.elementId)!;
-                    var item = ResourceFinder.FindItem(itemName)!;
-                    var control = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), new LayoutParams(element.size[1], element.size[0], new Thickness(0)), new CoalescedTextStyle(style));
-
-                    control.SetValue(Canvas.LeftProperty, element.position[1]);
-                    control.SetValue(Canvas.TopProperty, element.position[0]);
-                    this.Layout.Children.Add(control);
-                }
             }
         }
 

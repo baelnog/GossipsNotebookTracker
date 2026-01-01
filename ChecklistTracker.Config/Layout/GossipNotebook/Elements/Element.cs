@@ -7,8 +7,6 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
     public record Element
     {
         [JsonInclude]
-        public string elementId { get; set; } = string.Empty;
-        [JsonInclude]
         public int[] size { get; set; } = { 25, 25 };
         [JsonInclude]
         public string[] icons { get; set; } = { };

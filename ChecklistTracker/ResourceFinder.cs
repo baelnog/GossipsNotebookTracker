@@ -59,15 +59,6 @@ namespace ChecklistTracker
             return value;
         }
 
-        public static string? FindItemById(string itemId)
-        {
-            if (itemLookupByElementId.Value.TryGetValue(itemId, out var item))
-            {
-                return item;
-            }
-            return null;
-        }
-
         public static ImageSource? FindItem(string itemName, int count)
         {
             if (Config.Value.items.TryGetValue(itemName, out var item))

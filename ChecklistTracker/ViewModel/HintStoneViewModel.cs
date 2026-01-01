@@ -26,7 +26,7 @@ namespace ChecklistTracker.ViewModel
         internal HintStoneViewModel(CheckListViewModel viewModel, string elementId, ImageSource? startingImage = null)
         {
             ViewModel = viewModel;
-            ImageGroup = ResourceFinder.FindItemById(elementId) ?? elementId;
+            ImageGroup = elementId;
             Index = 0;
             CurrentImage = startingImage ?? ResourceFinder.FindImageGroupImage(ImageGroup, Index);
 
