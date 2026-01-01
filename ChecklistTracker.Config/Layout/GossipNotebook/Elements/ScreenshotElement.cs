@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using ChecklistTracker.Layout;
+using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Layout.HashFrog.Elements
+namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
 {
 
     [JsonDiscriminatorValue("screenshot")]

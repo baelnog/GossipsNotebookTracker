@@ -1,8 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using ChecklistTracker.ANTLR;
-using ChecklistTracker.Config;
-using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using System;
 using System.Collections.Generic;

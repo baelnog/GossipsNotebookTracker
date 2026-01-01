@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ChecklistTracker.Layout;
+using System;
 using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Layout.GossipNotebook.Elements
+namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
 {
     [JsonDiscriminatorValue("label")]
     public record Label : Element
@@ -16,10 +17,5 @@ namespace ChecklistTracker.Layout.GossipNotebook.Elements
         public string backgroundColor = "000000";
         [JsonInclude]
         public string padding = "0px 0px";
-
-        internal double Split(string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

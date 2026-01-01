@@ -1,6 +1,5 @@
 ﻿using Antlr4.Runtime.Tree;
 using ChecklistTracker.Config;
-using ChecklistTracker.Config.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using System;
 using System.Collections.Concurrent;
@@ -382,7 +381,7 @@ namespace ChecklistTracker.LogicProvider
                     return true;
                 }
 
-                return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Contains(Config.SettingsTypes.AdultTradeItem.PocketEgg);
+                return location.VanillaItem == "Pocket_Egg" && Settings.AdultTradeItemStart.Contains(Config.Settings.SettingsTypes.AdultTradeItem.PocketEgg);
             }
 
             if (ChildTradeItemExtensions.ItemLookup.ContainsKey(location.VanillaItem))

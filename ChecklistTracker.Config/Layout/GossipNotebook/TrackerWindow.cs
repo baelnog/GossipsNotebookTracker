@@ -1,4 +1,4 @@
-﻿using ChecklistTracker.Layout.HashFrog.Elements;
+﻿using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 

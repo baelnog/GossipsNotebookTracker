@@ -1,5 +1,4 @@
-﻿using ChecklistTracker.Layout.HashFrog;
-using ChecklistTracker.Layout.HashFrog.Elements;
+﻿using ChecklistTracker.Layout.HashFrog.Elements;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -10,7 +9,7 @@ namespace ChecklistTracker.Layout.GossipNotebook
     public class GossipNotebookLayout
     {
         [JsonInclude]
-        public TrackerConfig TrackerConfig = new TrackerConfig();
+        public ChecklistTrackerConfig TrackerConfig = new ChecklistTrackerConfig();
 
         [JsonInclude]
         public StyleConfig Style = new StyleConfig();

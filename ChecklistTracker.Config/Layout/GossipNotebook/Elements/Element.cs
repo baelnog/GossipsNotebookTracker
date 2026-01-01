@@ -1,34 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using ChecklistTracker.Layout;
+using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Layout.GossipNotebook.Elements
+namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
 {
     [JsonDiscriminatorValue("element")]
     public record Element
     {
         [JsonInclude]
-        public string ElementId { get; set; } = string.Empty;
+        public string elementId { get; set; } = string.Empty;
         [JsonInclude]
-        public string[] Label { get; set; } = { };
+        public int[] size { get; set; } = { 25, 25 };
         [JsonInclude]
-        public int LabelStartingIndex { get; set; } = 0;
+        public string[] icons { get; set; } = { };
         [JsonInclude]
-        public int[] Size { get; set; } = { 25, 25 };
-        [JsonInclude]
-        public string[] Icons { get; set; } = { };
-        [JsonInclude]
-        public int SelectedStartingIndex { get; set; } = 0;
-        [JsonInclude]
-        public int[] CountConfig { get; set; } = { 0, 5 };
-        [JsonInclude]
-        public bool Receiver { get; set; } = false;
-        [JsonInclude]
-        public bool DragCurrent { get; set; } = false;
-        [JsonInclude]
-        public string[] Items { get; set; } = { };
-        [JsonInclude]
-        public int[] Position { get; set; } = { };
-
-        public int LabelCurrentIndex;
-        public string LabelCurrent { get { return Label[LabelCurrentIndex]; } }
+        public int[] position { get; set; } = { };
     }
 }

@@ -1,5 +1,4 @@
-﻿using ChecklistTracker.Config.SettingsTypes;
-using ChecklistTracker.CoreUtils;
+﻿using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Dispatching;
 using System;
 using System.Collections.Generic;

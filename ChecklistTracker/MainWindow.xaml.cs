@@ -1,9 +1,9 @@
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
 using ChecklistTracker.Controls;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Layout;
 using ChecklistTracker.Layout.GossipNotebook;
-using ChecklistTracker.Layout.HashFrog.Elements;
 using ChecklistTracker.ViewModel;
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Dispatching;
@@ -198,7 +198,7 @@ namespace ChecklistTracker
 
             foreach (var component in layout.Components)
             {
-                if (component is Layout.HashFrog.Elements.Label compLabel)
+                if (component is Config.Layout.GossipNotebook.Elements.Label compLabel)
                 {
                     var padding = compLabel.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
@@ -273,7 +273,7 @@ namespace ChecklistTracker
                     grid.SetValue(Canvas.TopProperty, compTable.position[0]);
                     this.Layout.Children.Add(grid);
                 }
-                else if (component is Layout.HashFrog.Elements.HintTable hintTable)
+                else if (component is HintTable hintTable)
                 {
                     var padding = hintTable.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
@@ -403,7 +403,7 @@ namespace ChecklistTracker
                     control.SetValue(Canvas.TopProperty, screenshotElem.position[0]);
                     this.Layout.Children.Add(control);
                 }
-                else if (component is Layout.HashFrog.Elements.Element element)
+                else if (component is Element element)
                 {
                     var itemName = ResourceFinder.FindItemById(element.elementId)!;
                     var item = ResourceFinder.FindItem(itemName)!;
