@@ -8,7 +8,7 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
         public ElementConverter() : base(
             "type",
             GetTypeDiscriminator,
-            new List<Type> { typeof(Element), typeof(ElementTable), typeof(HintTable), typeof(Label), typeof(LocationHint), typeof(ScreenshotElement) }
+            new List<Type> { typeof(Element), typeof(ElementTable), typeof(HintTable), typeof(Label), typeof(ScreenshotElement) }
         )
         { }
 
