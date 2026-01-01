@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using ChecklistTracker.Config.Settings.SettingsTypes;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Config;
+namespace ChecklistTracker.Config.Settings;
 
-public partial class Settings
+public partial class SeedSettings
 {
     [JsonPropertyName("world_count")]
     public int WorldCount { get; set; } = 1;

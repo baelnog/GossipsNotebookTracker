@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using ChecklistTracker.Config.Settings.SettingsTypes;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Config;
+namespace ChecklistTracker.Config.Settings;
 
-public partial class Settings : INotifyPropertyChanged
+public partial class SeedSettings : INotifyPropertyChanged
 {
 #pragma warning disable 67
     public event PropertyChangedEventHandler? PropertyChanged;

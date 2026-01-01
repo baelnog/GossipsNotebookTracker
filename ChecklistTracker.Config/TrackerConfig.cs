@@ -1,4 +1,6 @@
-﻿using ChecklistTracker.CoreUtils;
+﻿using ChecklistTracker.Config.Settings;
+using ChecklistTracker.Config.Settings.SettingsTypes;
+using ChecklistTracker.CoreUtils;
 using Microsoft.UI.Dispatching;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ namespace ChecklistTracker.Config
 
         public IDictionary<string, int> DefaultInventory { get; private set; }
 
-        public Settings RandomizerSettings { get; private set; }
+        public SeedSettings RandomizerSettings { get; private set; }
 
         public static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions
         {
@@ -45,7 +47,7 @@ namespace ChecklistTracker.Config
 
         private TrackerConfig(
             UserConfig userConfig,
-            Settings randomizerSettings,
+            SeedSettings randomizerSettings,
             ItemTable itemTable,
             IDictionary<string, ISet<string>> hintRegions,
             IDictionary<string, string> hintRegionShortNames,
@@ -114,9 +116,9 @@ namespace ChecklistTracker.Config
                 .ConfigureAwait(false);
         }
 
-        private static async Task<Settings> LoadSettings(string settingsPath)
+        private static async Task<SeedSettings> LoadSettings(string settingsPath)
         {
-            var settings = await ParseJson<Settings>($"{ProgramDir}/{settingsPath}")
+            var settings = await ParseJson<SeedSettings>($"{ProgramDir}/{settingsPath}")
                 .ConfigureAwait(false);
 
             // Fix incompatible closed forest

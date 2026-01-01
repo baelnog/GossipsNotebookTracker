@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using ChecklistTracker.Config.Settings.SettingsTypes;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace ChecklistTracker.Config;
+namespace ChecklistTracker.Config.Settings;
 
-public partial class Settings
+public partial class SeedSettings
 {
     [JsonPropertyName("complete_mask_quest")]
     public bool CompleteMaskQuest { get; set; }

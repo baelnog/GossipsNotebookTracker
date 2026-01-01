@@ -58,7 +58,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_Bombs()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -141,7 +141,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_Bow()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -197,7 +197,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_Hookshot()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -254,7 +254,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_ZL_Bomb_Boomerang_Letter()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -367,7 +367,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_ZL_Bomb_Boomerang_Letter_Hookshot()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -478,7 +478,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_ZL_Bomb_Bow_Boomerang_Letter_Longshot_Str2_Magic_Lens()
         {
-            var settings = Settings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"C:\Users\ryago\source\repos\OoTRChecklistTracker\ChecklistTracker.Config\Resources\settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 
@@ -629,7 +629,7 @@ namespace ChecklistTracker.LogicProvider.Test
         [TestMethod]
         public void Season7Base_WastelandAccess()
         {
-            var settings = Settings.ReadFromJson(@"settings\season7-base.json").Result;
+            var settings = SeedSettings.ReadFromJson(@"settings\season7-base.json").Result;
             var config = TrackerConfig.Init().Result;
             var testEngine = new LogicEngine(config, "v8.0");
 

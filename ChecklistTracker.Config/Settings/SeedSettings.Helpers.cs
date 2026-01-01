@@ -7,27 +7,27 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ChecklistTracker.Config
+namespace ChecklistTracker.Config.Settings
 {
-    public partial class Settings
+    public partial class SeedSettings
     {
-        public static async Task<Settings> ReadFromJson(string jsonFilePath)
+        public static async Task<SeedSettings> ReadFromJson(string jsonFilePath)
         {
-            return await TrackerConfig.ParseJson<Settings>(jsonFilePath).ConfigureAwait(false);
+            return await TrackerConfig.ParseJson<SeedSettings>(jsonFilePath).ConfigureAwait(false);
         }
 
-        private static Lazy<IDictionary<string, Func<Settings, object?>>> SettingsByJsonName = new Lazy<IDictionary<string, Func<Settings, object?>>>(() =>
+        private static Lazy<IDictionary<string, Func<SeedSettings, object?>>> SettingsByJsonName = new Lazy<IDictionary<string, Func<SeedSettings, object?>>>(() =>
         {
-            var dict = new Dictionary<string, Func<Settings, object?>>();
+            var dict = new Dictionary<string, Func<SeedSettings, object?>>();
 
-            foreach (var property in typeof(Settings).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            foreach (var property in typeof(SeedSettings).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 var propertyNameAttribute = property.GetCustomAttribute(typeof(JsonPropertyNameAttribute)) as JsonPropertyNameAttribute;
                 if (propertyNameAttribute != null)
                 {
                     if (property.PropertyType.IsEnum)
                     {
-                        dict[propertyNameAttribute.Name] = (Settings settings) =>
+                        dict[propertyNameAttribute.Name] = (SeedSettings settings) =>
                         {
                             var value = property.GetValue(settings) as Enum;
                             return value?.GetEnumMemberName();
@@ -35,7 +35,7 @@ namespace ChecklistTracker.Config
                     }
                     else
                     {
-                        dict[propertyNameAttribute.Name] = (Settings settings) => property.GetValue(settings);
+                        dict[propertyNameAttribute.Name] = (SeedSettings settings) => property.GetValue(settings);
                     }
                 }
             }

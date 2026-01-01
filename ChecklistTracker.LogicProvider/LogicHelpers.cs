@@ -1,7 +1,8 @@
 ﻿using Antlr4.Runtime;
 using ChecklistTracker.ANTLR;
 using ChecklistTracker.Config;
-using ChecklistTracker.Config.SettingsTypes;
+using ChecklistTracker.Config.Settings;
+using ChecklistTracker.Config.Settings.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.LogicProvider.DataFiles.Settings;
 using System;
@@ -23,7 +24,7 @@ namespace ChecklistTracker.LogicProvider
 
         private TrackerConfig TrackerConfig;
 
-        private Settings SeedSettings { get => TrackerConfig.RandomizerSettings; }
+        private SeedSettings SeedSettings { get => TrackerConfig.RandomizerSettings; }
         private IDictionary<string, ParserRuleContext> RuleAliases { get; set; }
         private IDictionary<string, object> RenamedAttributes { get; set; }
 
@@ -119,7 +120,7 @@ namespace ChecklistTracker.LogicProvider
             );
         }
 
-        internal static IDictionary<string, object> InitRenamedAttributes(Settings settings)
+        internal static IDictionary<string, object> InitRenamedAttributes(SeedSettings settings)
         {
             var keysanity = settings.ShuffleSmallKeys.IsShuffled();
             var shuffleSilverRupees = settings.ShuffleSilverRupees != ShuffleSilverRupeesType.Vanilla;

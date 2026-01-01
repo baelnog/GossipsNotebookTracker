@@ -1,4 +1,5 @@
 ﻿using ChecklistTracker.Config;
+using ChecklistTracker.Config.Settings;
 using ChecklistTracker.CoreUtils;
 using System.ComponentModel;
 
@@ -11,7 +12,7 @@ namespace ChecklistTracker.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
 
-        public Settings Settings { get; set; }
+        public SeedSettings Settings { get; set; }
 
         internal SettingsViewModel(TrackerConfig trackerConfig)
         {

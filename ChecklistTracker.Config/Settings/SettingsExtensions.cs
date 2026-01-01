@@ -1,10 +1,11 @@
-﻿using System.Text.Json;
+﻿using ChecklistTracker.Config.Settings.SettingsTypes;
+using System.Text.Json;
 
 namespace ChecklistTracker.Config.Settings
 {
     public static class SettingsExtensions
     {
-        public static bool SkipChildZelda(this Settings settings)
+        public static bool SkipChildZelda(this SeedSettings settings)
         {
             return settings.ChildTradeItemStart.Contains(ChildTradeItem.ZeldasLetter) ||
                    settings.StartingItems.TryGetValue("Zeldas Letter", out var letterCount) && letterCount > 0;

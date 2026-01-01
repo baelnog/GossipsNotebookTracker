@@ -1,5 +1,7 @@
 ﻿using Antlr4.Runtime.Tree;
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.Settings;
+using ChecklistTracker.Config.Settings.SettingsTypes;
 using ChecklistTracker.CoreUtils;
 using System;
 using System.Collections.Concurrent;
@@ -45,7 +47,7 @@ namespace ChecklistTracker.LogicProvider
         IDictionary<string, LocationData> LocationTable { get; set; }
 
         TrackerConfig TrackerConfig { get; set; }
-        Settings Settings { get => TrackerConfig.RandomizerSettings; }
+        SeedSettings Settings { get => TrackerConfig.RandomizerSettings; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
