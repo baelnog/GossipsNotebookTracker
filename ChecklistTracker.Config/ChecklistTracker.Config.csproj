@@ -6,18 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Resources\**\*">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <Content Include="Resources\**\*">
+      <TargetPath>%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </None>
-    <None Remove="Resources\dist\**\*.pdn" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\config\child-trade-items.json" />
-    <None Remove="Resources\config\trade-items.json" />
+    </Content>
+    <Content Remove="Resources\dist\**\*.pdn" />
+    <Content Remove="Resources\config\child-trade-items.json" />
+    <Content Remove="Resources\config\trade-items.json" />
   </ItemGroup>
 
   <ItemGroup>
