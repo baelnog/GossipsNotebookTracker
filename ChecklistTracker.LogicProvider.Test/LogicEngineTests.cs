@@ -1,4 +1,5 @@
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.Settings;
 using System.Collections.Immutable;
 
 namespace ChecklistTracker.LogicProvider.Test

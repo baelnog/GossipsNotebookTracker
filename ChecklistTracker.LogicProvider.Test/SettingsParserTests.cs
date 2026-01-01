@@ -1,4 +1,5 @@
 ﻿using ChecklistTracker.Config;
+using ChecklistTracker.Config.Settings.SettingsTypes;
 using System.Text.Json;
 
 namespace ChecklistTracker.LogicProvider.Test
