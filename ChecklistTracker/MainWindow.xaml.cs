@@ -202,15 +202,10 @@ namespace ChecklistTracker
                 {
                     var padding = compLabel.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
-                    var label = new TextBlock()
-                    {
-                        Text = compLabel.text,
-                        Foreground = new SolidColorBrush(compLabel.color.ToColor()),
-                        FontSize = compLabel.fontSize,
-                        Padding = paddingObj
-                    };
-                    label.SetValue(Canvas.LeftProperty, compLabel.position[0]);
-                    label.SetValue(Canvas.TopProperty, compLabel.position[1]);
+                    var textStyle = new CoalescedTextStyle(compLabel, style);
+                    var label = new LabelControl(compLabel.Text, textStyle, new LayoutParams(compLabel.size[1], compLabel.size[0], paddingObj));
+                    label.SetValue(Canvas.LeftProperty, compLabel.position[1]);
+                    label.SetValue(Canvas.TopProperty, compLabel.position[0]);
 
                     this.Layout.Children.Add(label);
                 }

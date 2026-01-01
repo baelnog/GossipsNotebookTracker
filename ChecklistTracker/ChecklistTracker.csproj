@@ -35,6 +35,7 @@
     <None Remove="Controls\HintRegionControl.xaml" />
     <None Remove="Controls\HintStoneControl.xaml" />
     <None Remove="Controls\HintTableControl.xaml" />
+    <None Remove="Controls\LabelControl.xaml" />
     <None Remove="Controls\ManyValueToggleButton.xaml" />
     <None Remove="Controls\RewardControl.xaml" />
     <None Remove="Controls\ScreenCaptureControl.xaml" />
@@ -154,6 +155,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\LabelControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\ManyValueToggleButton.xaml">

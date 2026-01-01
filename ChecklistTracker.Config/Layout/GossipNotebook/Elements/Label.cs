@@ -5,17 +5,38 @@ using System.Text.Json.Serialization;
 namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
 {
     [JsonDiscriminatorValue("label")]
-    public record Label : Element
+    public record Label : Element, ITextStyle
     {
         [JsonInclude]
-        public string text = "";
+        [JsonPropertyName("text")]
+        public string Text { get; set; } = "";
+
         [JsonInclude]
-        public int fontSize;
+        [JsonPropertyName("fontSize")]
+        public double? FontSize { get; set; }
+
         [JsonInclude]
-        public string color = "#FFFFFF";
+        [JsonPropertyName("fontFamily")]
+        public string? FontFamily { get; set; }
+
         [JsonInclude]
-        public string backgroundColor = "000000";
+        [JsonPropertyName("fontStyle")]
+        public string? FontStyle { get; set; }
+
         [JsonInclude]
-        public string padding = "0px 0px";
+        [JsonPropertyName("fontWeight")]
+        public string? FontWeight { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("textColor")]
+        public string? TextColor { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("textBackgroundColor")]
+        public string? TextBackgroundColor { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("textBackgroundOpacity")]
+        public double? TextBackgroundOpacity { get; set; }
     }
 }

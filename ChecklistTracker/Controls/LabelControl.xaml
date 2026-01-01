@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ChecklistTracker.Controls.LabelControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChecklistTracker.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel>
+        <Border
+            Background="{x:Bind TextStyle.TextBackgroundColor, Mode=OneWay}"
+            Opacity="{x:Bind TextStyle.TextBackgroundOpacity.Value, Mode=OneWay}"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            />
+        <TextBlock 
+            x:Name="Label"
+            Text="{x:Bind Text, Mode=OneWay }"
+            Width="{x:Bind Layout.Width, Mode=OneWay }"
+            Height="{x:Bind Layout.Height, Mode=OneWay }"
+            FontSize="{x:Bind TextStyle.FontSize.Value, Mode=OneWay}"
+            FontFamily="{x:Bind TextStyle.FontFamily, Mode=OneWay}"
+            FontStyle="{x:Bind TextStyle.FontStyle, Mode=OneWay}"
+            FontWeight="{x:Bind TextStyle.FontWeight, Mode=OneWay}"
+            Foreground="{x:Bind TextStyle.TextColor, Mode=OneWay}"
+            TextAlignment="Left"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"/>
+    </RelativePanel>
+</UserControl>
