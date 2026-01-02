@@ -28,6 +28,7 @@ namespace ChecklistTracker.Layout.GossipNotebook
                     Converters = {
                         new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                         new ElementConverter(),
+                        new PaddingConverter(),
                         new PositionConverter(),
                         new SizeConverter(),
                     }

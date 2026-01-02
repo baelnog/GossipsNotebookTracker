@@ -1,4 +1,5 @@
-﻿using ChecklistTracker.Layout;
+﻿using ChecklistTracker.Config.Layout.GossipNotebook.Components;
+using ChecklistTracker.Layout;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -9,7 +10,7 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
     {
         public int columns { get; set; } = 1;
         public IEnumerable<string> elements { get; set; } = Enumerable.Empty<string>();
-        public int[] elementsSize { get; set; } = [];
+        public Size elementsSize { get; set; } = new Size { Height = 32, Width = 32 };
 
         public IEnumerable<string> quickFillLabels { get; set; } = Enumerable.Empty<string>();
         public IEnumerable<string> quickFillImages { get; set; } = Enumerable.Empty<string>();

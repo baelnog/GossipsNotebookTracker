@@ -14,6 +14,6 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
         [JsonInclude]
         public Position position { get; set; } = new Position();
         [JsonInclude]
-        public string padding = "0px 0px";
+        public Padding padding = new Padding(0);
     }
 }

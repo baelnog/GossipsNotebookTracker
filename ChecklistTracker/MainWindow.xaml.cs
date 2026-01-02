@@ -201,8 +201,7 @@ namespace ChecklistTracker
             {
                 if (component is Config.Layout.GossipNotebook.Elements.Label compLabel)
                 {
-                    var padding = compLabel.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
-                    var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
+                    var paddingObj = compLabel.padding.ToThickness();
                     var textStyle = new CoalescedTextStyle(compLabel, style);
                     var label = new LabelControl(compLabel.Text, textStyle, new LayoutParams(compLabel.size.Width, compLabel.size.Height, paddingObj));
                     label.SetPosition(compLabel.position);
@@ -217,8 +216,7 @@ namespace ChecklistTracker
                     grid.MaximumRowsOrColumns = columns;
                     grid.Orientation = Orientation.Horizontal;
 
-                    var padding = compTable.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
-                    var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
+                    var paddingObj = compTable.padding.ToThickness();
 
                     var quickFillLabels = compTable.quickFillLabels.ToCircularQueue();
                     var quickFillImages = compTable.quickFillImages.ToCircularQueue();
@@ -228,7 +226,7 @@ namespace ChecklistTracker
                         var item = ResourceFinder.FindItem(element);
                         var type = item?.type ?? ItemType.Hint;
 
-                        var layoutParams = new LayoutParams(compTable.elementsSize[1], compTable.elementsSize[0], paddingObj);
+                        var layoutParams = new LayoutParams(compTable.elementsSize.Width, compTable.elementsSize.Height, paddingObj);
 
                         var elementTextStyle = new CoalescedTextStyle(compTable, style);
                         UIElement elementControl;
@@ -263,14 +261,13 @@ namespace ChecklistTracker
                         elementControl.SetValue(FrameworkElement.MarginProperty, paddingObj);
                         grid.Children.Add(elementControl);
                     }
-                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[1]) + 10;
+                    grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize.Width) + 10;
                     grid.SetPosition(compTable.position);
                     this.Layout.Children.Add(grid);
                 }
                 else if (component is HintTable hintTable)
                 {
-                    var padding = hintTable.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
-                    var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
+                    var paddingObj = hintTable.padding.ToThickness();
 
                     double elementWidth = hintTable.width;
 

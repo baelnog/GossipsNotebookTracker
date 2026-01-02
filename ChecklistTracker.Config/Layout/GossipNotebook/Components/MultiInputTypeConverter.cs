@@ -12,6 +12,7 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Components
         // C generally just extend T without adding any new properties.
         where C : T
     {
+        protected virtual T? FromNumber(double value) => throw new JsonException($"Parsing {typeof(T)} from array is not supported");
         protected virtual T? FromArray(double[] value) => throw new JsonException($"Parsing {typeof(T)} from array is not supported");
         protected virtual T? FromString(string value) => throw new JsonException($"Parsing {typeof(T)} from string is not supported");
 
@@ -24,6 +25,15 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Components
 
         public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            if (reader.TokenType == JsonTokenType.Number)
+            {
+                var value = JsonSerializer.Deserialize<double?>(ref reader, options);
+                if (!value.HasValue)
+                {
+                    return null;
+                }
+                return FromNumber(value.Value);
+            }
             if (reader.TokenType == JsonTokenType.StartArray)
             {
                 var array = JsonSerializer.Deserialize<double[]>(ref reader, options);

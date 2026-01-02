@@ -10,7 +10,6 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
         public int width { get; set; }
         public int hintNumber { get; set; }
         public int columns { get; set; } = 1;
-        public string padding { get; set; } = "0px";
         public string labels { get; set; } = "sometimes";
         public string[]? labelsSet { get; set; } = null;
         public string itemIconSet { get; set; } = "sometimes";
