@@ -49,6 +49,7 @@ public class GossipNotebookLayout
 [JsonSerializable(typeof(ConcretePosition))]
 [JsonSerializable(typeof(Size))]
 [JsonSerializable(typeof(ConcreteSize))]
+[JsonSerializable(typeof(double[]))]
 internal partial class GossipNotebokJsonContext : JsonSerializerContext
 { 
 }
