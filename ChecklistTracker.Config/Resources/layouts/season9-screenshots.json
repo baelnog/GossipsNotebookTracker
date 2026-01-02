@@ -15,7 +15,7 @@
       "components": [
         {
           "type": "table",
-          "position": [ 3, 3 ],
+          "position": { "x": 3, "y": 3 },
           "columns": 10,
           "padding": "2.5px",
           "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "bottle", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
@@ -25,7 +25,7 @@
         },
         {
           "type": "table",
-          "position": [ 110, 6 ],
+          "position": { "x": 6, "y": 110 },
           "columns": 6,
           "padding": "8px 5px",
           "elements": [ "song_lullaby", "song_epona", "song_saria", "song_suns", "song_time", "song_storms", "song_minuet", "song_bolero", "song_serenade", "song_requiem", "song_nocturne", "song_prelude" ],
@@ -35,7 +35,7 @@
         },
         {
           "type": "table",
-          "position": [ 198, 6 ],
+          "position": { "x": 6, "y": 198 },
           "columns": 8,
           "padding": "4px",
           "elements": [ "keys_forest", "keys_fire", "keys_water", "keys_spirit", "keys_shadow", "keys_ganons", "keys_botw", "keys_gtg" ],
@@ -45,7 +45,7 @@
         },
         {
           "type": "table",
-          "position": [ 78, 216 ],
+          "position": { "x": 216, "y": 78 },
           "columns": 3,
           "padding": "4px 4px",
           "elements": [
@@ -78,7 +78,7 @@
         },
         {
           "type": "table",
-          "position": [ 200, 262 ],
+          "position": { "x": 262, "y": 200 },
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -94,7 +94,7 @@
         },
         {
           "type": "table",
-          "position": [ 200, 324 ],
+          "position": { "x": 324, "y": 200 },
           "columns": 2,
           "padding": ".8px 1px",
           "elements": [
@@ -110,7 +110,7 @@
         },
         {
           "type": "hinttable",
-          "position": [ 366, 10 ],
+          "position": { "x": 10, "y": 366 },
           "hintType": "sometimes",
           "hintNumber": 1,
           "width": 96,
@@ -126,7 +126,7 @@
         },
         {
           "type": "table",
-          "position": [ 366, 112 ],
+          "position": { "x": 112, "y": 366 },
           "padding": ".8px",
           "elements": [
             "child_spawn"
@@ -137,7 +137,7 @@
         },
         {
           "type": "table",
-          "position": [ 128, 344 ],
+          "position": { "x": 344, "y": 128 },
           "padding": "0px",
           "elements": [
             "gold_skulls"
@@ -152,19 +152,19 @@
         },
         {
           "type": "table",
-          "position": [ 366, 160 ],
+          "position": { "x": 160, "y": 366 },
           "padding": "0px",
           "elements": [
             "frogs_song"
           ],
-          "size": [ 24, 214 ],
+          "size": { "width": 214, "height": 24 },
           "elementsSize": [ 24, 214 ],
           "displayName": "frogs",
           "hidden": false
         },
         {
           "type": "hinttable",
-          "position": [ 236, 10 ],
+          "position": { "x": 10, "y": 236 },
           "hintType": "sometimes",
           "hintNumber": 2,
           "width": 234,
@@ -199,7 +199,7 @@
         },
         {
           "type": "hinttable",
-          "position": [ 288, 10 ],
+          "position": { "x": 10, "y": 288 },
           "hintType": "sometimes",
           "hintNumber": 3,
           "width": 177,
@@ -244,7 +244,7 @@
         },
         {
           "type": "table",
-          "position": [ 280, 190 ],
+          "position": { "x": 190, "y": 280 },
           "columns": 6,
           "padding": "6px 2px",
           "elements": [
@@ -281,7 +281,7 @@
         {
           "type": "hinttable",
           "displayName": "Path Hints",
-          "position": [ 392, 10 ],
+          "position": { "x": 10, "y": 392 },
           "hintType": "location",
           "hintNumber": 5,
           "columns": 1,
@@ -303,7 +303,7 @@
         {
           "type": "hinttable",
           "displayName": "Foolish Hints",
-          "position": [ 522, 10 ],
+          "position": { "x": 10, "y": 522 },
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
@@ -319,7 +319,7 @@
         {
           "type": "hinttable",
           "displayName": "Important Checks",
-          "position": [ 574, 10 ],
+          "position": { "x": 10, "y": 574 },
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
@@ -338,7 +338,7 @@
         {
           "type": "hinttable",
           "displayName": "Other Locations",
-          "position": [ 626, 10 ],
+          "position": { "x": 10, "y": 626 },
           "hintType": "location",
           "hintNumber": 16,
           "width": 360,
@@ -364,8 +364,8 @@
       "components": [
         {
           "type": "screenshot",
-          "position": [ 0, 0 ],
-          "size": [ 1080, 575 ],
+          "position": { "x": 0, "y": 0 },
+          "size": { "width": 575, "height": 1080 },
           "screenshotSize": [ 325, 575 ],
           "clipRegion": [
             [ 25, 15 ],

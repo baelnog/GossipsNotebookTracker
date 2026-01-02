@@ -1,4 +1,5 @@
-﻿using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
+﻿using ChecklistTracker.Config.Layout.GossipNotebook.Components;
+using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -27,6 +28,8 @@ namespace ChecklistTracker.Layout.GossipNotebook
                     Converters = {
                         new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                         new ElementConverter(),
+                        new PositionConverter(),
+                        new SizeConverter(),
                     }
                 }) ?? throw new Exception("Failed to parse layout file.");
         }

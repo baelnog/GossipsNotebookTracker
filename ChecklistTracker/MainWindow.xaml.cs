@@ -1,4 +1,5 @@
 using ChecklistTracker.Config;
+using ChecklistTracker.Config.Layout;
 using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
 using ChecklistTracker.Controls;
 using ChecklistTracker.CoreUtils;
@@ -203,9 +204,8 @@ namespace ChecklistTracker
                     var padding = compLabel.padding.Split(" ").Select(str => double.Parse(str.Replace("px", ""))).ToArray();
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
                     var textStyle = new CoalescedTextStyle(compLabel, style);
-                    var label = new LabelControl(compLabel.Text, textStyle, new LayoutParams(compLabel.size[1], compLabel.size[0], paddingObj));
-                    label.SetValue(Canvas.LeftProperty, compLabel.position[1]);
-                    label.SetValue(Canvas.TopProperty, compLabel.position[0]);
+                    var label = new LabelControl(compLabel.Text, textStyle, new LayoutParams(compLabel.size.Width, compLabel.size.Height, paddingObj));
+                    label.SetPosition(compLabel.position);
 
                     this.Layout.Children.Add(label);
                 }
@@ -221,7 +221,7 @@ namespace ChecklistTracker
                     var paddingObj = padding.Length == 1 ? new Thickness(padding[0]) : new Thickness(padding[1], padding[0], padding[1], padding[0]);
 
                     var quickFillLabels = compTable.quickFillLabels.ToCircularQueue();
-                    var quickFillImages= compTable.quickFillImages.ToCircularQueue();
+                    var quickFillImages = compTable.quickFillImages.ToCircularQueue();
 
                     foreach (var element in compTable.elements)
                     {
@@ -264,8 +264,7 @@ namespace ChecklistTracker
                         grid.Children.Add(elementControl);
                     }
                     grid.Width = compTable.columns * (paddingObj.Left + paddingObj.Right + compTable.elementsSize[1]) + 10;
-                    grid.SetValue(Canvas.LeftProperty, compTable.position[1]);
-                    grid.SetValue(Canvas.TopProperty, compTable.position[0]);
+                    grid.SetPosition(compTable.position);
                     this.Layout.Children.Add(grid);
                 }
                 else if (component is HintTable hintTable)
@@ -297,8 +296,7 @@ namespace ChecklistTracker
                                 allowOverflow: locationHintTable.allowScroll,
                                 placeholderText: locationHintTable.placeholderText);
 
-                        tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
-                        tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
+                        tableControl.SetPosition(hintTable.position);
                         this.Layout.Children.Add(tableControl);
                     }
                     else if (hintTable.hintType == HintType.Entrance)
@@ -334,8 +332,7 @@ namespace ChecklistTracker
                             Layout = layoutParams
                         };
 
-                        tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
-                        tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
+                        tableControl.SetPosition(hintTable.position);
                         this.Layout.Children.Add(tableControl);
                     }
                     else
@@ -376,8 +373,7 @@ namespace ChecklistTracker
                         }
 
                         tableControl.Width = (elementWidth + paddingObj.Left + paddingObj.Right) * hintTable.columns + 1;
-                        tableControl.SetValue(Canvas.LeftProperty, hintTable.position[1]);
-                        tableControl.SetValue(Canvas.TopProperty, hintTable.position[0]);
+                        tableControl.SetPosition(hintTable.position);
                         this.Layout.Children.Add(tableControl);
                     }
                 }
@@ -392,10 +388,9 @@ namespace ChecklistTracker
                         DispatcherQueue);
                     var control = new ScreenCaptureControl(
                         vm,
-                        new LayoutParams(screenshotElem.size[1], screenshotElem.size[0], new Thickness(0)));
+                        new LayoutParams(screenshotElem.size.Width, screenshotElem.size.Height, new Thickness(0)));
 
-                    control.SetValue(Canvas.LeftProperty, screenshotElem.position[1]);
-                    control.SetValue(Canvas.TopProperty, screenshotElem.position[0]);
+                    control.SetPosition(screenshotElem.position);
                     this.Layout.Children.Add(control);
                 }
             }
