@@ -15,6 +15,7 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Components
         protected virtual T? FromNumber(double value) => throw new JsonException($"Parsing {typeof(T)} from array is not supported");
         protected virtual T? FromArray(double[] value) => throw new JsonException($"Parsing {typeof(T)} from array is not supported");
         protected virtual T? FromString(string value) => throw new JsonException($"Parsing {typeof(T)} from string is not supported");
+        protected virtual T? FromObject(ref Utf8JsonReader reader, JsonSerializerOptions options) => JsonSerializer.Deserialize<C>(ref reader, options);
 
         private bool IsEnabled = true;
 
@@ -54,7 +55,7 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Components
             }
             else if (reader.TokenType == JsonTokenType.StartObject)
             {
-                return JsonSerializer.Deserialize<C>(ref reader, options);
+                return FromObject(ref reader, options);
             }
 
             throw new JsonException($"Unexpected token parsing {typeof(T)}. Got {reader.TokenType}.");

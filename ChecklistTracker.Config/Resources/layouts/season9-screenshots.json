@@ -17,9 +17,9 @@
           "type": "table",
           "position": { "x": 3, "y": 3 },
           "columns": 10,
-          "padding": "2.5px",
+          "padding": 2.5,
           "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "bottle", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
-          "elementsSize": [ 30, 30 ],
+          "elementsSize": { "width": 30, "height": 30 },
           "displayName": "Items",
           "hidden": false
         },
@@ -27,9 +27,9 @@
           "type": "table",
           "position": { "x": 6, "y": 110 },
           "columns": 6,
-          "padding": "8px 5px",
+          "padding": { "horizontal": 5, "vertical": 8 },
           "elements": [ "song_lullaby", "song_epona", "song_saria", "song_suns", "song_time", "song_storms", "song_minuet", "song_bolero", "song_serenade", "song_requiem", "song_nocturne", "song_prelude" ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "displayName": "Songs",
           "hidden": false
         },
@@ -37,9 +37,9 @@
           "type": "table",
           "position": { "x": 6, "y": 198 },
           "columns": 8,
-          "padding": "4px",
+          "padding": 4,
           "elements": [ "keys_forest", "keys_fire", "keys_water", "keys_spirit", "keys_shadow", "keys_ganons", "keys_botw", "keys_gtg" ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "displayName": "Keys",
           "hidden": false
         },
@@ -47,7 +47,7 @@
           "type": "table",
           "position": { "x": 216, "y": 78 },
           "columns": 3,
-          "padding": "4px 4px",
+          "padding": 4,
           "elements": [
             "medallion_green",
             "medallion_red",
@@ -70,7 +70,7 @@
             "SPIRIT",
             "FREE"
           ],
-          "elementsSize": [ 32, 32 ],
+          "elementsSize": { "width": 32, "height": 32 },
           "fontSize": 9.5,
           "TextBackgroundOpacity": 0.5,
           "displayName": "Rewards",
@@ -80,7 +80,7 @@
           "type": "table",
           "position": { "x": 262, "y": 200 },
           "columns": 2,
-          "padding": ".8px 1px",
+          "padding": { "horizontal": 0.8, "vertical": 1 },
           "elements": [
             "gs_30",
             "sometimes",
@@ -89,14 +89,14 @@
             "gs_50",
             "sometimes"
           ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "hidden": false
         },
         {
           "type": "table",
           "position": { "x": 324, "y": 200 },
           "columns": 2,
-          "padding": ".8px 1px",
+          "padding": { "horizontal": 0.8, "vertical": 1 },
           "elements": [
             "skull_mask",
             "sometimes",
@@ -105,7 +105,7 @@
             "frogs",
             "sometimes"
           ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "hidden": false
         },
         {
@@ -114,7 +114,7 @@
           "hintType": "sometimes",
           "hintNumber": 1,
           "width": 96,
-          "padding": "2px",
+          "padding": 2,
           "labels": "locations",
           "color": "#ffffff",
           "backgroundColor": "#408040",
@@ -127,22 +127,22 @@
         {
           "type": "table",
           "position": { "x": 112, "y": 366 },
-          "padding": ".8px",
+          "padding": 0.8,
           "elements": [
             "child_spawn"
           ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "displayName": "Spawn Icons",
           "hidden": false
         },
         {
           "type": "table",
           "position": { "x": 344, "y": 128 },
-          "padding": "0px",
+          "padding": 0,
           "elements": [
             "gold_skulls"
           ],
-          "elementsSize": [ 24, 24 ],
+          "elementsSize": { "width": 24, "height": 24 },
           "displayName": "skulls",
           "fontSize": 16,
           "fontWeight": "Bold",
@@ -153,12 +153,12 @@
         {
           "type": "table",
           "position": { "x": 160, "y": 366 },
-          "padding": "0px",
+          "padding": 0,
           "elements": [
             "frogs_song"
           ],
           "size": { "width": 214, "height": 24 },
-          "elementsSize": [ 24, 214 ],
+          "elementsSize": { "width": 214, "height": 24 },
           "displayName": "frogs",
           "hidden": false
         },
@@ -168,7 +168,7 @@
           "hintType": "sometimes",
           "hintNumber": 2,
           "width": 234,
-          "padding": "2px",
+          "padding": 2,
           "labels": "sometimes",
           "labelsSet": [
             "Lake Roof and Fishing",
@@ -203,7 +203,7 @@
           "hintType": "sometimes",
           "hintNumber": 3,
           "width": 177,
-          "padding": "2px",
+          "padding": 2,
           "labels": "sometimes",
           "labelsSet": [
             "20 Skulls",
@@ -246,7 +246,7 @@
           "type": "table",
           "position": { "x": 190, "y": 280 },
           "columns": 6,
-          "padding": "6px 2px",
+          "padding": { "horizontal": 2, "vertical": 6 },
           "elements": [
             "entrance_forest",
             "entrance_fire",
@@ -274,7 +274,7 @@
             "entrance_icecavern",
             "entrance_gtg"
           ],
-          "elementsSize": [ 28, 28 ],
+          "elementsSize": { "width": 28, "height": 28 },
           "displayName": "Dungeon Entrances",
           "hidden": false
         },
@@ -286,7 +286,7 @@
           "hintNumber": 5,
           "columns": 1,
           "width": 360,
-          "padding": "2px",
+          "padding": 2,
           "labels": "locations",
           "color": "#ffffff",
           "backgroundColor": "#4a8ab6",
@@ -307,7 +307,7 @@
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
-          "padding": "2px",
+          "padding": 2,
           "labels": "locations",
           "color": "#ffffff",
           "backgroundColor": "#c6445c",
@@ -323,7 +323,7 @@
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
-          "padding": "2px",
+          "padding": 2,
           "labels": "locations",
           "color": "#ffffff",
           "backgroundColor": "#c08000",
@@ -342,7 +342,7 @@
           "hintType": "location",
           "hintNumber": 16,
           "width": 360,
-          "padding": "2px",
+          "padding": 2,
           "labels": "locations",
           "color": "#ffffff",
           "backgroundColor": "#131346",

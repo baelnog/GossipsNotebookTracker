@@ -15,4 +15,6 @@ internal class ConcreteSize : Size { }
 internal class SizeConverter : MultiInputTypeConverter<Size, ConcreteSize>
 {
     protected override Size? FromArray(double[] array) => new Size { Width = array[1], Height = array[0] };
+
+    protected override Size? FromNumber(double size) => new Size { Width = size, Height = size };
 }

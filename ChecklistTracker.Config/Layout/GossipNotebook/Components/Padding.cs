@@ -9,11 +9,21 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Components;
 
 public class Padding
 {
+    [JsonInclude]
     public double Left { get; set; }
+    [JsonInclude]
     public double Right { get; set; }
+    [JsonInclude]
     public double Top { get; set; }
+    [JsonInclude]
     public double Bottom { get; set; }
 
+    [JsonInclude]
+    internal double Horizontal { set { Left = value; Right = value; } }
+    [JsonInclude]
+    internal double Vertical { set { Top = value; Bottom = value; } }
+
+    internal Padding() : this(0) { }
     internal Padding(double left, double right, double top, double bottom)
     {
         Left = left;
@@ -38,8 +48,6 @@ public class Padding
 
 internal class ConcretePadding : Padding
 {
-    [JsonConstructor]
-    internal ConcretePadding(double left = 0, double right = 0, double top = 0, double bottom = 0) : base(left, right, top, bottom) { }
 }
 
 internal class PaddingConverter : MultiInputTypeConverter<Padding, ConcretePadding>
