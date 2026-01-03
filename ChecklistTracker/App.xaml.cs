@@ -44,6 +44,9 @@ namespace ChecklistTracker
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            GlobalHooks = new TaskPoolGlobalHook();
+            GlobalHooks.RunAsync();
+
             var config = TrackerConfig.Init().Result;
             ScreenCaptureManager = new ScreenCaptureManager(config.UserConfig);
 
@@ -69,14 +72,6 @@ namespace ChecklistTracker
 
         private void LayoutTracker()
         {
-            if (GlobalHooks != null)
-            {
-                GlobalHooks.Stop();
-            }
-
-            GlobalHooks = new TaskPoolGlobalHook();
-            GlobalHooks.RunAsync();
-
             SecondaryWindows.ForEach(w => w.Close());
             SecondaryWindows.Clear();
 
