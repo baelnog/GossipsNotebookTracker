@@ -1,14 +1,13 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.CoreUtils;
+using ChecklistTracker.Images;
 using HPPH;
-using HPPH.SkiaSharp;
 using ScreenCapture.NET;
-using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using Windows.Graphics.Imaging;
 
 namespace ChecklistTracker.ViewModel
 {
@@ -77,7 +76,7 @@ namespace ChecklistTracker.ViewModel
             return await Task.Run(() => ScreenCaptureService.GetScreenCapture(display));
         }
 
-        private SKBitmap? DoCapture(CaptureZone<ColorBGRA> captureZone)
+        private SoftwareBitmap? DoCapture(CaptureZone<ColorBGRA> captureZone)
         {
             using (captureZone.Lock())
             {
@@ -88,12 +87,12 @@ namespace ChecklistTracker.ViewModel
                     return null;
                 }
 
-                return captureZone.Image.ToSKBitmap();
+                return captureZone.Image.ToSoftwareBitmap();
             }
 
         }
 
-        public async Task<SKBitmap?> DoCapture(Rectangle clipRegion)
+        public async Task<SoftwareBitmap?> DoCapture(Rectangle clipRegion)
         {
             var screen = await _ScreenCaptures[SelectedScreenIndex];
             var captureZone = _CaptureZones.GetOrAdd((screen, clipRegion), (key) => RegisterCaptureZone(key.Item1, key.Item2));

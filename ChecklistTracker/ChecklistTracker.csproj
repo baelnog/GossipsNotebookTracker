@@ -26,6 +26,10 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>$(DefineConstants);ENABLE_OCR</DefineConstants>
+    <EnableOcr>true</EnableOcr>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="CheckListView.xaml" />
     <None Remove="CheckPage.xaml" />
@@ -66,11 +70,14 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
     <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
-    <PackageReference Include="HPPH.SkiaSharp" />
-    <PackageReference Include="HPPH.System.Drawing" />
     <PackageReference Include="Nito.Disposables" />
     <PackageReference Include="ScreenCapture.NET" />
     <PackageReference Include="ScreenCapture.NET.DX11" />
+  </ItemGroup>
+  <!-- Screeshot processing packages -->
+  <ItemGroup Condition="'$(EnableOcr)' == 'true'">
+    <PackageReference Include="HPPH.SkiaSharp" />
+    <PackageReference Include="HPPH.System.Drawing" />
     <PackageReference Include="SharpHook" />
     <PackageReference Include="SkiaSharp" />
     <PackageReference Include="SkiaSharp.Extended" />

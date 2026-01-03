@@ -1,13 +1,8 @@
 using ChecklistTracker.CoreUtils;
 using ChecklistTracker.Images;
-using Microsoft.UI.Xaml.Media.Imaging;
-using SkiaSharp;
-using System;
-using System.Threading.Tasks;
 using Windows.Globalization;
 using Windows.Graphics.Imaging;
 using Windows.Media.Ocr;
-using Windows.Storage.Streams;
 
 namespace ChecklistTracker
 {
@@ -21,19 +16,11 @@ namespace ChecklistTracker
         /// </summary>
         /// <param name="softwareBitmap">The SoftwareBitmap to process.</param>
         /// <returns>The recognized text, or an empty string if OCR fails.</returns>
-        public static async Task<string> RecognizeTextAsync(SKBitmap bitmap)
-        {
-            // Run OCR
-            return await RecognizeTextAsync(bitmap.AdjustContrast(.75f).ToSoftwareBitmap());
-        }
-
-        /// <summary>
-        /// Recognizes text from a SoftwareBitmap using Windows.Media.Ocr.
-        /// </summary>
-        /// <param name="softwareBitmap">The SoftwareBitmap to process.</param>
-        /// <returns>The recognized text, or an empty string if OCR fails.</returns>
         public static async Task<string> RecognizeTextAsync(SoftwareBitmap softwareBitmap)
         {
+#if ENABLE_OCR
+            softwareBitmap = softwareBitmap.ToSKBitmap().AdjustContrast(0.75f).ToSoftwareBitmap();
+#endif
             // Run OCR
             var ocrEngine = OcrEngine.TryCreateFromLanguage(new Language("en-us"));
             if (ocrEngine == null)

@@ -1,17 +1,14 @@
 ﻿using ChecklistTracker.Config;
 using ChecklistTracker.Controls.Click;
 using ChecklistTracker.CoreUtils;
-using ChecklistTracker.Images;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using SharpHook;
-using SkiaSharp;
 using System.Collections.ObjectModel;
+using Windows.Graphics.Imaging;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace ChecklistTracker.ViewModel
@@ -62,16 +59,17 @@ namespace ChecklistTracker.ViewModel
                 }
 
                 Dispatcher.TryEnqueue(DispatcherQueuePriority.High, () => ProcessScreenShot(bitmap));
+#if ENABLE_OCR
                 var task = OcrHelper.RecognizeTextAsync(bitmap).ContinueWith(t =>
                 {
                     Logging.WriteLine($"OCR: {t.Result}");
                 });
+#endif
             });
         }
 
-        private void ProcessScreenShot(SKBitmap bitmap)
+        private void ProcessScreenShot(SoftwareBitmap softBitmap)
         {
-            var softBitmap = bitmap.ToSoftwareBitmap();
             var source = new SoftwareBitmapSource();
             var addBitmapTask = source.SetBitmapAsync(softBitmap).AsTask().ContinueWith(_ =>
             {
