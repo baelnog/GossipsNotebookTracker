@@ -20,7 +20,7 @@
     <PublishSingleFile>false</PublishSingleFile>
     <SelfContained>false</SelfContained>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
 
     <!-- Disable localization -->
     <InvariantGlobalization>true</InvariantGlobalization>
