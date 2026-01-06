@@ -10,42 +10,66 @@
       "style": {
         "title": "Season 9",
         "width": 384,
-        "height": 960,
+        "height": 960
       },
       "components": [
         {
           "type": "table",
-          "position": { "x": 3, "y": 3 },
+          "position": {
+            "x": 3,
+            "y": 3
+          },
           "columns": 10,
           "padding": 2.5,
           "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "bottle", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
-          "elementsSize": { "width": 30, "height": 30 },
+          "elementsSize": {
+            "width": 30,
+            "height": 30
+          },
           "displayName": "Items",
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 6, "y": 110 },
+          "position": {
+            "x": 6,
+            "y": 110
+          },
           "columns": 6,
-          "padding": { "horizontal": 5, "vertical": 8 },
+          "padding": {
+            "horizontal": 5,
+            "vertical": 8
+          },
           "elements": [ "song_lullaby", "song_epona", "song_saria", "song_suns", "song_time", "song_storms", "song_minuet", "song_bolero", "song_serenade", "song_requiem", "song_nocturne", "song_prelude" ],
-          "elementsSize": { "width": 24, "height": 24 },
+          "elementsSize": {
+            "width": 24,
+            "height": 24
+          },
           "displayName": "Songs",
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 6, "y": 198 },
+          "position": {
+            "x": 6,
+            "y": 198
+          },
           "columns": 8,
           "padding": 4,
           "elements": [ "keys_forest", "keys_fire", "keys_water", "keys_spirit", "keys_shadow", "keys_ganons", "keys_botw", "keys_gtg" ],
-          "elementsSize": { "width": 24, "height": 24 },
+          "elementsSize": {
+            "width": 24,
+            "height": 24
+          },
           "displayName": "Keys",
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 216, "y": 78 },
+          "position": {
+            "x": 216,
+            "y": 78
+          },
           "columns": 3,
           "padding": 4,
           "elements": [
@@ -70,17 +94,26 @@
             "SPIRIT",
             "FREE"
           ],
-          "elementsSize": { "width": 32, "height": 32 },
-          "fontSize": 9.5,
+          "elementsSize": {
+            "width": 32,
+            "height": 32
+          },
+          "fontSize": 8,
           "TextBackgroundOpacity": 0.5,
           "displayName": "Rewards",
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 262, "y": 200 },
+          "position": {
+            "x": 262,
+            "y": 200
+          },
           "columns": 2,
-          "padding": { "horizontal": 0.8, "vertical": 1 },
+          "padding": {
+            "horizontal": 0.8,
+            "vertical": 1
+          },
           "elements": [
             "gs_30",
             "sometimes",
@@ -89,14 +122,23 @@
             "gs_50",
             "sometimes"
           ],
-          "elementsSize": { "width": 24, "height": 24 },
+          "elementsSize": {
+            "width": 24,
+            "height": 24
+          },
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 324, "y": 200 },
+          "position": {
+            "x": 324,
+            "y": 200
+          },
           "columns": 2,
-          "padding": { "horizontal": 0.8, "vertical": 1 },
+          "padding": {
+            "horizontal": 0.8,
+            "vertical": 1
+          },
           "elements": [
             "skull_mask",
             "sometimes",
@@ -105,12 +147,19 @@
             "frogs",
             "sometimes"
           ],
-          "elementsSize": { "width": 24, "height": 24 },
+          "elementsSize": {
+            "width": 24,
+            "height": 24
+          },
           "hidden": false
         },
         {
           "type": "hinttable",
-          "position": { "x": 10, "y": 366 },
+          "position": {
+            "x": 10,
+            "y": 366
+          },
+          "fontSize": 8,
           "hintType": "sometimes",
           "hintNumber": 1,
           "width": 96,
@@ -125,24 +174,56 @@
           "placeholderText": ":: Spawn ::"
         },
         {
+          "type": "hinttable",
+          "position": {
+            "x": 112,
+            "y": 366
+          },
+          "fontSize": 8,
+          "hintType": "sometimes",
+          "hintNumber": 1,
+          "width": 108,
+          "padding": 2,
+          "labels": "locations",
+          "color": "#ffffff",
+          "backgroundColor": "#c0b000",
+          "showIcon": false,
+          "showItems": false,
+          "displayName": "Lights",
+          "hidden": false,
+          "placeholderText": ":: Light Arrows ::"
+        },
+        {
           "type": "table",
-          "position": { "x": 112, "y": 366 },
-          "padding": 0.8,
+          "position": {
+            "x": 228,
+            "y": 366
+          },
+          "padding": 0,
           "elements": [
-            "child_spawn"
+            "frogs_song"
           ],
-          "elementsSize": { "width": 24, "height": 24 },
-          "displayName": "Spawn Icons",
+          "elementsSize": {
+            "width": 144,
+            "height": 24
+          },
+          "displayName": "frogs",
           "hidden": false
         },
         {
           "type": "table",
-          "position": { "x": 344, "y": 128 },
+          "position": {
+            "x": 344,
+            "y": 128
+          },
           "padding": 0,
           "elements": [
             "gold_skulls"
           ],
-          "elementsSize": { "width": 24, "height": 24 },
+          "elementsSize": {
+            "width": 24,
+            "height": 24
+          },
           "displayName": "skulls",
           "fontSize": 16,
           "fontWeight": "Bold",
@@ -151,20 +232,11 @@
           "hidden": false
         },
         {
-          "type": "table",
-          "position": { "x": 160, "y": 366 },
-          "padding": 0,
-          "elements": [
-            "frogs_song"
-          ],
-          "size": { "width": 214, "height": 24 },
-          "elementsSize": { "width": 214, "height": 24 },
-          "displayName": "frogs",
-          "hidden": false
-        },
-        {
           "type": "hinttable",
-          "position": { "x": 10, "y": 236 },
+          "position": {
+            "x": 10,
+            "y": 236
+          },
           "hintType": "sometimes",
           "hintNumber": 2,
           "width": 234,
@@ -199,7 +271,10 @@
         },
         {
           "type": "hinttable",
-          "position": { "x": 10, "y": 288 },
+          "position": {
+            "x": 10,
+            "y": 288
+          },
           "hintType": "sometimes",
           "hintNumber": 3,
           "width": 177,
@@ -252,9 +327,15 @@
         },
         {
           "type": "table",
-          "position": { "x": 190, "y": 280 },
+          "position": {
+            "x": 190,
+            "y": 280
+          },
           "columns": 6,
-          "padding": { "horizontal": 2, "vertical": 6 },
+          "padding": {
+            "horizontal": 2,
+            "vertical": 6
+          },
           "elements": [
             "entrance_forest",
             "entrance_fire",
@@ -282,14 +363,20 @@
             "entrance_icecavern",
             "entrance_gtg"
           ],
-          "elementsSize": { "width": 28, "height": 28 },
+          "elementsSize": {
+            "width": 28,
+            "height": 28
+          },
           "displayName": "Dungeon Entrances",
           "hidden": false
         },
         {
           "type": "hinttable",
           "displayName": "Path Hints",
-          "position": { "x": 10, "y": 392 },
+          "position": {
+            "x": 10,
+            "y": 392
+          },
           "hintType": "location",
           "hintNumber": 5,
           "columns": 1,
@@ -311,7 +398,10 @@
         {
           "type": "hinttable",
           "displayName": "Foolish Hints",
-          "position": { "x": 10, "y": 522 },
+          "position": {
+            "x": 10,
+            "y": 522
+          },
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
@@ -327,7 +417,10 @@
         {
           "type": "hinttable",
           "displayName": "Important Checks",
-          "position": { "x": 10, "y": 574 },
+          "position": {
+            "x": 10,
+            "y": 574
+          },
           "hintType": "location",
           "hintNumber": 2,
           "width": 360,
@@ -346,7 +439,10 @@
         {
           "type": "hinttable",
           "displayName": "Other Locations",
-          "position": { "x": 10, "y": 626 },
+          "position": {
+            "x": 10,
+            "y": 626
+          },
           "hintType": "location",
           "hintNumber": 16,
           "width": 360,
@@ -367,13 +463,16 @@
       "style": {
         "title": "Season 9 Screenshots",
         "width": 580,
-        "height": 1080
+        "height": 960
       },
       "components": [
         {
           "type": "screenshot",
           "position": { "x": 0, "y": 0 },
-          "size": { "width": 575, "height": 1080 },
+          "size": {
+            "width": 575,
+            "height": 960
+          },
           "screenshotSize": [ 325, 575 ],
           "clipRegion": [
             [ 25, 15 ],
