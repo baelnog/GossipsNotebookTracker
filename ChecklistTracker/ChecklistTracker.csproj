@@ -67,6 +67,7 @@
     <PackageReference Include="Nito.Disposables" />
     <PackageReference Include="ScreenCapture.NET" />
     <PackageReference Include="ScreenCapture.NET.DX11" />
+    <PackageReference Include="System.Drawing.Common" />
   </ItemGroup>
   <!-- Screeshot processing packages -->
   <ItemGroup Condition="'$(EnableOcr)' == 'true'">

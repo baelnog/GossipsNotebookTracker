@@ -33,5 +33,6 @@
     <PackageVersion Include="SkiaSharp.Extended" Version="3.0.0" />
     <PackageVersion Include="SkiaSharp.Views.WinUI" Version="3.119.1" />
     <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
+    <PackageVersion Include="System.Drawing.Common" Version="10.0.2" />
   </ItemGroup>
 </Project>
