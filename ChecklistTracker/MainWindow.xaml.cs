@@ -1,5 +1,4 @@
 using ChecklistTracker.Config;
-using ChecklistTracker.Config.Layout;
 using ChecklistTracker.Config.Layout.GossipNotebook.Elements;
 using ChecklistTracker.Controls;
 using ChecklistTracker.CoreUtils;
@@ -7,16 +6,15 @@ using ChecklistTracker.Layout;
 using ChecklistTracker.Layout.GossipNotebook;
 using ChecklistTracker.ViewModel;
 using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SharpHook;
-using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Reflection;
 using Windows.Graphics;
 using Windows.Storage.Pickers;
 
@@ -178,9 +176,10 @@ namespace ChecklistTracker
             Contract.Assert(CheckListViewModel.GlobalInstance != null);
 
             this.Layout.Children.Clear();
-
             this.Layout.CanDrag = false;
-            this.AppWindow.SetIcon(@"Assets/notebook.ico");
+
+            var icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("ChecklistTracker.Assets.notebook.ico"));
+            this.AppWindow.SetIcon(Win32Interop.GetIconIdFromIcon(icon.Handle));
 
             var windowStyle = new CoalescedStyle(layout.Style, style);
 
