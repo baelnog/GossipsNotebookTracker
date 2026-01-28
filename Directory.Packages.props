@@ -19,8 +19,8 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
-    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.8.260101001" />
     <PackageVersion Include="MSTest.TestAdapter" Version="4.0.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
     <PackageVersion Include="Nito.Disposables" Version="2.5.0" />
@@ -28,7 +28,7 @@
     <PackageVersion Include="ScreenCapture.NET" Version="3.0.0" />
     <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
     <PackageVersion Include="ScreenCapturer" Version="3.0.1" />
-    <PackageVersion Include="SharpHook" Version="7.1.0" />
+    <PackageVersion Include="SharpHook" Version="7.1.1" />
     <PackageVersion Include="SkiaSharp" Version="3.119.1" />
     <PackageVersion Include="SkiaSharp.Extended" Version="3.0.0" />
     <PackageVersion Include="SkiaSharp.Views.WinUI" Version="3.119.1" />
