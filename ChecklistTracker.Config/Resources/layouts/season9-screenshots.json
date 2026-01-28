@@ -27,6 +27,7 @@
             "height": 30
           },
           "displayName": "Items",
+          "allowStar": true,
           "hidden": false
         },
         {
@@ -46,6 +47,7 @@
             "height": 24
           },
           "displayName": "Songs",
+          "allowStar": true,
           "hidden": false
         },
         {

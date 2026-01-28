@@ -9,6 +9,9 @@ namespace ChecklistTracker.Controls;
 
 public partial class SongControl : UserControl, INotifyPropertyChanged
 {
+    private bool StarEnabled { get; set; }
+    public Visibility ShowStar { get { return StarEnabled && ViewModel.ShowStar ? Visibility.Visible : Visibility.Collapsed; } }
+
     public double BottomImageWidth { get; set; }
     public double BottomImageHeight { get; set; }
     public Thickness BottomImageMargin { get; set; }
@@ -16,12 +19,13 @@ public partial class SongControl : UserControl, INotifyPropertyChanged
     internal LayoutParams Layout { get; private set; }
     internal SongViewModel ViewModel { get; private set; }
 
-    internal SongControl(SongViewModel viewModel, LayoutParams layout)
+    internal SongControl(SongViewModel viewModel, bool allowStar, LayoutParams layout)
     {
         InitializeComponent();
         ViewModel = viewModel;
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
+        StarEnabled = allowStar;
         Layout = layout;
 
         var bottomScale = 0.6;
