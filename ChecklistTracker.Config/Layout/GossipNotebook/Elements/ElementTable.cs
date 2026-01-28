@@ -35,5 +35,8 @@ namespace ChecklistTracker.Config.Layout.GossipNotebook.Elements
 
         [JsonPropertyName("TextBackgroundOpacity")]
         public double? TextBackgroundOpacity { get; set; }
+
+        [JsonPropertyName("allowStar")]
+        public bool AllowStar { get; set; } = false;
     }
 }

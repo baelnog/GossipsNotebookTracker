@@ -11,6 +11,9 @@ namespace ChecklistTracker.Controls
     public sealed partial class ElementControl : UserControl, INotifyPropertyChanged
     {
         public Visibility CountVisibility { get { return ViewModel.HasCount ? Visibility.Visible : Visibility.Collapsed; } }
+        public Visibility ShowStar { get { return StarEnabled && ViewModel.ShowStar ? Visibility.Visible : Visibility.Collapsed; } }
+
+        private bool StarEnabled { get; set; }
 
         internal ItemViewModel ViewModel;
         internal LayoutParams Layout { get; private set; }
@@ -18,11 +21,13 @@ namespace ChecklistTracker.Controls
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        internal ElementControl(ItemViewModel viewModel, LayoutParams layout, ITextStyle textStyle)
+        internal ElementControl(ItemViewModel viewModel, bool allowStar, LayoutParams layout, ITextStyle textStyle)
         {
             InitializeComponent();
             ViewModel = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+            StarEnabled = allowStar;
 
             Layout = layout;
             TextStyle = textStyle;

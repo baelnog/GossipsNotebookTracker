@@ -28,5 +28,23 @@
             Margin="{x:Bind BottomImageMargin, Mode=OneWay}"
             RelativePanel.AlignHorizontalCenterWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True"/>
+        <TextBlock
+            x:Name="Star"
+            Text="★"
+            FontSize="16"
+            Margin="-6,-10,0,0"
+            FontWeight="ExtraBold"
+            Foreground="Gold"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            HorizontalTextAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="{x:Bind ShowStar, Mode=OneWay}"
+            IsTapEnabled="False"
+            IsDoubleTapEnabled="False"
+            IsHitTestVisible="False"
+            IsHoldingEnabled="False"
+            IsRightTapEnabled="False"
+            />
     </RelativePanel>
 </UserControl>

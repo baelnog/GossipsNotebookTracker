@@ -20,6 +20,7 @@ namespace ChecklistTracker.ViewModel
         public int Count { get; private set; }
 
         public bool HasCount { get => Item.collection == CollectionType.Count; }
+        public bool ShowStar { get; private set; } = false;
 
         public ImageSource CurrentImage { get; private set; }
 
@@ -81,9 +82,17 @@ namespace ChecklistTracker.ViewModel
                 case MouseButton.Right:
                     Uncollect();
                     break;
+                case MouseButton.Middle:
+                    ToggleStar();
+                    break;
                 default:
                     return;
             }
+        }
+
+        internal void ToggleStar()
+        {
+            ShowStar = !ShowStar;
         }
 
         internal ImageSource OnDragImage(UIElement sender, MouseButton button)

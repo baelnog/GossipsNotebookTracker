@@ -237,7 +237,7 @@ namespace ChecklistTracker
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance, quickFillImages), layoutParams);
+                                elementControl = new SongControl(new SongViewModel(item, CheckListViewModel.GlobalInstance, quickFillImages), compTable.AllowStar, layoutParams);
                                 break;
                             case ItemType.Reward:
                                 if (item == null)
@@ -254,7 +254,7 @@ namespace ChecklistTracker
                                 {
                                     throw new ArgumentNullException(nameof(item));
                                 }
-                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), layoutParams, elementTextStyle);
+                                elementControl = new ElementControl(new ItemViewModel(item, CheckListViewModel.GlobalInstance), compTable.AllowStar, layoutParams, elementTextStyle);
                                 break;
 
                         }

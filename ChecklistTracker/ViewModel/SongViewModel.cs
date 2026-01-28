@@ -46,8 +46,8 @@ namespace ChecklistTracker.ViewModel
                 if (QuickFillImages.Any())
                 {
                     BottomImage = ResourceFinder.FindItem(QuickFillImages.Next(), 1);
+                    return;
                 }
-                return;
             }
             base.OnClick(sender, button);
         }
