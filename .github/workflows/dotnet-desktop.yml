@@ -35,3 +35,28 @@ jobs:
       with:
         name: Tracker
         path: publish
+
+  build-ocr:
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Publish the app
+      run: dotnet publish ChecklistTracker --property:EnableOcr=true -c Release -r win-x64 -o publish
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.publish }}
+      with:
+        name: Tracker
+        path: publish
