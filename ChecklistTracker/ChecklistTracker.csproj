@@ -25,10 +25,13 @@
     <!-- Disable localization -->
     <InvariantGlobalization>true</InvariantGlobalization>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <Configurations>Debug;Release;DebugOcr</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>$(DefineConstants);ENABLE_OCR</DefineConstants>
     <EnableOcr>true</EnableOcr>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(EnableOcr)'=='true'">
+    <DefineConstants>$(DefineConstants);ENABLE_OCR</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="CheckListView.xaml" />
