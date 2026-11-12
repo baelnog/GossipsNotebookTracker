@@ -524,6 +524,23 @@
 			"light_arrows",
 			"triforce"
 		],
+		"season10": [
+			"unkown",
+			"medallion_green",
+			"medallion_red",
+			"medallion_blue",
+			"medallion_orange",
+			"medallion_purple",
+			"medallion_yellow",
+			"queen_gohma",
+			"king_dodongo",
+			"barinade",
+			"phantom_ganon",
+			"volvagia",
+			"morpha",
+			"twinrova",
+			"bongo_bongo"
+		],
 		"all_paths": [
 			"unkown",
 			"queen_gohma",

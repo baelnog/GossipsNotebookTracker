@@ -1,0 +1,394 @@
+{
+    "style": {
+        "title": "Season 10",
+        "width": 384,
+        "height": 960,
+        "backgroundColor": "#000000"
+    },
+    "windows": [
+        {
+            "components": [
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "columns": 10,
+                    "padding": 2.5,
+                    "elements": [ "bombs", "hammer", "hookshot", "bow", "fire_arrows", "dins", "scale", "lens", "tunic_goron", "trade_4", "bombchus", "strength", "boomerang", "slingshot", "light_arrows", "farores", "rutos_letter", "bottle", "tunic_zora", "wallet", "boots_iron", "boots_hover", "kokiri_sword", "mirror_shield", "ice_arrows", "magic" ],
+                    "elementsSize": {
+                        "width": 30,
+                        "height": 30
+                    },
+                    "displayName": "Items",
+                    "allowStar": true,
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 6,
+                        "y": 110
+                    },
+                    "columns": 6,
+                    "padding": {
+                        "horizontal": 5,
+                        "vertical": 8
+                    },
+                    "elements": [ "song_lullaby", "song_epona", "song_saria", "song_suns", "song_time", "song_storms", "song_minuet", "song_bolero", "song_serenade", "song_requiem", "song_nocturne", "song_prelude" ],
+                    "elementsSize": {
+                        "width": 24,
+                        "height": 24
+                    },
+                    "displayName": "Songs",
+                    "allowStar": true,
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 6,
+                        "y": 198
+                    },
+                    "columns": 8,
+                    "padding": 4,
+                    "elements": [ "keys_forest", "keys_fire", "keys_water", "keys_spirit", "keys_shadow", "keys_ganons", "keys_botw", "keys_gtg" ],
+                    "elementsSize": {
+                        "width": 24,
+                        "height": 24
+                    },
+                    "displayName": "Keys",
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 216,
+                        "y": 78
+                    },
+                    "columns": 3,
+                    "padding": 4,
+                    "elements": [
+                        "medallion_green",
+                        "medallion_red",
+                        "medallion_blue",
+                        "medallion_orange",
+                        "medallion_purple",
+                        "medallion_yellow",
+                        "stone_kokiri",
+                        "stone_goron",
+                        "stone_zora"
+                    ],
+                    "quickFillLabels": [
+                        "DEKU",
+                        "DC",
+                        "JABU",
+                        "FOREST",
+                        "FIRE",
+                        "WATER",
+                        "SHADOW",
+                        "SPIRIT",
+                        "FREE"
+                    ],
+                    "elementsSize": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "fontSize": 8,
+                    "TextBackgroundOpacity": 0.5,
+                    "displayName": "Rewards",
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 262,
+                        "y": 200
+                    },
+                    "columns": 2,
+                    "padding": {
+                        "horizontal": 0.8,
+                        "vertical": 1
+                    },
+                    "elements": [
+                        "gs_30",
+                        "sometimes",
+                        "gs_40",
+                        "sometimes",
+                        "gs_50",
+                        "sometimes"
+                    ],
+                    "elementsSize": {
+                        "width": 24,
+                        "height": 24
+                    },
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 324,
+                        "y": 200
+                    },
+                    "columns": 2,
+                    "padding": {
+                        "horizontal": 0.8,
+                        "vertical": 1
+                    },
+                    "elements": [
+                        "skull_mask",
+                        "sometimes",
+                        "biggoron",
+                        "sometimes",
+                        "frogs",
+                        "sometimes"
+                    ],
+                    "elementsSize": {
+                        "width": 24,
+                        "height": 24
+                    },
+                    "hidden": false
+                },
+                {
+                    "type": "hinttable",
+                    "position": {
+                        "x": 10,
+                        "y": 340
+                    },
+                    "fontSize": 8,
+                    "hintType": "sometimes",
+                    "hintNumber": 1,
+                    "width": 96,
+                    "padding": 2,
+                    "labels": "locations",
+                    "color": "#ffffff",
+                    "backgroundColor": "#408040",
+                    "showIcon": false,
+                    "showItems": false,
+                    "displayName": "Spawns",
+                    "hidden": false,
+                    "placeholderText": ":: Spawn ::"
+                },
+                {
+                    "type": "hinttable",
+                    "position": {
+                        "x": 112,
+                        "y": 340
+                    },
+                    "fontSize": 8,
+                    "hintType": "sometimes",
+                    "hintNumber": 1,
+                    "width": 108,
+                    "padding": 2,
+                    "labels": "locations",
+                    "color": "#ffffff",
+                    "backgroundColor": "#c0b000",
+                    "showIcon": false,
+                    "showItems": false,
+                    "displayName": "Lights",
+                    "hidden": false,
+                    "placeholderText": ":: Light Arrows ::"
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 228,
+                        "y": 340
+                    },
+                    "padding": 0,
+                    "elements": [
+                        "frogs_song"
+                    ],
+                    "elementsSize": {
+                        "width": 144,
+                        "height": 24
+                    },
+                    "displayName": "frogs",
+                    "hidden": false
+                },
+                {
+                    "type": "table",
+                    "position": {
+                        "x": 344,
+                        "y": 128
+                    },
+                    "padding": 0,
+                    "elements": [
+                        "gold_skulls"
+                    ],
+                    "elementsSize": {
+                        "width": 24,
+                        "height": 24
+                    },
+                    "displayName": "skulls",
+                    "fontSize": 16,
+                    "fontWeight": "Bold",
+                    "backgroundColor": "#000000",
+                    "TextBackgroundOpacity": 0.5,
+                    "hidden": false
+                },
+                {
+                    "type": "hinttable",
+                    "position": {
+                        "x": 10,
+                        "y": 236
+                    },
+                    "hintType": "sometimes",
+                    "hintNumber": 2,
+                    "width": 234,
+                    "padding": 2,
+                    "labels": "sometimes",
+                    "labelsSet": [
+                        "Lake Roof and Fishing",
+                        "Bombchu Bowling",
+                        "Castle Great Fairies",
+                        "Domain Child Torches and Diving",
+                        "Gerudo Valley Ledges",
+                        "Horseback Archery",
+                        "BotW Dead Hand (Reward First)",
+                        "Fire Temple Hammer Loop",
+                        "Spirit Trial (Switch + Invis)",
+                        "Shadow Temple Like Like (Left + Right)",
+                        "Shadow Temple Dins Checks (Left + Right)",
+                        "Spirit Temple Child Basement (Left + Right)",
+                        "Spirit Temple Hands (Child + Adult)",
+                        "Spirit Temple Adult Basement (Right + Left)",
+                        "Water Temple Dark Link + River"
+                    ],
+                    "color": "#ffffff",
+                    "backgroundColor": "#333333",
+                    "fontSize": 8,
+                    "showIcon": true,
+                    "showBoss": true,
+                    "showItems": true,
+                    "itemCount": 2,
+                    "displayName": "Sometimes Hints",
+                    "hidden": false
+                },
+                {
+                    "type": "hinttable",
+                    "position": {
+                        "x": 10,
+                        "y": 288
+                    },
+                    "hintType": "sometimes",
+                    "hintNumber": 4,
+                    "columns": 2,
+                    "width": 177,
+                    "padding": 2,
+                    "labels": "sometimes",
+                    "labelsSet": [
+                        "20 Skulls",
+                        "Market 10 Big Poes",
+                        "Anju's Chickens",
+                        "Royal Family Tomb Chest",
+                        "Darunia's Joy",
+                        "ZR Frogs in the Rain",
+                        "Goron City Smiling Pot",
+                        "King Zora Thawed",
+                        "Lake Hylia Lab Dive",
+                        "Lake Hylia Shoot the Sun",
+                        "Lost Woods Skull Kid",
+                        "Redead Grave",
+                        "Lost Woods Target in the Woods",
+                        "Treasure Chest Game",
+                        "ZF Bottom",
+                        "Fire Temple Hammer Chest",
+                        "Fire Temple Pierre",
+                        "Shadow Trial 2",
+                        "GTG Sunken Rupees",
+                        "Ice Cavern Final Reward (Iron Boots)",
+                        "Boomerang Chest",
+                        "Shadow Temple Freestanding Key (Pot Key)",
+                        "Water BK Chest",
+                        "Water Central Pillar",
+                        "Haunted Wasteland Chest",
+                        "Goron City Left Maze Chest",
+                        "Gerudo Valley Hammer Rocks",
+                        "Hyrule Castle Fairy",
+                        "Outside Ganon's Castle Fairy",
+                        "Water River Chest",
+                        "GTG Maze Final Chest",
+                        "Spirit Temple Left Hand",
+                        "Spirit Temple Right Hand"
+                    ],
+                    "color": "#ffffff",
+                    "backgroundColor": "#333333",
+                    "fontSize": 10,
+                    "showIcon": true,
+                    "showBoss": true,
+                    "showItems": true,
+                    "itemCount": 1,
+                    "displayName": "Sometimes Hints",
+                    "hidden": false
+                },
+                {
+                    "type": "hinttable",
+                    "displayName": "Path Hints",
+                    "position": {
+                        "x": 10,
+                        "y": 366
+                    },
+                    "hintType": "location",
+                    "hintNumber": 4,
+                    "columns": 1,
+                    "width": 360,
+                    "padding": 2,
+                    "labels": "locations",
+                    "color": "#ffffff",
+                    "backgroundColor": "#4a8ab6",
+                    "showIcon": true,
+                    "showBoss": true,
+                    "showItems": true,
+                    "bossCount": 3,
+                    "itemCount": 7,
+                    "bossIconSet": "season10",
+                    "itemIconSet": "logical_items",
+                    "hidden": false,
+                    "placeholderText": ":: Goals of the Hero ::"
+                },
+                {
+                    "type": "hinttable",
+                    "displayName": "Foolish Hints",
+                    "position": {
+                        "x": 10,
+                        "y": 470
+                    },
+                    "hintType": "location",
+                    "hintNumber": 3,
+                    "width": 360,
+                    "padding": 2,
+                    "labels": "locations",
+                    "color": "#ffffff",
+                    "backgroundColor": "#c6445c",
+                    "showIcon": true,
+                    "showItems": false,
+                    "hidden": false,
+                    "placeholderText": ":: Foolish Locations ::"
+                },
+                {
+                    "type": "hinttable",
+                    "displayName": "Other Locations",
+                    "position": {
+                        "x": 10,
+                        "y": 548
+                    },
+                    "hintType": "location",
+                    "hintNumber": 16,
+                    "width": 360,
+                    "padding": 2,
+                    "labels": "locations",
+                    "color": "#ffffff",
+                    "backgroundColor": "#131346",
+                    "showIcon": true,
+                    "itemCount": 8,
+                    "itemIconSet": "logical_items",
+                    "hidden": false,
+                    "allowScroll": true,
+                    "placeholderText": ":: Other Locations ::"
+                }
+            ]
+        }
+    ]
+}
