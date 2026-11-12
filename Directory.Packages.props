@@ -11,7 +11,7 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.251219" />
     <PackageVersion Include="CommunityToolkit.WinUI.Helpers" Version="8.2.251219" />
     <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="8.2.251219" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="Fody" Version="6.9.3" />
     <PackageVersion Include="HPPH.SkiaSharp" Version="1.0.0" />
     <PackageVersion Include="HPPH.System.Drawing" Version="1.0.0" />
