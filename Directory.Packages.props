@@ -13,7 +13,7 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="8.2.251219" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Fody" Version="6.9.3" />
-    <PackageVersion Include="HPPH.SkiaSharp" Version="1.0.0" />
+    <PackageVersion Include="HPPH.SkiaSharp" Version="2.0.0" />
     <PackageVersion Include="HPPH.System.Drawing" Version="1.0.0" />
     <PackageVersion Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0" />
@@ -29,7 +29,7 @@
     <PackageVersion Include="ScreenCapture.NET.DX11" Version="3.0.0" />
     <PackageVersion Include="ScreenCapturer" Version="3.0.1" />
     <PackageVersion Include="SharpHook" Version="7.1.1" />
-    <PackageVersion Include="SkiaSharp" Version="3.119.1" />
+    <PackageVersion Include="SkiaSharp" Version="4.156.0" />
     <PackageVersion Include="SkiaSharp.Extended" Version="3.0.0" />
     <PackageVersion Include="SkiaSharp.Views.WinUI" Version="3.119.1" />
     <PackageVersion Include="StrangeLoopGames.PropertyChanged.Fody" Version="3.4.0" />
